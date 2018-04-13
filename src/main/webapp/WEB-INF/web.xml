@@ -1,0 +1,171 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+
+    <display-name>Archetype Created Web Application</display-name>
+
+    <filter>
+        <filter-name>StartFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.StartFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>StartFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AddQuestionFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.AddQuestionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AddQuestionFilter</filter-name>
+        <url-pattern>/asking</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>EditAnswerFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.EditAnswerFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EditAnswerFilter</filter-name>
+        <url-pattern>/edit_answer</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>EditQuestionFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.EditQuestionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EditQuestionFilter</filter-name>
+        <url-pattern>/edit_question</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UserDetailsFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.UserDetailsFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>UserDetailsFilter</filter-name>
+        <url-pattern>/user</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>AdminResponsibilityFilter</filter-name>
+        <filter-class>by.epam.like_it.contoller.filter.AdminResponsibilityFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AdminResponsibilityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>by.epam.like_it.contoller.Controller</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>SignInError</servlet-name>
+        <jsp-file>/WEB-INF/sign_in_error.jsp</jsp-file>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>SignUpForm</servlet-name>
+        <jsp-file>/WEB-INF/sign_up_form.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddQuestionForm</servlet-name>
+        <jsp-file>/WEB-INF/add_question.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EditQuestionForm</servlet-name>
+        <jsp-file>/WEB-INF/edit_question_form.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EditAnswerForm</servlet-name>
+        <jsp-file>/WEB-INF/edit_answer_form.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EditUserForm</servlet-name>
+        <jsp-file>/WEB-INF/edit_user_form.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EditUserForm</servlet-name>
+        <url-pattern>/edit_user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserDetails</servlet-name>
+        <jsp-file>/WEB-INF/user_details.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AdminMenu</servlet-name>
+        <jsp-file>/WEB-INF/admin_menu.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdminMenu</servlet-name>
+        <url-pattern>/admin_menu</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UserDetails</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EditAnswerForm</servlet-name>
+        <url-pattern>/edit_answer</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EditQuestionForm</servlet-name>
+        <url-pattern>/edit_question</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>AddQuestionForm</servlet-name>
+        <url-pattern>/asking</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SignUpForm</servlet-name>
+        <url-pattern>/sign_up</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>SignInError</servlet-name>
+        <url-pattern>/sign_in_error</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/start</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+</web-app>
