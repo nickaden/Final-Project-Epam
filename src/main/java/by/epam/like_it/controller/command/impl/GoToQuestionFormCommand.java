@@ -1,0 +1,24 @@
+package by.epam.like_it.controller.command.impl;
+
+import by.epam.like_it.controller.command.Command;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class GoToQuestionFormCommand implements Command {
+
+    private static final String ADDING_FORM_PATH = "/asking";
+
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+
+            response.sendRedirect(ADDING_FORM_PATH);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -13,6 +13,7 @@ public class User implements Serializable {
     private int id;
     private String login;
     private String password;
+    private String imageName;
     private Role role;
     private String name;
     private String surname;
@@ -28,6 +29,14 @@ public class User implements Serializable {
         this.login = login;
         this.password = password;
         this.regDate = regDate;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getName() {
@@ -107,12 +116,13 @@ public class User implements Serializable {
                 Objects.equals(name, user.name) &&
                 Objects.equals(surname, user.surname) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(regDate, user.regDate);
+                Objects.equals(regDate, user.regDate) &&
+                Objects.equals(imageName, user.imageName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, login, password, role, name, surname, email, regDate);
+        return Objects.hash(id, login, password, role, name, surname, email, regDate, imageName);
     }
 }

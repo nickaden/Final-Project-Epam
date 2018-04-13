@@ -1,141 +1,147 @@
 <commands>
     <command>
         <action-name>add_user</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.AddUserCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.AddUserCommand</command-class>
     </command>
 
     <command>
         <action-name>question_view</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.StartCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.StartCommand</command-class>
     </command>
 
     <command>
         <action-name>question_details</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.QuestionDetailsCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.QuestionDetailsCommand</command-class>
     </command>
 
     <command>
         <action-name>sign_in</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.SignInCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.SignInCommand</command-class>
     </command>
 
     <command>
         <action-name>sign_out</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.SignOutCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.SignOutCommand</command-class>
     </command>
 
     <command>
         <action-name>sign_up</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToSignUpCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToSignUpCommand</command-class>
     </command>
 
     <command>
         <action-name>sign_up_user</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.SignUpUserCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.SignUpUserCommand</command-class>
     </command>
 
     <command>
         <action-name>add_mark</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.AddMarkCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.AddMarkCommand</command-class>
     </command>
 
     <command>
         <action-name>ask</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToQuestionFormCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToQuestionFormCommand</command-class>
     </command>
 
     <command>
         <action-name>change_lang</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.ChangeLanguageCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.ChangeLanguageCommand</command-class>
     </command>
 
     <command>
         <action-name>add_question</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.AddQuestionCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.AddQuestionCommand</command-class>
     </command>
 
     <command>
         <action-name>answer</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.AddAnswerCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.AddAnswerCommand</command-class>
     </command>
 
     <command>
         <action-name>set_solution</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.SetSolutionCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.SetSolutionCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_question_form</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToQuestionEditCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToQuestionEditCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_question</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.EditQuestionCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.EditQuestionCommand</command-class>
     </command>
 
     <command>
         <action-name>delete_question</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.DeleteQuestionCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.DeleteQuestionCommand</command-class>
     </command>
 
     <command>
         <action-name>delete_answer</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.DeleteAnswerCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.DeleteAnswerCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_answer</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.EditAnswerCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.EditAnswerCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_answer_form</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToAnswerEditCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToAnswerEditCommand</command-class>
     </command>
 
     <command>
         <action-name>user_details</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToUserDetailsCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToUserDetailsCommand</command-class>
     </command>
 
     <command>
         <action-name>admin_menu</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToAdminMenuCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToAdminMenuCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_user_form</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToEditUserFormCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToEditUserFormCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_user</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.EditUserCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.EditUserCommand</command-class>
     </command>
 
     <command>
         <action-name>delete_user</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.DeleteUserCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.DeleteUserCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_tag_form</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.GoToEditTagFormCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.GoToEditTagFormCommand</command-class>
     </command>
 
     <command>
         <action-name>edit_tag</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.EditTagCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.EditTagCommand</command-class>
     </command>
 
     <command>
         <action-name>add_tag</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.AddTagCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.AddTagCommand</command-class>
     </command>
 
     <command>
         <action-name>delete_tag</action-name>
-        <command-class>by.epam.like_it.contoller.command.impl.DeleteTagCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.DeleteTagCommand</command-class>
     </command>
+
+    <command>
+        <action-name>load_user_image</action-name>
+        <command-class>by.epam.like_it.controller.command.impl.LoadUserImageCommand</command-class>
+    </command>
+
 </commands>

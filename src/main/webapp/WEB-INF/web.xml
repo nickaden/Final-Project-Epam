@@ -6,9 +6,14 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
+    <context-param>
+        <param-name>user_image_path</param-name>
+        <param-value>D:\Epam JWD\Tasks\likeIT\src\main\webapp\images\users</param-value>
+    </context-param>
+
     <filter>
         <filter-name>StartFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.StartFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.StartFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -18,7 +23,7 @@
 
     <filter>
         <filter-name>AddQuestionFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.AddQuestionFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.AddQuestionFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -28,7 +33,7 @@
 
     <filter>
         <filter-name>EditAnswerFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.EditAnswerFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.EditAnswerFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -38,7 +43,7 @@
 
     <filter>
         <filter-name>EditQuestionFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.EditQuestionFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.EditQuestionFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -48,7 +53,7 @@
 
     <filter>
         <filter-name>UserDetailsFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.UserDetailsFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.UserDetailsFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -59,7 +64,7 @@
 
     <filter>
         <filter-name>AdminResponsibilityFilter</filter-name>
-        <filter-class>by.epam.like_it.contoller.filter.AdminResponsibilityFilter</filter-class>
+        <filter-class>by.epam.like_it.controller.filter.AdminResponsibilityFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -69,8 +74,18 @@
 
     <servlet>
         <servlet-name>Controller</servlet-name>
-        <servlet-class>by.epam.like_it.contoller.Controller</servlet-class>
+        <servlet-class>by.epam.like_it.controller.Controller</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>ImageLoader</servlet-name>
+        <servlet-class>by.epam.like_it.controller.ImageLoader</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ImageLoader</servlet-name>
+        <url-pattern>/load</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>Home</servlet-name>

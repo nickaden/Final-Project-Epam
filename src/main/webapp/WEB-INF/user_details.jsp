@@ -16,6 +16,12 @@
 </head>
 <body>
 <div class="user_desc">
+    <img src="/load?name=${user.imageName}" width="200px" height="200px">
+    <form method="POST" enctype="multipart/form-data" action="start">
+        <input type="hidden" name="action" value="load_user_image">
+        <input type="file" name="upfile"><br/>
+        <input type="submit" value="Press"><br>
+    </form>
     <c:out value="${sessionScope.user.login}"/>
     <c:out value="${sessionScope.user.name}"/>
     <c:out value="${sessionScope.user.surname}"/>

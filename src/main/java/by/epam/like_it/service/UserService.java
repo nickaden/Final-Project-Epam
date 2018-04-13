@@ -17,4 +17,6 @@ public interface UserService {
     boolean deleteUser(int userID) throws ServiceException;
 
     int addUser(User user) throws ServiceException;
+
+    void setUserImage(String imageName, User user) throws ServiceException;
 }

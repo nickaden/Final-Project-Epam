@@ -16,4 +16,6 @@ public interface UserDAO {
     int addUser(User user) throws DAOException;
 
     boolean deleteUser(int userID) throws DAOException;
+
+    void setImageName(String name, User user) throws DAOException;
 }

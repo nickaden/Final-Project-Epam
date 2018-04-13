@@ -23,9 +23,10 @@ public class UserDAOImpl implements UserDAO {
     private static final String GET_USERS="SELECT * FROM user";
     private static final String GET_USER_ID="SELECT id FROM user WHERE login=?";
     private static final String GET_USER_BY_LOGIN="SELECT * FROM user WHERE login=?";
-    private static final String ADD_USER="INSERT INTO user (login, password, role, name, surname, email, reg_date) VALUES(?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_USER="UPDATE user SET login=?, password=?, role=?, name=?, surname=?, email=? WHERE id=?";
+    private static final String ADD_USER="INSERT INTO user (login, password, role, name, surname, email, reg_date, image_name) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_USER="UPDATE user SET login=?, password=?, role=?, name=?, surname=?, email=?, image_name=? WHERE id=?";
     private static final String DELETE_USER="DELETE FROM user WHERE id=?";
+    private static final String SET_IMAGE="UPDATE user SET image_name=? WHERE id=?";
 
     //**** Literals ****//
     private static final String ID_KEY = "id";
@@ -36,6 +37,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String EMAIL_KEY="email";
     private static final String REG_DATE_KEY="reg_date";
     private static final String ROLE_KEY="role";
+    private static final String IMAGE_KEY="image_name";
 
     //**** Indexes ****//
     private static final int LOGIN_INDEX=1;
@@ -47,6 +49,8 @@ public class UserDAOImpl implements UserDAO {
     private static final int REG_DATE_INDEX=7;
     private static final int ID_INDEX=7;
     private static final int FIRST_INDEX=1;
+    private static final int SECOND_INDEX=2;
+    private static final int IMAGE_NAME_INDEX =8;
 
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -75,6 +79,7 @@ public class UserDAOImpl implements UserDAO {
                 user.setPassword(rs.getString(PASSWORD_KEY));
                 user.setRegDate(rs.getDate(REG_DATE_KEY).toLocalDate());
                 user.setRole(User.Role.valueOf(rs.getString(ROLE_KEY)));
+                user.setImageName(rs.getString(IMAGE_KEY));
             }
         } catch (ConnectionPoolException | SQLException e) {
             throw new DAOException(e);
@@ -114,6 +119,7 @@ public class UserDAOImpl implements UserDAO {
                 user.setEmail(rs.getNString(EMAIL_KEY));
                 user.setRegDate(rs.getDate(REG_DATE_KEY).toLocalDate());
                 user.setRole(User.Role.valueOf(rs.getString(ROLE_KEY)));
+                user.setImageName(rs.getString(IMAGE_KEY));
 
                 users.add(user);
             }
@@ -157,6 +163,7 @@ public class UserDAOImpl implements UserDAO {
                 statement.setString(SURNAME_INDEX,user.getSurname());
                 statement.setString(EMAIL_INDEX,user.getEmail());
                 statement.setDate(REG_DATE_INDEX,java.sql.Date.valueOf(user.getRegDate()));
+                statement.setString(IMAGE_NAME_INDEX,user.getImageName());
 
                 statement.execute();
 
@@ -196,6 +203,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(SURNAME_INDEX,user.getSurname());
             statement.setString(EMAIL_INDEX,user.getEmail());
             statement.setInt(ID_INDEX,user.getId());
+            statement.setString(IMAGE_NAME_INDEX,user.getImageName());
 
             statement.execute();
 
@@ -231,5 +239,25 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return isDeleted;
+    }
+
+
+    @Override
+    public void setImageName(String name, User user) throws DAOException {
+
+        Connection connection=null;
+        PreparedStatement statement=null;
+
+        try {
+
+            connection=connectionPool.takeConnection();
+            statement=connection.prepareStatement(SET_IMAGE);
+            statement.setString(FIRST_INDEX, name);
+            statement.setInt(SECOND_INDEX,user.getId());
+            statement.execute();
+
+        } catch (ConnectionPoolException | SQLException e) {
+            throw  new DAOException(e);
+        }
     }
 }

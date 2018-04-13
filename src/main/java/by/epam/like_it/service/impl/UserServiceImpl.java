@@ -100,4 +100,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public void setUserImage(String imageName, User user) throws ServiceException {
+
+        try {
+            DAOFactory.getInstance().getUserDAO().setImageName(imageName,user);
+        } catch (DAOException e) {
+            throw  new ServiceException(e);
+        }
+    }
 }
