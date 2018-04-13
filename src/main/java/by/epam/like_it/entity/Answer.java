@@ -12,7 +12,7 @@ public class Answer implements Serializable{
     private int id;
     private User owner;
     private int questionId;
-    private Date cr_date;
+    private Date creatingDate;
     private List<Mark> marks;
     private boolean solution;
     private String description;
@@ -36,12 +36,12 @@ public class Answer implements Serializable{
         this.questionId = questionId;
     }
 
-    public Date getCr_date() {
-        return cr_date;
+    public Date getCreatingDate() {
+        return creatingDate;
     }
 
-    public void setCr_date(Date cr_date) {
-        this.cr_date = cr_date;
+    public void setCreatingDate(Date creatingDate) {
+        this.creatingDate = creatingDate;
     }
 
     public String getDescription() {
@@ -85,7 +85,7 @@ public class Answer implements Serializable{
                 questionId == answer.questionId &&
                 solution == answer.solution &&
                 Objects.equals(owner, answer.owner) &&
-                Objects.equals(cr_date, answer.cr_date) &&
+                Objects.equals(creatingDate, answer.creatingDate) &&
                 Objects.equals(marks, answer.marks) &&
                 Objects.equals(description, answer.description);
     }
@@ -93,6 +93,6 @@ public class Answer implements Serializable{
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, owner, questionId, cr_date, marks, solution, description);
+        return Objects.hash(id, owner, questionId, creatingDate, marks, solution, description);
     }
 }

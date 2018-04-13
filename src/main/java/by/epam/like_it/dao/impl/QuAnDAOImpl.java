@@ -650,7 +650,7 @@ public class QuAnDAOImpl implements QuAnDAO {
                 answer.setSolution(searchSolution(connection, answer.getId(), ANSWER_ID_KEY));
                 answer.setQuestionId(rs.getInt(QUESTION_ID_KEY));
                 answer.setOwner(user);
-                answer.setCr_date(rs.getDate(CR_DATE_KEY));
+                answer.setCreatingDate(rs.getDate(CR_DATE_KEY));
 
                 answers.add(answer);
             }
@@ -843,7 +843,7 @@ public class QuAnDAOImpl implements QuAnDAO {
                 answer = new Answer();
                 answer.setId(rs.getInt(ID_KEY));
                 answer.setDescription(rs.getString(DESCRIPTION_KEY));
-                answer.setCr_date(rs.getDate(CR_DATE_KEY));
+                answer.setCreatingDate(rs.getDate(CR_DATE_KEY));
                 answer.setOwner(getAnswerOwner(answer));
                 answer.setQuestionId(rs.getInt(QUESTION_ID_KEY));
                 answer.setSolution(searchSolution(connection, answer.getId(), ANSWER_ID_KEY));
@@ -939,7 +939,7 @@ public class QuAnDAOImpl implements QuAnDAO {
 
                 Answer answer = new Answer();
                 answer.setId(rs.getInt(ID_KEY));
-                answer.setCr_date(rs.getDate(CR_DATE_KEY));
+                answer.setCreatingDate(rs.getDate(CR_DATE_KEY));
                 answer.setDescription(rs.getString(DESCRIPTION_KEY));
                 answer.setSolution(searchSolution(connection, answer.getId(), ANSWER_ID_KEY));
 
