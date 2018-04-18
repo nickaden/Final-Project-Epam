@@ -28,7 +28,9 @@ public class KeyHolder {
     public static final String HOME_PATH="/home";
     public static final String LANG_KEY="lang";
     public static final String USER_IMAGE_PATH ="user_image_path";
+    public static final String DESCRIPTION_IMAGE_PATH ="description_image_path";
     public static final String UPFILE_KEY="upfile";
+    public static final String DOT_SEPARATOR =".";
 
 
     public static final String QUESTION_DETAILS_PATH = "/start?action=question_details&id=";

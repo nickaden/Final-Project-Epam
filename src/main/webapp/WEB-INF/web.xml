@@ -11,6 +11,11 @@
         <param-value>D:\Epam JWD\Tasks\likeIT\src\main\webapp\images\users</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>description_image_path</param-name>
+        <param-value>D:\Epam JWD\Tasks\likeIT\src\main\webapp\images\descriptions</param-value>
+    </context-param>
+
     <filter>
         <filter-name>StartFilter</filter-name>
         <filter-class>by.epam.like_it.controller.filter.StartFilter</filter-class>

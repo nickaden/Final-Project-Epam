@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.security.Key;
 
 
 @MultipartConfig
@@ -18,7 +19,14 @@ public class ImageLoader  extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String fileName=request.getParameter(KeyHolder.NAME_KEY);
-        String filePath=request.getServletContext().getInitParameter(KeyHolder.USER_IMAGE_PATH)+"\\"+fileName;
+        String imageType=request.getParameter(KeyHolder.TYPE_KEY);
+        String filePath=null;
+
+        if (imageType.equals(KeyHolder.USER_KEY)) {
+            filePath = request.getServletContext().getInitParameter(KeyHolder.USER_IMAGE_PATH) + "\\" + fileName;
+        } else {
+            filePath = request.getServletContext().getInitParameter(KeyHolder.DESCRIPTION_IMAGE_PATH)+"\\"+fileName;
+        }
 
         File file=new File(filePath);
         FileInputStream is=new FileInputStream(file);

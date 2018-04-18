@@ -144,4 +144,9 @@
         <command-class>by.epam.like_it.controller.command.impl.LoadUserImageCommand</command-class>
     </command>
 
+    <command>
+        <action-name>load_description_image</action-name>
+        <command-class>by.epam.like_it.controller.command.impl.LoadDescriptionImageCommand</command-class>
+    </command>
+
 </commands>

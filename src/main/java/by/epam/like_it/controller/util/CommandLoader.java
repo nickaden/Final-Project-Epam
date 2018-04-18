@@ -14,6 +14,7 @@ import java.util.Map;
 
 
 public class CommandLoader {
+
     private static CommandLoader ourInstance = new CommandLoader();
     private static final String COMMANDS_SOURCE_PATH="D:\\Epam JWD\\Tasks\\likeIT\\src\\main\\resources\\commands.xml";
 
