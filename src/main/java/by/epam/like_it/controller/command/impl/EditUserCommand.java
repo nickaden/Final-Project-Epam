@@ -6,6 +6,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.service.UserService;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,9 @@ public class EditUserCommand implements Command {
             response.sendRedirect(path);
 
         } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
         }
 
 

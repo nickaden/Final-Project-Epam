@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SignInCommand implements Command {
 
     private static final String ERROR_REFER="/sign_in_error";
+    private static final String SUCCESS="success";
+    private static final String FAILURE="failure";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -29,9 +32,11 @@ public class SignInCommand implements Command {
             HttpSession session=request.getSession();
             if (user!=null){
                 session.setAttribute(KeyHolder.USER_KEY,user);
-                response.sendRedirect(ReferenceEditor.getReference(request));
+                PrintWriter writer=response.getWriter();
+                writer.write(SUCCESS);
             } else {
-                response.sendRedirect(ERROR_REFER);
+                PrintWriter writer=response.getWriter();
+                writer.write(FAILURE);
             }
 
         } catch (IOException | ServiceException e) {

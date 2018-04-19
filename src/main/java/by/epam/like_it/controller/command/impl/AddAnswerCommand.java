@@ -7,6 +7,7 @@ import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +18,7 @@ public class AddAnswerCommand implements Command {
     private static final String NEW_QUESTION_PATH = "/start?action=question_details&id=";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Answer answer=new Answer();
         User user=(User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
@@ -28,16 +29,14 @@ public class AddAnswerCommand implements Command {
         QuAnService service=factory.getQuAnService();
 
         try {
+
             service.addAnswer(answer,Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)));
 
-
-                response.sendRedirect(NEW_QUESTION_PATH+request.getParameter(KeyHolder.QUESTION_KEY));
-
-
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+        } finally {
+            response.sendRedirect(NEW_QUESTION_PATH+request.getParameter(KeyHolder.QUESTION_KEY));
         }
-
-
     }
 }

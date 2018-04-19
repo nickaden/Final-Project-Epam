@@ -50,3 +50,45 @@ function view() {
         pos=closeImgPos+1;
     }
 }
+
+function signIn() {
+
+    var form=new FormData();
+    var login=document.getElementById("login").value;
+    var password=document.getElementById("password").value;
+
+    form.append("login",login);
+    form.append("password",password);
+    form.append("action","sign_in");
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == "success"){
+                location.reload();
+            } else {
+                var msg=document.getElementById("sign_in_warning");
+                msg.innerText="Данного пользователя не существует!";
+            }
+        }
+    };
+
+    xhttp.open("POST", "start", true);
+    xhttp.send(form);
+}
+
+function signUp() {
+    var msg   = $('#sign_up_form').serialize();
+    $.ajax({
+        type: 'POST',
+        url: 'start',
+        data: msg,
+        success: function(data) {
+            location.reload();
+        },
+        error:  function(xhr, str){
+            alert('Возникла ошибка!');
+        }
+    });
+}

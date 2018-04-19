@@ -37,6 +37,7 @@ public class QuAnServiceImpl implements QuAnService {
                 questionBlock.setOwner(quAnDAO.getQuestionOwner(question));
                 questionBlock.setMarks(quAnDAO.getMarksByQuestion(question));
                 questionBlock.setTags(quAnDAO.getTagsByQuestion(question));
+                questionBlock.setAnswers(quAnDAO.getAnswersByQuestion(question));
 
                 questionBlockList.add(questionBlock);
             }
@@ -383,6 +384,8 @@ public class QuAnServiceImpl implements QuAnService {
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
         try {
+
+
 
             dao.setSolution(questionID, answerID);
 

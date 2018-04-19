@@ -8,6 +8,7 @@ import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class AddMarkCommand implements Command {
     private static final String MARK_TYPE_KEY = "mark_type";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Mark mark = new Mark();
         User user = (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
@@ -33,10 +34,14 @@ public class AddMarkCommand implements Command {
         try {
 
             service.addMark(mark, request.getParameter(KeyHolder.TYPE_KEY), Integer.parseInt(request.getParameter(KeyHolder.ID_KEY)));
-            response.sendRedirect(ReferenceEditor.getReference(request));
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+
+        } catch (ServiceException e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+
+        } finally {
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
 
 

@@ -57,6 +57,7 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final String ADD_QUESTION_TAG = "INSERT INTO question_tag (q_id, tag_id) VALUES(?, ?)";
 
     private static final String SET_SOLUTION = "INSERT INTO solution (q_id,an_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE an_id=?";
+    private static final String DELETE_SOLUTION="DELETE FROM solution where an_id=?";
 
 
     //**** Literals ****//
@@ -865,19 +866,35 @@ public class QuAnDAOImpl implements QuAnDAO {
 
         Connection connection = null;
         PreparedStatement statement = null;
+        ResultSet rs=null;
 
         try {
+
             connection = connectionPool.takeConnection();
-            statement = connection.prepareStatement(SET_SOLUTION);
-            statement.setInt(SOLUTION_Q_ID, questionID);
-            statement.setInt(SOLUTION_AN_ID, answerID);
-            statement.setInt(UPDATE_AN_ID, answerID);
-            statement.execute();
+            statement=connection.prepareStatement(GET_SOLUTION_BY_ANSWER);
+            statement.setInt(ID_INDEX,answerID);
+            rs=statement.executeQuery();
+
+            if(rs.next()){
+
+                statement=connection.prepareStatement(DELETE_SOLUTION);
+                statement.setInt(ID_INDEX,answerID);
+                statement.execute();
+
+            } else {
+
+                statement = connection.prepareStatement(SET_SOLUTION);
+                statement.setInt(SOLUTION_Q_ID, questionID);
+                statement.setInt(SOLUTION_AN_ID, answerID);
+                statement.setInt(UPDATE_AN_ID, answerID);
+                statement.execute();
+
+            }
 
         } catch (ConnectionPoolException | SQLException e) {
             throw new DAOException(e);
         } finally {
-            connectionPool.closeConnection(connection,statement);
+            connectionPool.closeConnection(connection,statement,rs);
         }
     }
 

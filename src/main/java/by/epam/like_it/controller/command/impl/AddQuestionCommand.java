@@ -3,12 +3,14 @@ package by.epam.like_it.controller.command.impl;
 
 import by.epam.like_it.entity.Question;
 import by.epam.like_it.entity.User;
+import by.epam.like_it.exception.CommandException;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
 import by.epam.like_it.controller.util.ReferenceEditor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +20,10 @@ public class AddQuestionCommand implements Command {
 
     private static final String TAGS_KEY = "tags";
     private static final String NEW_QUESTION_PATH = "/start?action=question_details&id=";
+    private static final String NO_QUESTION="Question not found";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Question question = new Question();
 
@@ -39,11 +42,14 @@ public class AddQuestionCommand implements Command {
             if (questionID != -1) {
                 response.sendRedirect(NEW_QUESTION_PATH + String.valueOf(questionID));
             } else {
-                response.sendRedirect(ReferenceEditor.getReference(request));
+                throw new CommandException(NO_QUESTION);
             }
 
-        } catch (IOException | ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException | CommandException e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
     }
 }

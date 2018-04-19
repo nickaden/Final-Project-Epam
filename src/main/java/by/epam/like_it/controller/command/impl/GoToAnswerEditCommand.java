@@ -7,6 +7,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
 import by.epam.like_it.controller.util.ReferenceEditor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,7 +36,9 @@ public class GoToAnswerEditCommand implements Command{
 
 
         } catch (ServletException | ServiceException | IOException e) {
-            e.printStackTrace();
+
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
         }
     }
 }

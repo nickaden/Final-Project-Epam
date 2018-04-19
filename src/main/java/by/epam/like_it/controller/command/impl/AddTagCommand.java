@@ -7,6 +7,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
 import by.epam.like_it.controller.util.ReferenceEditor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ import java.io.IOException;
 public class AddTagCommand implements Command {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Tag tag = new Tag();
         tag.setTitle(request.getParameter(KeyHolder.TITLE_KEY));
@@ -26,10 +27,13 @@ public class AddTagCommand implements Command {
         try {
 
             service.addTag(tag);
-            response.sendRedirect(ReferenceEditor.getReference(request));
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+        } catch (ServiceException  e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+
+        } finally {
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
     }
 }

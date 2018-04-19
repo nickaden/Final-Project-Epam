@@ -7,6 +7,7 @@ import by.epam.like_it.service.UserService;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
 import by.epam.like_it.controller.util.ReferenceEditor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class AddUserCommand implements Command{
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         UserService service = factory.getUserService();
@@ -34,10 +35,12 @@ public class AddUserCommand implements Command{
 
             int userID=service.addUser(user);
 
-                response.sendRedirect(ReferenceEditor.getReference(request));
+        } catch (ServiceException e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+        } finally {
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
 
 

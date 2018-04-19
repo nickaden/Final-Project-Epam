@@ -20,7 +20,7 @@ public class ImageLoader  extends HttpServlet {
 
         String fileName=request.getParameter(KeyHolder.NAME_KEY);
         String imageType=request.getParameter(KeyHolder.TYPE_KEY);
-        String filePath=null;
+        String filePath;
 
         if (imageType.equals(KeyHolder.USER_KEY)) {
             filePath = request.getServletContext().getInitParameter(KeyHolder.USER_IMAGE_PATH) + "\\" + fileName;

@@ -7,6 +7,7 @@ import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +19,13 @@ public class EditAnswerCommand implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory=ServiceFactory.getInstance();
         QuAnService service=factory.getQuAnService();
 
         try {
+
             Answer answer = service.getAnswerById(Integer.parseInt(request.getParameter(KeyHolder.ANSWER_KEY)));
             answer.setDescription(request.getParameter(KeyHolder.DESCRIPTION_KEY));
 
@@ -33,10 +35,12 @@ public class EditAnswerCommand implements Command {
                 service.editAnswer(answer, user.getId());
             }
 
-            response.sendRedirect(request.getParameter(KeyHolder.PATH_KEY));
+        } catch (ServiceException  e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+        } finally {
+            response.sendRedirect(request.getParameter(KeyHolder.PATH_KEY));
         }
 
     }

@@ -6,6 +6,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
 import by.epam.like_it.controller.util.ReferenceEditor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ public class DeleteAnswerCommand implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         QuAnService service = factory.getQuAnService();
@@ -27,10 +28,13 @@ public class DeleteAnswerCommand implements Command {
                     Integer.parseInt(request.getParameter(KeyHolder.USER_KEY))
             );
 
-            response.sendRedirect(ReferenceEditor.getReference(request));
+        } catch (ServiceException e) {
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+
+        } finally {
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
 
 

@@ -1,15 +1,12 @@
 package by.epam.like_it.controller.command;
 
 import by.epam.like_it.controller.util.CommandLoader;
-
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class CommandFactory {
 
     private static CommandFactory ourInstance = new CommandFactory();
-    private Map<String,Command> commandMap=new HashMap<>();
+    private Map<String,Command> commandMap;
 
     public static CommandFactory getInstance() {
         return ourInstance;

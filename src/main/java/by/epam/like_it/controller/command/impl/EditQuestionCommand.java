@@ -6,6 +6,7 @@ import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class EditQuestionCommand implements Command{
     private static final String NEW_QUESTION_PATH = "/start?action=question_details&id=";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Question question=new Question();
         question.setId(Integer.parseInt(request.getParameter(KeyHolder.ID_KEY)));
@@ -32,10 +33,13 @@ public class EditQuestionCommand implements Command{
         try {
 
             service.editQuestion(question,request.getParameter(KeyHolder.TAGS_KEY),lang);
-            response.sendRedirect( NEW_QUESTION_PATH+request.getParameter(KeyHolder.ID_KEY));
 
-        } catch (ServiceException | IOException e) {
-            e.printStackTrace();
+        } catch (ServiceException  e) {
+            Logger logger= Logger.getRootLogger();
+            logger.error(e.getMessage());
+
+        } finally {
+            response.sendRedirect( NEW_QUESTION_PATH+request.getParameter(KeyHolder.ID_KEY));
         }
 
 
