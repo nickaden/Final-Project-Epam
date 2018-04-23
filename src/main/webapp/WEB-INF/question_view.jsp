@@ -27,7 +27,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav" id="topNav">
             <li>
-                <h3>Like IT</h3>
+                <h3><a href="/home">Like IT</a></h3>
             </li>
             <li><a href="#">
                 <form class="form-inline">
@@ -179,8 +179,8 @@
                         <c:forEach items="${block.tags}" var="tag">
                             <div class="tag">${tag.title}</div>
                         </c:forEach>
-                        <div class="date"><c:out value="${block.question.creatingDate}"/></div>
-                        <div class="owner"><a href="#"><c:out value="${block.owner.login}"/>,</a></div>
+                        <div class="date question-date"><c:out value="${block.question.creatingDate}"/></div>
+                        <div class="owner question-owner"><a href="#"><c:out value="${block.owner.login}"/>,</a></div>
                     </div>
                 </div>
             </c:forEach>

@@ -148,6 +148,7 @@ public class QuAnServiceImpl implements QuAnService {
             block.setTags(quAnDAO.getTagsByQuestion(question));
             block.setMarks(quAnDAO.getMarksByQuestion(question));
             block.setOwner(quAnDAO.getQuestionOwner(question));
+            block.setAnswers(quAnDAO.getAnswersByQuestion(question));
 
         } catch (DAOException e) {
             throw new ServiceException(e);

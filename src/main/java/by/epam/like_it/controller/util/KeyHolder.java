@@ -31,6 +31,8 @@ public class KeyHolder {
     public static final String DESCRIPTION_IMAGE_PATH ="description_image_path";
     public static final String UPFILE_KEY="upfile";
     public static final String DOT_SEPARATOR =".";
+    public static final String ERROR="error";
+    public static final String SUCCESS="success";
 
 
     public static final String QUESTION_DETAILS_PATH = "/start?action=question_details&id=";

@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class AddMarkCommand implements Command {
 
@@ -34,14 +35,14 @@ public class AddMarkCommand implements Command {
         try {
 
             service.addMark(mark, request.getParameter(KeyHolder.TYPE_KEY), Integer.parseInt(request.getParameter(KeyHolder.ID_KEY)));
-
+            PrintWriter writer=response.getWriter();
+            writer.write(KeyHolder.SUCCESS);
 
         } catch (ServiceException e) {
             Logger logger= Logger.getRootLogger();
             logger.error(e.getMessage());
-
-        } finally {
-            response.sendRedirect(ReferenceEditor.getReference(request));
+            PrintWriter writer=response.getWriter();
+            writer.write(KeyHolder.ERROR);
         }
 
 

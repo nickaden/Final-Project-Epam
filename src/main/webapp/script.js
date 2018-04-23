@@ -92,3 +92,34 @@ function signUp() {
         }
     });
 }
+
+function vote_up(type, id) {
+    var msg= "action=add_mark&type="+type+"&id="+id+"&mark_type=up";
+    $.ajax({
+        type: 'POST',
+        url: 'start',
+        data: msg,
+        success: function(data) {
+            location.reload();
+        },
+        error:  function(xhr, str){
+            alert('Возникла ошибка!');
+        }
+    });
+
+}
+
+function vote_down(type,id) {
+    var msg= "action=add_mark&type="+type+"&id="+id+"&mark_type=down";
+    $.ajax({
+        type: 'POST',
+        url: 'start',
+        data: msg,
+        success: function(data) {
+            location.reload();
+        },
+        error:  function(xhr, str){
+            alert('Возникла ошибка!');
+        }
+    });
+}

@@ -72,7 +72,12 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final String LOGIN_KEY = "login";
     private static final String PASSWORD_KEY = "password";
     private static final String REG_DATE_KEY = "reg_date";
+    private static final String NAME_KEY="name";
+    private static final String SURNAME_KEY="surname";
+    private static final String EMAIL_KEY="email";
+    private static final String IMAGE_NAME="image_name";
     private static final String SQL_EXCEPTION = "Database exception";
+
 
 
     //**** Indexes ****//
@@ -550,7 +555,11 @@ public class QuAnDAOImpl implements QuAnDAO {
                 owner.setId(rs.getInt(ID_KEY));
                 owner.setLogin(rs.getString(LOGIN_KEY));
                 owner.setPassword(rs.getString(PASSWORD_KEY));
+                owner.setName(rs.getString(NAME_KEY));
+                owner.setSurname(rs.getString(SURNAME_KEY));
+                owner.setEmail(rs.getString(EMAIL_KEY));
                 owner.setRegDate(rs.getDate(REG_DATE_KEY).toLocalDate());
+                owner.setImageName(rs.getString(IMAGE_NAME));
 
             }
         } catch (ConnectionPoolException | SQLException e) {
@@ -589,6 +598,10 @@ public class QuAnDAOImpl implements QuAnDAO {
                 owner.setLogin(rs.getString(LOGIN_KEY));
                 owner.setPassword(rs.getString(PASSWORD_KEY));
                 owner.setRegDate(rs.getDate(REG_DATE_KEY).toLocalDate());
+                owner.setName(rs.getString(NAME_KEY));
+                owner.setSurname(rs.getString(SURNAME_KEY));
+                owner.setEmail(rs.getString(EMAIL_KEY));
+                owner.setImageName(rs.getString(IMAGE_NAME));
             }
 
 
