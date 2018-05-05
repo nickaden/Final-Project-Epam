@@ -1,7 +1,9 @@
 package by.epam.like_it.service.impl;
 
 import by.epam.like_it.dao.DAOFactory;
+import by.epam.like_it.dao.QuAnDAO;
 import by.epam.like_it.dao.UserDAO;
+import by.epam.like_it.entity.Mark;
 import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.DAOException;
 import by.epam.like_it.exception.ServiceException;
@@ -13,7 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Override
-    public User getUser(String login, String password) throws ServiceException {
+    public User authorizeUser(String login, String password) throws ServiceException {
 
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = factory.getUserDAO();
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
         try {
 
-            user = userDAO.getUser(login, password);
+            user = userDAO.authorUser(login, password);
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -107,6 +109,47 @@ public class UserServiceImpl implements UserService {
             DAOFactory.getInstance().getUserDAO().setImageName(imageName,user);
         } catch (DAOException e) {
             throw  new ServiceException(e);
+        }
+    }
+
+    @Override
+    public User getUserById(int id) throws ServiceException {
+
+        try {
+
+            UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+            User user = userDAO.getUserById(id);
+
+            return user;
+
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int getUserRate(User user) throws ServiceException {
+
+        QuAnDAO quAnDAO=DAOFactory.getInstance().getQuAnDAO();
+        int rate=0;
+
+        try {
+
+            List<Mark> marks=quAnDAO.getMarksByUser(user);
+
+            for(Mark mark:marks){
+
+                if (mark.getType()==Mark.Type.UP){
+                    rate++;
+                } else if (mark.getType() == Mark.Type.DOWN){
+                    rate--;
+                }
+            }
+
+            return rate;
+
+        } catch (DAOException e) {
+           throw new ServiceException(e);
         }
     }
 }

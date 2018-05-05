@@ -15,6 +15,7 @@ public class KeyHolder {
     public static final String NAME_KEY = "name";
     public static final String SURNAME_KEY = "surname";
     public static final String EMAIL_KEY = "email";
+    public static final String IMAGE_NAME_KEY="image_name";
     public static final String IS_ADDED_KEY="isAdded";
     public static final String SIGN_UP_PATH="/sign_up";
     public static final String START_PATH="/start?action=question_view";
@@ -29,6 +30,7 @@ public class KeyHolder {
     public static final String LANG_KEY="lang";
     public static final String USER_IMAGE_PATH ="user_image_path";
     public static final String DESCRIPTION_IMAGE_PATH ="description_image_path";
+    public static final String ERROR_IMAGE_PATH ="error_image_path";
     public static final String UPFILE_KEY="upfile";
     public static final String DOT_SEPARATOR =".";
     public static final String ERROR="error";

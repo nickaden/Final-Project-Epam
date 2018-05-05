@@ -6,7 +6,6 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.service.UserService;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
-import by.epam.like_it.controller.util.ReferenceEditor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,7 @@ public class SignInCommand implements Command {
             ServiceFactory factory=ServiceFactory.getInstance();
             UserService service=factory.getUserService();
 
-            User user=service.getUser(request.getParameter(KeyHolder.LOGIN_KEY),request.getParameter(KeyHolder.PASSWORD_KEY));
+            User user=service.authorizeUser(request.getParameter(KeyHolder.LOGIN_KEY),request.getParameter(KeyHolder.PASSWORD_KEY));
             HttpSession session=request.getSession();
             if (user!=null){
                 session.setAttribute(KeyHolder.USER_KEY,user);

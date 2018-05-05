@@ -20,9 +20,12 @@ public class UserDAOImpl implements UserDAO {
 
     //**** Statements ****//
     private static final String GET_USER="SELECT * FROM user WHERE login=? AND password=?";
+    private static final String GET_USER_BY_ID="SELECT * FROM user WHERE id=?";
     private static final String GET_USERS="SELECT * FROM user";
     private static final String GET_USER_ID="SELECT id FROM user WHERE login=?";
     private static final String GET_USER_BY_LOGIN="SELECT * FROM user WHERE login=?";
+
+
     private static final String ADD_USER="INSERT INTO user (login, password, role, name, surname, email, reg_date, image_name) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_USER="UPDATE user SET login=?, password=?, role=?, name=?, surname=?, email=?, image_name=? WHERE id=?";
     private static final String DELETE_USER="DELETE FROM user WHERE id=?";
@@ -40,6 +43,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String IMAGE_KEY="image_name";
 
     //**** Indexes ****//
+    private static final int GET_ID_INDEX=1;
     private static final int LOGIN_INDEX=1;
     private static final int PASSWORD_INDEX=2;
     private static final int ROLE_INDEX=3;
@@ -47,10 +51,10 @@ public class UserDAOImpl implements UserDAO {
     private static final int SURNAME_INDEX=5;
     private static final int EMAIL_INDEX=6;
     private static final int REG_DATE_INDEX=7;
-    private static final int ID_INDEX=7;
+    private static final int ID_INDEX=8;
     private static final int FIRST_INDEX=1;
     private static final int SECOND_INDEX=2;
-    private static final int IMAGE_NAME_INDEX =8;
+    private static final int IMAGE_NAME_INDEX =7;
 
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -58,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User getUser(String login, String password) throws DAOException {
+    public User authorUser(String login, String password) throws DAOException {
 
         User user=null;
 
@@ -92,6 +96,45 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
+
+    @Override
+    public User getUserById(int id) throws DAOException {
+
+        User user=null;
+
+        Connection connection=null;
+        PreparedStatement statement=null;
+        ResultSet rs=null;
+
+        try {
+            connection = connectionPool.takeConnection();
+            statement = connection.prepareStatement(GET_USER_BY_ID);
+            statement.setInt(GET_ID_INDEX,id);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt(ID_KEY));
+                user.setLogin(rs.getString(LOGIN_KEY));
+                user.setPassword(rs.getString(PASSWORD_KEY));
+                user.setName(rs.getString(NAME_KEY));
+                user.setSurname(rs.getString(SURNAME_KEY));
+                user.setEmail(rs.getString(EMAIL_KEY));
+                user.setRegDate(rs.getDate(REG_DATE_KEY).toLocalDate());
+                user.setRole(User.Role.valueOf(rs.getString(ROLE_KEY)));
+                user.setImageName(rs.getString(IMAGE_KEY));
+            }
+
+            return user;
+
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            connectionPool.closeConnection(connection,statement,rs);
+
+        }
+    }
 
     @Override
     public List<User> getUsers() throws DAOException {

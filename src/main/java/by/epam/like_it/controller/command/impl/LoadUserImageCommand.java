@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -38,13 +39,20 @@ public class LoadUserImageCommand implements Command {
             Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             fileContent.close();
 
-            User user = (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+            int id= Integer.parseInt(request.getParameter(KeyHolder.USER_KEY));
+            User user = ServiceFactory.getInstance().getUserService().getUserById(id);
 
             ServiceFactory.getInstance().getUserService().setUserImage(file.getName(),user);
 
-            user.setImageName(file.getName());
-            request.getSession(true).setAttribute(KeyHolder.USER_KEY, user);
-            response.sendRedirect(ReferenceEditor.getReference(request));
+            User currentUser = (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+
+            if (currentUser.getLogin().equals(user.getLogin())) {
+                currentUser.setImageName(file.getName());
+                request.getSession(true).setAttribute(KeyHolder.USER_KEY, currentUser);
+            }
+
+            PrintWriter writer=response.getWriter();
+            writer.write(file.getName());
 
         } catch (IOException | ServletException | ServiceException e) {
             e.printStackTrace();

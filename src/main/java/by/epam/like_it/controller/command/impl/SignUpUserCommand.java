@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 
 
@@ -22,6 +23,7 @@ public class SignUpUserCommand implements Command {
     private static final String IS_ADDED_KEY = "isAdded";
     private static final String SIGN_UP_PATH = "/sign_up";
     private static final String START_PATH = "/start?action=question_view";
+    private static final String SIGN_UP_ERROR="error";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -43,17 +45,14 @@ public class SignUpUserCommand implements Command {
 
 
             if (userID != -1) {
-                request.setAttribute(IS_ADDED_KEY, true);
                 HttpSession session = request.getSession(true);
                 session.setAttribute(KeyHolder.USER_KEY, user);
-                response.sendRedirect(START_PATH);
             } else {
-                request.setAttribute(IS_ADDED_KEY, false);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(SIGN_UP_PATH);
-                dispatcher.forward(request, response);
+                PrintWriter writer=response.getWriter();
+                writer.write(SIGN_UP_ERROR);
             }
 
-        } catch (IOException | ServletException | ServiceException e) {
+        } catch (IOException |  ServiceException e) {
             e.printStackTrace();
         }
     }

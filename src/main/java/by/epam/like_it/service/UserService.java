@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface UserService {
 
-    User getUser(String login, String password) throws  ServiceException;
+    User authorizeUser(String login, String password) throws  ServiceException;
+
+    User getUserById(int id) throws ServiceException;
 
     List<User> getUsers() throws ServiceException;
+
+    int getUserRate(User user) throws ServiceException;
 
     void editUser(User user) throws ServiceException;
 

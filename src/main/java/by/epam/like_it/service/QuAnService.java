@@ -31,9 +31,11 @@ public interface QuAnService {
 
     boolean addMark(Mark mark, String typeOfMark, int id) throws ServiceException;
 
-    List<Question> getAnsweredQuestionsByUser(User user) throws ServiceException;
+    Mark getMark(String typeOfMark, int id, int ownerId) throws ServiceException;
 
-    List<Question> getQuestionsByUser(User user) throws ServiceException;
+    List<QuestionInfoBlock> getAnsweredQuestionsByUser(User user) throws ServiceException;
+
+    List<QuestionInfoBlock> getQuestionsByUser(User user) throws ServiceException;
 
     void addAnswer(Answer answer, int questionID) throws ServiceException;
 

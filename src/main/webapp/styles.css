@@ -26,12 +26,12 @@ header h2{
     margin-top: 20px;
 }
 
-.user{
-    border-top: 2px solid #898687;
-    padding: 10px;
-    margin-top: 20px;
-    margin-left: 5px;
-}
+/*.user{*/
+    /*border-top: 2px solid #898687;*/
+    /*padding: 10px;*/
+    /*margin-top: 20px;*/
+    /*margin-left: 5px;*/
+/*}*/
 
 #user_answered{
     border-top: 2px solid #50a8ca;
@@ -86,7 +86,7 @@ header h2{
     width: 100%;
 }
 
-#sel1{
+#lang{
     position: relative;
     margin-top: 15px;
     float: right;
@@ -185,6 +185,7 @@ header h2{
 }
 
 .answer-date{
+    font-size: 11px;
 }
 
 .answer-owner-menu{
@@ -288,7 +289,7 @@ header h2{
 }
 
 .vote-down:hover{
-    background: url("web-images/vote_down_hover.png") no-repeat 50% 50%;
+    background: url('web-images/vote_down_hover.png') no-repeat 50% 50%;
     background-size: contain;
 }
 
@@ -303,10 +304,15 @@ header h2{
 }
 
 .description{
+    width: 100%;
     padding: 10px;
     display: inline-block;
     text-align: left;
     min-height: 100px;
+}
+
+.description p{
+    margin: 10px;
 }
 
 .ownerMenu{
@@ -327,3 +333,236 @@ header h2{
     margin-bottom: 80px;
 }
 
+.code pre{
+    border: 0px;
+}
+
+.code{
+    width: 80%;
+    padding: 5px;
+}
+
+.title-label{
+    display: inline;
+}
+
+.title-text{
+    display: inline;
+    width: 90%;
+}
+
+#description{
+
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.styler{
+    margin-top: 15px;
+    height: 30px;
+}
+
+
+
+.load-picture{
+    margin-top: 2px;
+    padding: 0px;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    background: url('web-images/picture.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+
+
+.set-code{
+    margin-top: 2px;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    background: url('web-images/code.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.load-picture:hover{
+    background: url('web-images/picture_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.set-code:hover {
+
+    background: url('web-images/code_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+#preview{
+    position: relative;
+    margin-left: -15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+#preview-img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.help-tip{
+    padding: 10px;
+
+}
+
+.answer-form{
+    margin-bottom: 10px;
+}
+
+.answer-form button{
+    margin-top: 5px;
+}
+
+#answers {
+    margin-top: 30px;
+}
+
+.user{
+    display: flex;
+}
+
+#user-menu-image{
+    width: 200px;
+    height: 200px;
+
+}
+
+.user-image button{
+    display: block;
+    margin-top: 10px;
+    width: auto;
+    height: 25px;
+    padding: 5px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.user-info{
+    margin-left: 20px;
+}
+
+#nickname{
+    display: inline;
+}
+
+#edit-user{
+    display: inline-block;
+    border: 0px;
+    width: 17px;
+    height: 17px;
+    background: url('web-images/pen.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+#edit-user:hover{
+    background: url('web-images/pen_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.user-info h3{
+    margin-top: 10px;
+}
+
+.qa-lists{
+}
+
+.qa-info{
+    width: 100%;
+    border-bottom: 2px #666666;
+    margin-bottom: 10px;
+}
+
+.user-tab {
+    margin-bottom: 20px;
+}
+
+#sign-up-label{
+    color: #ff2a28;
+}
+
+.edit-user-by-admin{
+    display: inline-block;
+    border: 0px;
+    width: 15px;
+    height: 15px;
+    background: url('web-images/pen.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.edit-user-by-admin:hover{
+    background: url('web-images/pen_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.delete-user-by-admin{
+    display: inline-block;
+    border: 0px;
+    width: 12px;
+    height: 12px;
+    background: url('web-images/delete.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.delete-user-by-admin:hover{
+    background: url('web-images/delete_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.user-image-container{
+    width: 60px;
+    height: 60px;
+}
+
+.user-image-container img{
+    width: 100%;
+    height: auto;
+}
+
+.users{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.user-sm{
+    display: flex;
+    flex-flow: row;
+    padding: 5px;
+    width: 20%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.user-sm:hover{
+    box-shadow: 0 0 3px #00a5dd ;
+}
+
+.user-sm h4{
+    font-size: 16px;
+    margin: 0px 10px;
+}
+
+.edit-buttons{
+    position: relative;
+    display: flex;
+    flex-flow: row-reverse;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.edit-buttons div{
+    margin: 0px 5px;
+
+}

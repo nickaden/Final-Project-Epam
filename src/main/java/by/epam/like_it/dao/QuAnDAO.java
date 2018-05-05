@@ -35,9 +35,13 @@ public interface QuAnDAO {
 
     List<Mark> getMarksByQuestion(Question question) throws DAOException;
 
+    List<Mark> getMarksByUser(User user) throws DAOException;
+
     List<Answer> getAnswersByUser(User user) throws DAOException;
 
     Question getQuestionByAnswer(Answer answer) throws DAOException;
+
+    Mark getMark(String typeOfMark, int id, int ownerId) throws DAOException;
 
     List<Mark> getMarksByAnswer(Answer answer) throws DAOException;
 

@@ -148,7 +148,7 @@ public class QuAnServiceImpl implements QuAnService {
             block.setTags(quAnDAO.getTagsByQuestion(question));
             block.setMarks(quAnDAO.getMarksByQuestion(question));
             block.setOwner(quAnDAO.getQuestionOwner(question));
-            block.setAnswers(quAnDAO.getAnswersByQuestion(question));
+            block.setAnswers(getAnswersByQuestion(question));
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -210,45 +210,69 @@ public class QuAnServiceImpl implements QuAnService {
 
 
     @Override
-    public List<Question> getAnsweredQuestionsByUser(User user) throws ServiceException {
+    public List<QuestionInfoBlock> getAnsweredQuestionsByUser(User user) throws ServiceException {
 
-        QuAnDAO dao = DAOfactory.getQuAnDAO();
-        List<Question> questions = new ArrayList<>();
+        QuAnDAO quAnDAO = DAOfactory.getQuAnDAO();
+        List<QuestionInfoBlock> blockList = new ArrayList<>();
 
-        List<Answer> answers = null;
+        List<Answer> answers=new ArrayList<>();
 
         try {
 
-            answers = dao.getAnswersByUser(user);
+            answers = quAnDAO.getAnswersByUser(user);
 
             for (Answer answer : answers) {
-                Question question = dao.getQuestionByAnswer(answer);
-                questions.add(question);
+                Question question = quAnDAO.getQuestionByAnswer(answer);
+
+                QuestionInfoBlock block=new QuestionInfoBlock();
+
+                block.setQuestion(question);
+                block.setTags(quAnDAO.getTagsByQuestion(question));
+                block.setMarks(quAnDAO.getMarksByQuestion(question));
+                block.setOwner(quAnDAO.getQuestionOwner(question));
+                block.setAnswers(getAnswersByQuestion(question));
+
+                blockList.add(block);
             }
 
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
 
-        return questions;
+        return blockList;
     }
 
 
     @Override
-    public List<Question> getQuestionsByUser(User user) throws ServiceException {
+    public List<QuestionInfoBlock> getQuestionsByUser(User user) throws ServiceException {
 
-        QuAnDAO dao = DAOfactory.getQuAnDAO();
-        List<Question> questions = new ArrayList<>();
+        QuAnDAO quAnDAO = DAOfactory.getQuAnDAO();
+        List<Question> questions;
+        List<QuestionInfoBlock> blockList = new ArrayList<>();
 
         try {
 
-            questions = dao.getQuestionsByUser(user);
+            questions = quAnDAO.getQuestionsByUser(user);
+
+            for (Question question:questions){
+
+                QuestionInfoBlock block=new QuestionInfoBlock();
+
+                block.setQuestion(question);
+                block.setTags(quAnDAO.getTagsByQuestion(question));
+                block.setMarks(quAnDAO.getMarksByQuestion(question));
+                block.setOwner(quAnDAO.getQuestionOwner(question));
+                block.setAnswers(getAnswersByQuestion(question));
+
+                blockList.add(block);
+
+            }
 
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
 
-        return questions;
+        return blockList;
     }
 
 
@@ -416,5 +440,20 @@ public class QuAnServiceImpl implements QuAnService {
         }
 
         return isAdded;
+    }
+
+    @Override
+    public Mark getMark(String typeOfMark, int id, int ownerId) throws ServiceException {
+
+        QuAnDAO quAnDAO=DAOfactory.getQuAnDAO();
+        Mark mark= null;
+
+        try {
+            mark = quAnDAO.getMark(typeOfMark, id, ownerId);
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
+
+        return mark;
     }
 }

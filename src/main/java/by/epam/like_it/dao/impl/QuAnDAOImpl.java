@@ -27,6 +27,11 @@ public class QuAnDAOImpl implements QuAnDAO {
 
     private static final String GET_MARKS_BY_QUESTION = "SELECT * FROM q_mark WHERE q_id=?";
     private static final String GET_MARKS_BY_ANSWER = "SELECT * FROM an_mark WHERE an_id=?";
+    private static final String GET_QUESTION_MARKS_BY_USER="SELECT * FROM q_mark WHERE owner_id=?";
+    private static final String GET_ANSWER_MARKS_BY_USER="SELECT * FROM an_mark WHERE owner_id=?";
+
+    private static final String GET_QUESTION_MARK="SELECT * FROM q_mark WHERE q_id=? AND owner_id=?";
+    private static final String GET_ANSWER_MARK="SELECT * FROM an_mark WHERE an_id=? AND owner_id=?";
 
     private static final String GET_SOLUTION_BY_QUESTION = "SELECT * FROM solution WHERE q_id=?";
     private static final String GET_SOLUTION_BY_ANSWER = "SELECT * FROM solution WHERE an_id=?";
@@ -77,11 +82,14 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final String EMAIL_KEY="email";
     private static final String IMAGE_NAME="image_name";
     private static final String SQL_EXCEPTION = "Database exception";
+    private static final String QUESTION_KEY="question";
+    private static final String ANSWER_KEY="answer";
 
 
 
     //**** Indexes ****//
     private static final int ID_INDEX = 1;
+    private static final int MARK_OWNER_INDEX=2;
     private static final int OWNER_ID_INDEX = 1;
     private static final int QUESTION_ID_INDEX = 2;
     private static final int ANSWER_ID_INDEX = 2;
@@ -461,6 +469,54 @@ public class QuAnDAOImpl implements QuAnDAO {
         return marks;
     }
 
+    @Override
+    public List<Mark> getMarksByUser(User user) throws DAOException {
+
+        List<Mark> marks = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+
+        try{
+
+            connection=connectionPool.takeConnection();
+            preparedStatement=connection.prepareStatement(GET_QUESTION_MARKS_BY_USER);
+            preparedStatement.setInt(ID_INDEX,user.getId());
+            rs=preparedStatement.executeQuery();
+
+            while (rs.next()){
+                Mark mark=new Mark();
+
+                mark.setId(rs.getInt(ID_KEY));
+                mark.setOwnerId(rs.getInt(OWNER_ID_KEY));
+                mark.setType(Mark.Type.valueOf(rs.getString(TYPE_KEY)));
+
+                marks.add(mark);
+            }
+
+            preparedStatement=connection.prepareStatement(GET_ANSWER_MARKS_BY_USER);
+            preparedStatement.setInt(ID_INDEX,user.getId());
+            rs=preparedStatement.executeQuery();
+
+            while (rs.next()){
+                Mark mark=new Mark();
+
+                mark.setId(rs.getInt(ID_KEY));
+                mark.setOwnerId(rs.getInt(OWNER_ID_KEY));
+                mark.setType(Mark.Type.valueOf(rs.getString(TYPE_KEY)));
+
+                marks.add(mark);
+            }
+
+            return marks;
+
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            connectionPool.closeConnection(connection,preparedStatement,rs);
+        }
+    }
 
     @Override
     public List<Mark> getMarksByAnswer(Answer answer) throws DAOException{
@@ -1077,6 +1133,46 @@ public class QuAnDAOImpl implements QuAnDAO {
         return isAdded;
     }
 
+    @Override
+    public Mark getMark(String typeOfMark, int id, int ownerId) throws DAOException {
+
+        Connection connection=null;
+        PreparedStatement statement=null;
+        ResultSet rs=null;
+        Mark mark=null;
+
+        try {
+            connection=connectionPool.takeConnection();
+            String Query=null;
+
+            if (typeOfMark.equals(QUESTION_KEY)){
+                Query=GET_QUESTION_MARK;
+            } else if (typeOfMark.equals(ANSWER_KEY)) {
+                Query=GET_ANSWER_MARK;
+            }
+
+            statement=connection.prepareStatement(Query);
+            statement.setInt(ID_INDEX,id);
+            statement.setInt(MARK_OWNER_INDEX,ownerId);
+            rs=statement.executeQuery();
+
+            if (rs.next()){
+
+                mark=new Mark();
+                mark.setId(rs.getInt(ID_KEY));
+                mark.setType(Mark.Type.valueOf(rs.getString(TYPE_KEY)));
+                mark.setOwnerId(rs.getInt(OWNER_ID_KEY));
+            }
+
+            return mark;
+
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            connectionPool.closeConnection(connection,statement,rs);
+        }
+
+    }
 
     private void addQuestionTag(Connection connection, List<Tag> tagList, int questionID) throws DAOException {
 

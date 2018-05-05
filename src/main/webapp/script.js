@@ -1,10 +1,10 @@
 function loadDoc() {
 
-    var file=document.getElementById("upfile"),
-        form=new FormData(),
-        up_file=file.files[0];
-    form.append("upfile",up_file);
-    form.append("action","load_description_image");
+    var file = document.getElementById("upfile"),
+        form = new FormData(),
+        up_file = file.files[0];
+    form.append("upfile", up_file);
+    form.append("action", "load_description_image");
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -19,57 +19,57 @@ function loadDoc() {
 }
 
 function view() {
-    var desc_text=document.getElementById("description_area").value;
-    var pos=0;
-    var isEnd=false;
-    while(true){
+    var desc_text = document.getElementById("description_area").value;
+    var pos = 0;
+    var isEnd = false;
+    while (true) {
 
-        var openImgPos=desc_text.indexOf("[img]",pos);
-        if (openImgPos==-1){
-            var text=desc_text.substring(pos+5,desc_text.length);
-            isEnd=true;
+        var openImgPos = desc_text.indexOf("[img]", pos);
+        if (openImgPos == -1) {
+            var text = desc_text.substring(pos + 5, desc_text.length);
+            isEnd = true;
         } else {
-            var text=desc_text.substring(pos+5,openImgPos);
+            var text = desc_text.substring(pos + 5, openImgPos);
         }
 
 
-        var p_node=document.createElement("P");
-        var p_textnode=document.createTextNode(text);
+        var p_node = document.createElement("P");
+        var p_textnode = document.createTextNode(text);
         p_node.appendChild(p_textnode);
         document.getElementById("view").appendChild(p_node);
 
-        if(isEnd) break;
+        if (isEnd) break;
 
-        var closeImgPos=desc_text.indexOf("[/img]",pos);
-        var img_name=desc_text.substring(openImgPos+5,closeImgPos);
+        var closeImgPos = desc_text.indexOf("[/img]", pos);
+        var img_name = desc_text.substring(openImgPos + 5, closeImgPos);
 
-        var img_node=document.createElement("IMG");
-        img_node.setAttribute("src","/load?type=description&name="+img_name);
+        var img_node = document.createElement("IMG");
+        img_node.setAttribute("src", "/load?type=description&name=" + img_name);
         document.getElementById("view").appendChild(img_node);
 
-        pos=closeImgPos+1;
+        pos = closeImgPos + 1;
     }
 }
 
 function signIn() {
 
-    var form=new FormData();
-    var login=document.getElementById("login").value;
-    var password=document.getElementById("password").value;
+    var form = new FormData();
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
 
-    form.append("login",login);
-    form.append("password",password);
-    form.append("action","sign_in");
+    form.append("login", login);
+    form.append("password", password);
+    form.append("action", "sign_in");
 
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText == "success"){
+            if (this.responseText == "success") {
                 location.reload();
             } else {
-                var msg=document.getElementById("sign_in_warning");
-                msg.innerText="Данного пользователя не существует!";
+                var msg = document.getElementById("sign_in_warning");
+                msg.innerText = "Данного пользователя не существует!";
             }
         }
     };
@@ -79,47 +79,270 @@ function signIn() {
 }
 
 function signUp() {
-    var msg   = $('#sign_up_form').serialize();
+    var msg = $('#sign_up_form').serialize();
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
-        success: function(data) {
-            location.reload();
+        success: function (data) {
+            if (data != 'error') {
+                location.reload();
+            } else {
+                $('#sign-up-label').val('Ошибка регистрации. Проверьте правильность введенных данных')
+            }
         },
-        error:  function(xhr, str){
+        error: function (xhr, str) {
             alert('Возникла ошибка!');
         }
     });
 }
 
 function vote_up(type, id) {
-    var msg= "action=add_mark&type="+type+"&id="+id+"&mark_type=up";
+    var msg = "action=add_mark&type=" + type + "&id=" + id + "&mark_type=up";
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
-        success: function(data) {
+        success: function (data) {
             location.reload();
         },
-        error:  function(xhr, str){
+        error: function (xhr, str) {
             alert('Возникла ошибка!');
         }
     });
 
 }
 
-function vote_down(type,id) {
-    var msg= "action=add_mark&type="+type+"&id="+id+"&mark_type=down";
+function vote_down(type, id) {
+    var msg = "action=add_mark&type=" + type + "&id=" + id + "&mark_type=down";
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
-        success: function(data) {
+        success: function (data) {
             location.reload();
         },
-        error:  function(xhr, str){
+        error: function (xhr, str) {
             alert('Возникла ошибка!');
         }
     });
+}
+
+function set_solution(questionId, answerId) {
+    var msg = "action=set_solution&question=" + questionId + "&answer=" + answerId;
+    $.ajax({
+        type: 'POST',
+        url: 'start',
+        data: msg,
+        success: function (data) {
+            location.reload();
+        },
+        error: function (xhr, str) {
+            alert('Возникла ошибка!');
+        }
+    });
+}
+
+function style_description(block) {
+
+    var descriptionBlock = block;
+    var description = descriptionBlock.text();
+    descriptionBlock.empty();
+    var pos = 0;
+    var newPos = 0
+
+    while (pos <= description.length) {
+
+        if ((newPos = description.indexOf("[img]", pos)) != -1) {
+
+            var end = description.indexOf("[/img]", newPos);
+
+            var tempText = description.substring(pos, newPos);
+            if (tempText.length > 0) {
+                var textBlock = $('<p></p>').text(tempText);
+                descriptionBlock.append(textBlock);
+            }
+
+
+            var imgName = description.substring(newPos + 5, end);
+            var imgBlock = $('<img id="preview-img">');
+            imgBlock.attr('src', '/load?type=description&name=' + imgName);
+            descriptionBlock.append(imgBlock);
+
+            pos = end + 6;
+
+        } else if ((newPos = description.indexOf("[code]", pos)) != -1) {
+
+            var end = description.indexOf("[/code]", newPos);
+
+            var tempText = description.substring(pos, newPos);
+            if (tempText.length > 0) {
+                var textBlock = $('<p></p>').text(tempText);
+                descriptionBlock.append(textBlock);
+            }
+
+            var codeText = description.substring(newPos + 6, end);
+            var codeBlock = $('<div class="well code"></div>');
+            var preBlock = $('<pre></pre>').text(codeText);
+            codeBlock.append(preBlock);
+            descriptionBlock.append(codeBlock);
+
+            pos = end + 7;
+        } else {
+
+            var text = description.substring(pos, description.length);
+            var textBlock = $('<p></p>').text(text);
+            descriptionBlock.append(textBlock);
+            pos = description.length + 1;
+        }
+    }
+
+    return descriptionBlock;
+
+}
+
+function chooseFile(picture) {
+    var picture = picture.get(0)
+    if (picture) {
+        picture.click();
+    } else {
+        alert('Error! Input not found')
+    }
+}
+
+function loadPicture() {
+
+    var picture = document.getElementById("picture");
+    var form = new FormData(),
+        up_file = picture.files[0];
+    form.append("upfile", up_file);
+    form.append("action", "load_description_image");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var imgText = '\n[img]' + this.responseText + '[/img]\n';
+            document.getElementById('description').value += imgText;
+        }
+    };
+
+    xhttp.open("POST", "start", true);
+    xhttp.send(form);
+}
+
+function setCode() {
+    var codeText = "\n[code]\nWrite your code here...\n[/code]\n";
+    document.getElementById('description').value += codeText;
+}
+
+function showPreview() {
+
+    $('#preview').empty();
+
+    var text = document.getElementById('description').value;
+    var block = $('<div></div>').text(text);
+
+    var description = style_description(block);
+
+    $('#preview').append(description);
+    $('#preview').slideToggle(500);
+}
+
+function showTip(type) {
+    var title = $('#how-to-title');
+    var format = $('#how-to-format');
+    var tags = $('#how-to-tag');
+
+    switch (type) {
+
+        case 'title':
+            title.fadeIn(500);
+            format.hide();
+            tags.hide();
+            break;
+
+        case 'area' :
+            title.hide();
+            format.fadeIn(500);
+            tags.hide()
+            break;
+
+        case'tag' :
+            title.hide();
+            format.hide();
+            tags.fadeIn(500);
+            break;
+    }
+}
+
+function changeLang() {
+
+    var e = document.getElementById('lang');
+    var lang = e.options[e.selectedIndex].value;
+
+    var msg = "action=change_lang&lang=" + lang;
+    $.ajax({
+        type: 'POST',
+        url: 'start',
+        data: msg,
+        success: function (data) {
+            location.reload();
+        },
+        error: function (xhr, str) {
+            alert('Возникла ошибка!');
+        }
+    });
+}
+
+function loadUserImage(picture,id) {
+
+    picture=picture.get(0);
+    var form = new FormData(),
+        up_file = picture.files[0];
+    form.append("upfile", up_file);
+    form.append("user", id);
+    form.append("action", "load_user_image");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            location.reload();
+        }
+    };
+
+    xhttp.open("POST", "start", true);
+    xhttp.send(form);
+}
+
+function editUserImage(image,inputLoad,inputEdit,id) {
+
+    inputLoad=inputLoad.get(0);
+    var form = new FormData(),
+        up_file = inputLoad.files[0];
+    form.append("upfile", up_file);
+    form.append("user", id);
+    form.append("action", "load_user_image");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            image.attr('src','/load?type=user&name='+this.responseText);
+            inputEdit.val(this.responseText);
+        }
+    };
+
+    xhttp.open("POST", "start", true);
+    xhttp.send(form);
+}
+
+function editUser(form) {
+
+    var modal=$('#edit-user-modal').find('.modal-body');
+    modal.empty();
+    modal.append(form.css('display', 'block'));
+    $('#edit-user-modal').modal();
+
+}
+
+function deleteUser(id) {
+
+    $('#delete-user-modal').find('#user-id').val(id);
+    $('#delete-user-modal').modal();
 }

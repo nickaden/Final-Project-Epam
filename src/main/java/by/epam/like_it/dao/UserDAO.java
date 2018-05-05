@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface UserDAO {
 
-    User getUser(String login, String password) throws DAOException;
+    User authorUser(String login, String password) throws DAOException;
+
+    User getUserById(int id) throws DAOException;
 
     List<User> getUsers() throws DAOException;
 

@@ -43,14 +43,12 @@
             </a></li>
             <li>
                 <div class="form-group">
-                    <form id="change_lang" method="post" action="start"></form>
                     <c:set var="rus" value="selected"/>
                     <c:if test="${sessionScope.lang eq 'en'}">
                         <c:set var="eng" value="selected"/>
                         <c:set var="rus" value=""/>
                     </c:if>
-                    <input type="hidden" name="action" value="change_lang" form="change_lang">
-                    <select class="form-control" id="sel1" name="lang" form="change_lang" onchange="this.form.submit()">
+                    <select class="form-control" id="lang" name="lang" onchange="changeLang()">
                         <option value="en" <c:out value="${eng}"/> >EN</option>
                         <option value="ru" <c:out value="${rus}"/> >RU</option>
                     </select>
@@ -91,7 +89,9 @@
                             <img class="img-rounded" id="miniature"
                                  src="/load?type=user&name=${sessionScope.user.imageName}">
                             <div id="userInfo">
-                                <a href="/start?action=user_details"><c:out value="${sessionScope.user.login}"/></a>
+                                <a href="/start?action=user_details&user=${sessionScope.user.id}">
+                                    <c:out value="${sessionScope.user.login}"/>
+                                </a>
                                 <form method="get" action="start">
                                     <input type="hidden" name="action" value="sign_out">
                                     <button id="signOut" class="btn-default" type="submit">Выйти</button>
@@ -174,13 +174,13 @@
                     </table>
                     <div class="question-info">
                         <div class="answered">
-                            <c:out value="${fn:length(block.answers)} Ответов"/>
+                            <c:out value="Ответов: ${fn:length(block.answers)}"/>
                         </div>
                         <c:forEach items="${block.tags}" var="tag">
                             <div class="tag">${tag.title}</div>
                         </c:forEach>
                         <div class="date question-date"><c:out value="${block.question.creatingDate}"/></div>
-                        <div class="owner question-owner"><a href="#"><c:out value="${block.owner.login}"/>,</a></div>
+                        <div class="owner question-owner"><a href="/start?action=user_details&user=${block.owner.id}"><c:out value="${block.owner.login}"/>,</a></div>
                     </div>
                 </div>
             </c:forEach>

@@ -1,5 +1,6 @@
 package by.epam.like_it.controller.command.impl;
 
+import by.epam.like_it.controller.util.ReferenceEditor;
 import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.ServiceFactory;
@@ -21,7 +22,7 @@ public class EditUserCommand implements Command {
         ServiceFactory factory=ServiceFactory.getInstance();
         UserService service=factory.getUserService();
 
-        String path=request.getParameter(KeyHolder.PATH_KEY);
+        String path=ReferenceEditor.getReference(request);
 
         User user = new User();
 
@@ -32,6 +33,7 @@ public class EditUserCommand implements Command {
         user.setSurname(request.getParameter(KeyHolder.SURNAME_KEY));
         user.setRole(User.Role.valueOf(request.getParameter(KeyHolder.ROLE_KEY)));
         user.setEmail(request.getParameter(KeyHolder.EMAIL_KEY));
+        user.setImageName(request.getParameter(KeyHolder.IMAGE_NAME_KEY));
 
         try {
 

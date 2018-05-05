@@ -1,12 +1,14 @@
 package by.epam.like_it.controller.command.impl;
 
 import by.epam.like_it.entity.Question;
+import by.epam.like_it.entity.QuestionInfoBlock;
 import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import by.epam.like_it.service.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,25 +20,41 @@ import java.util.List;
 public class GoToUserDetailsCommand implements Command {
 
     private static final String USER_DETAILS_PATH = "/user";
+    private static final String RATE_KEY="rate";
+    private static final String TAGS_KEY="tags";
+    private static final String USERS_KEY="users";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         ServiceFactory factory = ServiceFactory.getInstance();
-        QuAnService service = factory.getQuAnService();
+        QuAnService quAnService = factory.getQuAnService();
+        UserService userService=factory.getUserService();
 
-        User user = (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+        int userId= Integer.parseInt(request.getParameter(KeyHolder.USER_KEY));
 
         try {
 
+            User user = userService.getUserById(userId);
+            User  currentUser= (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+
             if (user != null) {
 
-                List<Question> answeredQuestionList = service.getAnsweredQuestionsByUser(user);
-                List<Question> questionList = service.getQuestionsByUser(user);
+                List<QuestionInfoBlock> answeredQuestionList = quAnService.getAnsweredQuestionsByUser(user);
+                List<QuestionInfoBlock> questionList = quAnService.getQuestionsByUser(user);
+                int rate=userService.getUserRate(user);
+
+                request.setAttribute(KeyHolder.USER_KEY,user);
                 request.setAttribute(KeyHolder.ANSWERED_QUESTION_KEY, answeredQuestionList);
                 request.setAttribute(KeyHolder.QUESTIONS_KEY, questionList);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(USER_DETAILS_PATH);
+                request.setAttribute(RATE_KEY, rate);
 
+                if ((currentUser!=null) && (user.getLogin().equals(currentUser.getLogin()) || user.getRole()==User.Role.ADMIN)){
+                    request.setAttribute(TAGS_KEY,quAnService.getTags());
+                    request.setAttribute(USERS_KEY,userService.getUsers());
+                }
+
+                RequestDispatcher dispatcher = request.getRequestDispatcher(USER_DETAILS_PATH);
                 dispatcher.forward(request, response);
 
             }
