@@ -26,13 +26,6 @@ header h2{
     margin-top: 20px;
 }
 
-/*.user{*/
-    /*border-top: 2px solid #898687;*/
-    /*padding: 10px;*/
-    /*margin-top: 20px;*/
-    /*margin-left: 5px;*/
-/*}*/
-
 #user_answered{
     border-top: 2px solid #50a8ca;
     margin-top: 20px;
@@ -402,7 +395,6 @@ header h2{
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 5px;
-    border: 1px solid #ccc;
 }
 
 #preview-img{
@@ -491,7 +483,7 @@ header h2{
     color: #ff2a28;
 }
 
-.edit-user-by-admin{
+.edit-by-admin{
     display: inline-block;
     border: 0px;
     width: 15px;
@@ -500,12 +492,12 @@ header h2{
     background-size: contain;
 }
 
-.edit-user-by-admin:hover{
+.edit-by-admin:hover{
     background: url('web-images/pen_hover.png') no-repeat 50% 50%;
     background-size: contain;
 }
 
-.delete-user-by-admin{
+.delete-by-admin{
     display: inline-block;
     border: 0px;
     width: 12px;
@@ -514,7 +506,7 @@ header h2{
     background-size: contain;
 }
 
-.delete-user-by-admin:hover{
+.delete-by-admin:hover{
     background: url('web-images/delete_hover.png') no-repeat 50% 50%;
     background-size: contain;
 }
@@ -527,27 +519,58 @@ header h2{
 .user-image-container img{
     width: 100%;
     height: auto;
+    max-height: 60px;
 }
 
-.users{
+.tags-menu{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+}
+
+.tag-sm{
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    padding: 5px;
+    margin: 10px;
+
+}
+
+.tag-sm h3{
+    font-size: 20px;
+    padding: 3px;
+    display: inline-block;
+    background-color: #E1ECF4;
+    margin: 10px 0px;
+}
+
+.tag-sm .edit-buttons{
+    margin-left: 10px;
+}
+
+.users-menu{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.edit-menu{
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.edit-menu:hover{
+    box-shadow: 0 0 3px #00a5dd ;
 }
 
 .user-sm{
     display: flex;
     flex-flow: row;
     padding: 5px;
-    width: 20%;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
     margin: 10px;
 }
 
-.user-sm:hover{
-    box-shadow: 0 0 3px #00a5dd ;
-}
 
 .user-sm h4{
     font-size: 16px;
@@ -565,4 +588,8 @@ header h2{
 .edit-buttons div{
     margin: 0px 5px;
 
+}
+
+#edit-tag-modal{
+    width: 50%;
 }

@@ -136,11 +136,19 @@
 <div class="container">
     <div class="col-md-8">
         <form class="form-horizontal" method="post" action="start">
-            <input type="hidden" name="action" value="add_question">
+            <c:choose>
+                <c:when test="${requestScope.block eq null}">
+                    <input type="hidden" name="action" value="add_question">
+                </c:when>
+                <c:otherwise>
+                    <input type="hidden" name="action" value="edit_question">
+                    <input type="hidden" name="id" value="${requestScope.block.question.id}">
+                </c:otherwise>
+            </c:choose>
             <div class="form-group">
                 <label class="control-label title-label" for="title">Заголовок</label>
                 <input type="text" class="form-control title-text" id="title" placeholder="Введите заголовок"
-                       name="title" onfocus="showTip('title')" onload="showTip('title')">
+                       name="title" onfocus="showTip('title')" onload="showTip('title')" value="${requestScope.block.question.title}">
                 <div class="styler">
                     <a href="#" onclick="chooseFile()">
                         <div class="load-picture">
@@ -153,10 +161,16 @@
                     </a>
                 </div>
                 <textarea class="form-control" rows="9" id="description" name="description"
-                          onfocus="showTip('area')"></textarea>
+                          onfocus="showTip('area')"><c:out value="${requestScope.block.question.description}"/></textarea>
                 <label class="control-label" for="tags">Тэги</label>
+                <c:set var="tagLine" value=""/>
+                <c:if test="${requestScope.block != null}">
+                    <c:forEach items="${block.tags}" var="tag">
+                        <c:set var="tagLine" value="${tagLine.concat(tag.title).concat(' ')}"/>
+                    </c:forEach>
+                </c:if>
                 <input type="text" name="tags" class="form-control tag-text" id="tags"
-                       placeholder="Введите название тэгов через пробел..." onfocus="showTip('tag')">
+                       placeholder="Введите название тэгов через пробел..." onfocus="showTip('tag')" value="${tagLine}">
             </div>
             <button class="btn btn-info" type="button" onclick="showPreview()">Показать
                 превью
@@ -192,7 +206,54 @@
         </div>
     </div>
     <div class="col-md-9">
-        <div id="preview" class="collapse"></div>
+        <div id="preview" class="collapse">
+            <div id="question-details">
+                <div id="question-title">
+                    <h3></h3>
+                </div>
+                <div class="marking">
+                    <div class="vote-up mark-block" style="${q_up_style}"></div>
+                    <div class="question-details-mark mark-block">
+
+                        <%-- Count Rate--%>
+                        <c:set var="count" value="0"/>
+                        <c:forEach var="mark" items="${block.marks}">
+                            <c:choose>
+                                <c:when test="${mark.type=='UP'}">
+                                    <c:set var="count" value="${count+1}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="count" value="${count-1}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:out value="${count}"/>
+                        <%---------------------%>
+
+                    </div>
+                    <br>
+                    <div class="vote-down mark-block" style="${q_down_style}"></div>
+                </div>
+                <div class="ownerMenu">
+                    <a href="#" onclick="$('#edit-question-submit').click()">править</a>
+                    <a style="cursor: pointer;" onclick="$('#delete-question-modal').modal()">удалить</a>
+                </div>
+                <div class="description">
+                </div>
+                <div class="question-info">
+                    <div class="answered">
+                        Ответов:0
+                    </div>
+                    <div class="tags" style="display: inline-block">
+
+                    </div>
+                    <div class="date question-date"></div>
+                    <span>, </span>
+                    <div class="owner question-owner"><a href=""><c:out
+                            value="${sessionScope.user.login}"/></a></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

@@ -97,14 +97,20 @@ function signUp() {
     });
 }
 
-function vote_up(type, id) {
+function vote_up(type, id, mark) {
     var msg = "action=add_mark&type=" + type + "&id=" + id + "&mark_type=up";
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
+        dataType:'text',
         success: function (data) {
-            location.reload();
+            if (data != "error") {
+                mark.css("background", "url(\"web-images/vote_up_hover.png\") no-repeat 50% 50%");
+                mark.css("background-size", "contain");
+                mark.siblings(".vote-down").css("background", "url(\"web-images/vote_down.png\") no-repeat 50% 50%").css("background-size", "contain");
+                mark.siblings(".question-details-mark").text(data);
+            }
         },
         error: function (xhr, str) {
             alert('Возникла ошибка!');
@@ -113,14 +119,18 @@ function vote_up(type, id) {
 
 }
 
-function vote_down(type, id) {
+function vote_down(type, id, mark) {
     var msg = "action=add_mark&type=" + type + "&id=" + id + "&mark_type=down";
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
+        dataType:'text',
         success: function (data) {
-            location.reload();
+            mark.css("background", "url(\"web-images/vote_down_hover.png\") no-repeat 50% 50%");
+            mark.css("background-size", "contain");
+            mark.siblings(".vote-up").css("background", "url(\"web-images/vote_up.png\") no-repeat 50% 50%").css("background-size", "contain");
+            mark.siblings(".question-details-mark").text(data);
         },
         error: function (xhr, str) {
             alert('Возникла ошибка!');
@@ -128,14 +138,17 @@ function vote_down(type, id) {
     });
 }
 
-function set_solution(questionId, answerId) {
+function set_solution(questionId, answerId, solution) {
     var msg = "action=set_solution&question=" + questionId + "&answer=" + answerId;
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
         success: function (data) {
-            location.reload();
+            $('#answers').find('.solution').css("background","url(\"web-images/solution.png\") no-repeat 50% 50%")
+                .css("background-size","contain");
+            solution.css( 'background', 'url("web-images/solution_hover.png") no-repeat 50% 50%')
+                .css('background-size','contain');
         },
         error: function (xhr, str) {
             alert('Возникла ошибка!');
@@ -236,15 +249,27 @@ function setCode() {
 
 function showPreview() {
 
-    $('#preview').empty();
+    $('.tags').empty();
+
+    $('#preview').slideToggle(500);
+
+    var title=$('.title-text').val();
+    var tags=$('#tags').val();
+    var date=new Date();
 
     var text = document.getElementById('description').value;
     var block = $('<div></div>').text(text);
+    var descriptionBlock = style_description(block);
 
-    var description = style_description(block);
+    $('#preview').find('#question-title').text(title);
+    $('#preview').find('.description').html(descriptionBlock);
+    $('#preview').find('.question-date').text(date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear());
 
-    $('#preview').append(description);
-    $('#preview').slideToggle(500);
+    tags=tags.split(' ');
+
+    for (var i=0; i<tags.length; i++){
+        $('.tags').append($('<div class=tag></div>').text(tags[i]));
+    }
 }
 
 function showTip(type) {
@@ -293,9 +318,9 @@ function changeLang() {
     });
 }
 
-function loadUserImage(picture,id) {
+function loadUserImage(picture, id) {
 
-    picture=picture.get(0);
+    picture = picture.get(0);
     var form = new FormData(),
         up_file = picture.files[0];
     form.append("upfile", up_file);
@@ -312,9 +337,9 @@ function loadUserImage(picture,id) {
     xhttp.send(form);
 }
 
-function editUserImage(image,inputLoad,inputEdit,id) {
+function editUserImage(image, inputLoad, inputEdit, id) {
 
-    inputLoad=inputLoad.get(0);
+    inputLoad = inputLoad.get(0);
     var form = new FormData(),
         up_file = inputLoad.files[0];
     form.append("upfile", up_file);
@@ -323,7 +348,7 @@ function editUserImage(image,inputLoad,inputEdit,id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            image.attr('src','/load?type=user&name='+this.responseText);
+            image.attr('src', '/load?type=user&name=' + this.responseText);
             inputEdit.val(this.responseText);
         }
     };
@@ -332,17 +357,28 @@ function editUserImage(image,inputLoad,inputEdit,id) {
     xhttp.send(form);
 }
 
-function editUser(form) {
+function showEditUserModal(form) {
 
-    var modal=$('#edit-user-modal').find('.modal-body');
+    var modal = $('#edit-user-modal').find('.modal-body');
     modal.empty();
     modal.append(form.css('display', 'block'));
     $('#edit-user-modal').modal();
 
 }
 
-function deleteUser(id) {
+function showDeleteUserModal(id) {
 
     $('#delete-user-modal').find('#user-id').val(id);
     $('#delete-user-modal').modal();
+}
+
+function showEditTagModal(id, title) {
+    $('#edit-tag-modal').find('input[name="id"]').val(id);
+    $('#edit-tag-modal').find('input[name="title"]').val(title)
+    $('#edit-tag-modal').modal();
+}
+
+function showDeleteTagModal(id) {
+    $('#delete-tag-modal').find('input[name="id"]').val(id);
+    $('#delete-tag-modal').modal();
 }
