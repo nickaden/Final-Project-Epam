@@ -66,9 +66,6 @@ public class AddMarkCommand implements Command {
             writer.write(KeyHolder.ERROR);
             writer.close();
 
-        } finally  {
         }
-
-
     }
 }

@@ -23,7 +23,7 @@ public class GoToAdminMenuCommand implements Command {
     private static final String USERS_KEY = "users";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         UserService userService = factory.getUserService();
@@ -41,8 +41,7 @@ public class GoToAdminMenuCommand implements Command {
             RequestDispatcher dispatcher = request.getRequestDispatcher(ADMIN_MENU_PATH);
             dispatcher.forward(request, response);
 
-
-        } catch (ServletException | IOException | ServiceException e) {
+        } catch (ServletException | ServiceException e) {
 
             Logger logger= Logger.getRootLogger();
             logger.error(e.getMessage());

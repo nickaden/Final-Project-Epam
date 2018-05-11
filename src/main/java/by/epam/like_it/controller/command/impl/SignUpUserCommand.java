@@ -6,6 +6,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.service.UserService;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,14 +20,11 @@ import java.time.LocalDate;
 
 public class SignUpUserCommand implements Command {
 
-    private static final String USER_KEY = "user";
-    private static final String IS_ADDED_KEY = "isAdded";
-    private static final String SIGN_UP_PATH = "/sign_up";
-    private static final String START_PATH = "/start?action=question_view";
+
     private static final String SIGN_UP_ERROR="error";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         UserService service = factory.getUserService();
@@ -52,8 +50,8 @@ public class SignUpUserCommand implements Command {
                 writer.write(SIGN_UP_ERROR);
             }
 
-        } catch (IOException |  ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
     }
 }

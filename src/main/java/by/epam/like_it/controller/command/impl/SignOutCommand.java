@@ -13,16 +13,11 @@ public class SignOutCommand implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        try {
+        HttpSession session = request.getSession(true);
+        session.removeAttribute(KeyHolder.USER_KEY);
+        response.sendRedirect(ReferenceEditor.getReference(request));
 
-            HttpSession session=request.getSession(true);
-            session.removeAttribute(KeyHolder.USER_KEY);
-            response.sendRedirect(ReferenceEditor.getReference(request));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ChangeLanguageCommand implements Command {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession(false);
         session.setAttribute(KeyHolder.LANG_KEY, request.getParameter(KeyHolder.LANG_KEY));

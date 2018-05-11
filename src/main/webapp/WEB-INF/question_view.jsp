@@ -2,7 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <fmt:setLocale value="${sessionScope.lang}" scope="session"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
@@ -31,14 +31,19 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles.css">
+
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../sign_up_styles.css">
+    <script src="../validation.js"></script>
     <script src="../script.js"></script>
+
 
 </head>
 <body>
@@ -79,22 +84,22 @@
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">${sign_in}</a>
                         <div class="dropdown-menu" style="padding:10px;">
                             <form class="form" id="formLogin">
+                                <input type="hidden" name="action" value="sign_in">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login" type="text" class="form-control" name="login" placeholder="${login}">
+                                    <input id="login" type="text" class="form-control" name="login"
+                                           placeholder="${login}">
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password"
                                            placeholder="${password}">
                                 </div>
-                                <p class="help-block" id="sign_in_warning"></p>
-                                <button type="button" id="btnLogin" class="btn"
-                                        onclick="signIn()">${sign_in}
-                                </button>
+                                <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
                                 <button type="button" id="btnSignUp" class="btn"
                                         data-toggle="modal" data-target="#sign_up_modal">
-                                    ${sign_up}
+                                        ${sign_up}
                                 </button>
                             </form>
                         </div>
@@ -131,21 +136,55 @@
                 <h4 class="modal-title">${sign_up}</h4>
             </div>
             <div class="modal-body">
-                <form id="sign_up_form">
-                    <div class="form-group">
+                <form id="sign_up_form" class="form-horizontal">
+                    <div class="form-group has-feedback">
                         <input type="hidden" name="action" value="sign_up_user">
-                        <label for="up_login">${login}:</label>
-                        <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}"><br/>
-                        <label for="up_password">${password}:</label>
-                        <input id="up_password" class="form-control" type="password" name="password" placeholder="${password}"><br/>
-                        <label for="up_name">${first_name}:</label>
-                        <input id="up_name" class="form-control" type="text" name="name" placeholder="${first_name}"><br/>
-                        <label for="up_surname">${last_name}:</label>
-                        <input id="up_surname" class="form-control" type="text" name="surname" placeholder="${last_name}"><br/>
-                        <label for="up_email">${email}:</label>
-                        <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}"><br/>
-                        <button class="btn btn-success" type="button" onclick="signUp()">${confirm}</button>
+                        <label for="up_login" class="control-label col-sm-2">${login}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
                     </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_password" class="control-label col-sm-2">${password}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_password" class="form-control" type="password" name="password"
+                                   placeholder="${password}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_name" class="control-label col-sm-2">${first_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_name" class="form-control" type="text" name="name"
+                                   placeholder="${first_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_surname" class="control-label col-sm-2">${last_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_surname" class="form-control" type="text" name="surname"
+                                   placeholder="${last_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_email" class="control-label col-sm-2">${email}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger alert-hidden">
+                        <strong>Ошибка!</strong> Пользователь с таким логином уже существует.
+                    </div>
+                    <button class="btn btn-success" type="submit">${confirm}</button>
                 </form>
             </div>
         </div>
@@ -197,8 +236,11 @@
                         <c:forEach items="${block.tags}" var="tag">
                             <div class="tag">${tag.title}</div>
                         </c:forEach>
-                        <div class="date question-date"><fmt:formatDate value="${block.question.creatingDate}" dateStyle="SHORT"/></div>
-                        <div class="owner question-owner"><a href="/start?action=user_details&user=${block.owner.id}"><c:out value="${block.owner.login}"/>,</a></div>
+                        <div class="date question-date"><fmt:formatDate value="${block.question.creatingDate}"
+                                                                        dateStyle="SHORT"/></div>
+                        <div class="owner question-owner"><a
+                                href="/start?action=user_details&user=${block.owner.id}"><c:out
+                                value="${block.owner.login}"/>,</a></div>
                     </div>
                 </div>
             </c:forEach>

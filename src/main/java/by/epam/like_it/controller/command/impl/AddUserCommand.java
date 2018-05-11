@@ -31,6 +31,7 @@ public class AddUserCommand implements Command{
         user.setEmail(request.getParameter(KeyHolder.EMAIL_KEY));
         user.setRole(User.Role.valueOf(request.getParameter(KeyHolder.ROLE_KEY)));
 
+
         try {
 
             int userID=service.addUser(user);

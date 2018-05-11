@@ -25,11 +25,6 @@
     </command>
 
     <command>
-        <action-name>sign_up</action-name>
-        <command-class>by.epam.like_it.controller.command.impl.GoToSignUpCommand</command-class>
-    </command>
-
-    <command>
         <action-name>sign_up_user</action-name>
         <command-class>by.epam.like_it.controller.command.impl.SignUpUserCommand</command-class>
     </command>

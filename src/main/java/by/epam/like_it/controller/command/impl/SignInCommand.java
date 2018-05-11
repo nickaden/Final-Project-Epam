@@ -6,6 +6,7 @@ import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.service.UserService;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class SignInCommand implements Command {
     private static final String FAILURE="failure";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
 
@@ -38,8 +39,8 @@ public class SignInCommand implements Command {
                 writer.write(FAILURE);
             }
 
-        } catch (IOException | ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
     }
 }

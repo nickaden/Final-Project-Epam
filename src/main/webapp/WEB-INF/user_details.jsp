@@ -24,13 +24,16 @@
 <fmt:message bundle="${loc}" key="user.role_title" var="role_title"/>
 <fmt:message bundle="${loc}" key="user.admin_role" var="admin_role"/>
 <fmt:message bundle="${loc}" key="user.user_role" var="user_role"/>
+<fmt:message bundle="${loc}" key="user.edit_info" var="user_edit"/>
+<fmt:message bundle="${loc}" key="user.add_btn" var="add_btn"/>
+<fmt:message bundle="${loc}" key="user.delete_tag_warn_msg" var="delete_tag_msg"/>
+<fmt:message bundle="${loc}" key="user.delete_warning_msg" var="user_delete_warning_msg"/>
 <fmt:message bundle="${loc}" key="button.confirm" var="confirm"/>
 <fmt:message bundle="${loc}" key="button.cancel" var="cancel"/>
 <fmt:message bundle="${loc}" key="asking.ask_button" var="ask_button"/>
 <fmt:message bundle="${loc}" key="question.answers" var="answers"/>
 <fmt:message bundle="${loc}" key="question.edit" var="edit"/>
 <fmt:message bundle="${loc}" key="question.delete" var="delete"/>
-<fmt:message bundle="${loc}" key="question.delete_warning_msg" var="delete_warning_msg"/>
 <fmt:message bundle="${loc}" key="answer.answers" var="answers_title"/>
 <fmt:message bundle="${loc}" key="answer.answer_btn" var="answer_btn"/>
 <fmt:message bundle="${loc}" key="button.edit" var="edit_btn"/>
@@ -56,6 +59,8 @@
     <!-- Latest compiled JavaScript -->
     <script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="../script.js"></script>
+    <link rel="stylesheet" href="../sign_up_styles.css">
+    <script src="../validation.js"></script>
 
 </head>
 <body>
@@ -96,19 +101,19 @@
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">${sign_in}</a>
                         <div class="dropdown-menu" style="padding:10px;">
                             <form class="form" id="formLogin">
+                                <input type="hidden" name="action" value="sign_in">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login" type="text" class="form-control" name="login" placeholder="${login}">
+                                    <input id="login" type="text" class="form-control" name="login"
+                                           placeholder="${login}">
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password"
                                            placeholder="${password}">
                                 </div>
-                                <p class="help-block" id="sign_in_warning"></p>
-                                <button type="button" id="btnLogin" class="btn"
-                                        onclick="signIn()">${sign_in}
-                                </button>
+                                <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
                                 <button type="button" id="btnSignUp" class="btn"
                                         data-toggle="modal" data-target="#sign_up_modal">
                                         ${sign_up}
@@ -148,32 +153,121 @@
                 <h4 class="modal-title">${sign_up}</h4>
             </div>
             <div class="modal-body">
-                <form id="sign_up_form">
-                    <div class="form-group">
+                <form id="sign_up_form" class="form-horizontal">
+                    <div class="form-group has-feedback">
                         <input type="hidden" name="action" value="sign_up_user">
-                        <label for="up_login">${login}:</label>
-                        <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}"><br/>
-                        <label for="up_password">${password}:</label>
-                        <input id="up_password" class="form-control" type="password" name="password" placeholder="${password}"><br/>
-                        <label for="up_name">${first_name}:</label>
-                        <input id="up_name" class="form-control" type="text" name="name" placeholder="${first_name}"><br/>
-                        <label for="up_surname">${last_name}:</label>
-                        <input id="up_surname" class="form-control" type="text" name="surname" placeholder="${last_name}"><br/>
-                        <label for="up_email">${email}:</label>
-                        <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}"><br/>
-                        <button class="btn btn-success" type="button" onclick="signUp()">${confirm}</button>
+                        <label for="up_login" class="control-label col-sm-2">${login}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
                     </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_password" class="control-label col-sm-2">${password}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_password" class="form-control" type="password" name="password"
+                                   placeholder="${password}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_name" class="control-label col-sm-2">${first_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_name" class="form-control" type="text" name="name"
+                                   placeholder="${first_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_surname" class="control-label col-sm-2">${last_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_surname" class="form-control" type="text" name="surname"
+                                   placeholder="${last_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_email" class="control-label col-sm-2">${email}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger alert-hidden">
+                        <strong>Ошибка!</strong> Пользователь с таким логином уже существует.
+                    </div>
+                    <button class="btn btn-success" type="submit">${confirm}</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
+<div id="add-user-modal" class="modal fade" role="dialog">
+    div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="add-user-form" method="post"
+                  action="start">
+                <div class="form-group">
+                    <input type="hidden" name="action" value="add_user">
+                    <label class="control-label" for="user-login">${login}</label>
+                    <input id="user-login" type="text" class="form-control"
+                           name="login"
+                           value=""/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="user-password">${password}</label>
+                    <input id="user-password" type="password" class="form-control"
+                           name="password"
+                           value=""/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="user-name">${first_name}</label>
+                    <input id="user-name" type="text" class="form-control"
+                           name="name"
+                           value=""/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="user-surname">${last_name}</label>
+                    <input id="user-surname" type="text" class="form-control"
+                           name="surname"
+                           value=""/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="user-email">${email}</label>
+                    <input id="user-email" type="text" class="form-control"
+                           name="email"
+                           value=""/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">${role_title}</label><br/>
+                    <label class="radio-inline"><input type="radio" name="role" value="USER"
+                                                       checked="checked">${user_role}</label>
+                    <label class="radio-inline"><input type="radio" name="role"
+                                                       value="ADMIN">${admin_role}</label>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" id="add-user-submit" type="submit">${add_btn}
+                    </button>
+                </div>
+            </form>
+    </div>
+</div>
 </div>
 <div id="edit-user-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Изменение пользователя</h4>
+                <h4 class="modal-title">${user_edit}</h4>
             </div>
             <div class="modal-body">
             </div>
@@ -186,11 +280,11 @@
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <form method="post" action="start">
-                    <h5>Вы уверены, что хотите удалить пользователя?</h5>
+                    <h5>${user_delete_warning_msg}</h5>
                     <input id='user-id' type="hidden" name="id" value="">
                     <input type="hidden" name="action" value="delete_user">
-                    <button type="submit" class="btn btn-warning">Подтвердить</button>
-                    <button type="button" class="btn btn-success" onclick="$('#delete-user-modal').modal('hide')">Отмена</button>
+                    <button type="submit" class="btn btn-warning">${confirm}</button>
+                    <button type="button" class="btn btn-success" onclick="$('#delete-user-modal').modal('hide')">${cancel}</button>
                 </form>
             </div>
         </div>
@@ -216,6 +310,7 @@
                       action="start" style="display: none">
                     <input type="hidden" name="image_name" value="${requestScope.user.imageName}">
                     <input type="hidden" name="role" value="${requestScope.user.role}">
+                    <input type="hidden" name="action" value="edit_user">
                     <div class="form-group">
                         <input type="hidden" name="id" value="${requestScope.user.id}"/>
                         <label class="control-label" for="user-login-own">${login}</label>
@@ -243,9 +338,7 @@
                                value="${requestScope.user.email}"/>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-success " type="submit" name="action"
-                                value="edit_user">${edit_btn}
-                        </button>
+                        <button class="btn btn-success " type="submit">${edit_btn}</button>
                     </div>
                 </form>
             </c:if>
@@ -380,31 +473,32 @@
                                         <form class=form-inline" method="post" action="start">
                                             <div class="form-group">
                                                 <input type="hidden" name="id" value="">
+                                                <input type="hidden" name="action" value="edit_tag">
                                                 <input type="text" class="form-control" name="title" value="">
-                                                <button class="btn btn-primary" type="submit" name="action"
-                                                        value="edit_tag">
-                                                    Изменить
+                                                <button class="btn btn-primary" type="submit">
+                                                    ${edit_btn}
                                                 </button>
+                                                <button id="edit-tag-btn" class="btn btn-warning" onclick="$('#edit-tag-modal').modal('hide')">${cancel}</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div id="delete-tag-modal" class="modal fade" role="dialog">
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        <h4>Вы действительно хотите удалить пользователя?</h4>
+                                        <h4>${delete_tag_msg}</h4>
                                         <form class=form-inline" method="post" action="start">
                                             <div class="form-group">
                                                 <input type="hidden" name="id" value="">
-                                                <button class="btn btn-warning" type="submit" name="action"
-                                                        value="delete_tag">
-                                                    Подтвердить
+                                                <input type="hidden" name="title" value="">
+                                                <input type="hidden" name="action" value="delete_tag">
+                                                <button class="btn btn-warning" type="submit">
+                                                    ${confirm}
                                                 </button>
-                                                <button type="button" class="btn btn-success" onclick="$('#delete-tag-modal').modal('hide')">Отмена</button>
+                                                <button type="button" class="btn btn-success" onclick="$('#delete-tag-modal').modal('hide')">${cancel}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -416,8 +510,8 @@
                             <div class="tag-sm edit-menu">
                                 <h3><c:out value="${tag.title}"/></h3>
                                 <div class="edit-buttons">
-                                    <div class="delete-by-admin" onclick="showDeleteTagModal(${tag.id})"></div>
-                                    <div class="edit-by-admin" onclick="showEditTagModal(${tag.id},${tag.title})"></div>
+                                    <div class="delete-by-admin" onclick="showDeleteTagModal(${tag.id},'${tag.title}')"></div>
+                                    <div class="edit-by-admin" onclick="showEditTagModal(${tag.id},<c:out value="'${tag.title}'"/>)"></div>
                                 </div>
                             </div>
                         </c:forEach>
@@ -438,6 +532,7 @@
                                           action="start" style="display: none">
                                         <div class="form-group">
                                             <input type="hidden" name="id" value="${user.id}"/>
+                                            <input type="hidden" name="action" value="edit_user">
                                             <label class="control-label" for="user-login-${user.id}">${login}</label>
                                             <input id="user-login-${user.id}" type="text" class="form-control"
                                                    name="login"
@@ -488,8 +583,7 @@
                                                    onchange="editUserImage($('#user-image-${user.id}'), $('#image-load-${user.id}'),$('#image-edit-${user.id}'), ${user.id})">
                                         </div>
                                         <div class="form-group">
-                                            <button class="btn btn-success " type="submit" name="action"
-                                                    value="edit_user">${edit_btn}
+                                            <button class="btn btn-success" type="submit">${edit_btn}
                                             </button>
                                         </div>
                                     </form>
@@ -502,6 +596,7 @@
                             </div>
                         </c:forEach>
                     </div>
+                    <button class="btn btn-primary" id="add-user">${add_btn}</button>
                 </div>
             </c:if>
         </div>

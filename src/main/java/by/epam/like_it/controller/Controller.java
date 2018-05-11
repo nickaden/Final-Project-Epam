@@ -31,21 +31,18 @@ public class Controller extends HttpServlet {
         process(req,resp);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) {
+    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String path = getServletContext().getRealPath(EMPTY_STRING);
         PropertyConfigurator.configure(path + LOG_PROPERTIES);
+
         Logger log = Logger.getLogger(getClass());
         log.info("Start Servlet");
 
         String action=req.getParameter(ACTION_KEY);
         CommandFactory commandFactory=CommandFactory.getInstance();
         Command command=commandFactory.getCommand(action);
+        command.execute(req,resp);
 
-        try {
-            command.execute(req,resp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

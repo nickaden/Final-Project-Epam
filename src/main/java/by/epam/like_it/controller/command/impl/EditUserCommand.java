@@ -17,7 +17,7 @@ import java.io.IOException;
 public class EditUserCommand implements Command {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ServiceFactory factory=ServiceFactory.getInstance();
         UserService service=factory.getUserService();
@@ -38,12 +38,14 @@ public class EditUserCommand implements Command {
         try {
 
             service.editUser(user);
-            response.sendRedirect(path);
 
-        } catch (ServiceException | IOException e) {
+        } catch (ServiceException e) {
 
             Logger logger= Logger.getRootLogger();
             logger.error(e.getMessage());
+
+        } finally {
+            response.sendRedirect(path);
         }
 
 

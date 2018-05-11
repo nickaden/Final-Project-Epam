@@ -24,10 +24,10 @@
 <fmt:message bundle="${loc}" key="question.answers" var="answers"/>
 <fmt:message bundle="${loc}" key="question.edit" var="edit"/>
 <fmt:message bundle="${loc}" key="question.delete" var="delete"/>
-<fmt:message bundle="${loc}" key="question.delete_warning_msg" var="delete_warning_msg"/>
+<fmt:message bundle="${loc}" key="question.delete_warning_msg" var="delete_question_msg"/>
 <fmt:message bundle="${loc}" key="answer.answers" var="answers_title"/>
 <fmt:message bundle="${loc}" key="answer.answer_btn" var="answer_btn"/>
-
+<fmt:message bundle="${loc}" key="answer.delete_warn_msg" var="delete_answer_msg"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +53,8 @@
             });
         });
     </script>
+    <link rel="stylesheet" href="../sign_up_styles.css">
+    <script src="../validation.js"></script>
 
 </head>
 <body>
@@ -93,19 +95,19 @@
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">${sign_in}</a>
                         <div class="dropdown-menu" style="padding:10px;">
                             <form class="form" id="formLogin">
+                                <input type="hidden" name="action" value="sign_in">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login" type="text" class="form-control" name="login" placeholder="${login}">
+                                    <input id="login" type="text" class="form-control" name="login"
+                                           placeholder="${login}">
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password"
                                            placeholder="${password}">
                                 </div>
-                                <p class="help-block" id="sign_in_warning"></p>
-                                <button type="button" id="btnLogin" class="btn"
-                                        onclick="signIn()">${sign_in}
-                                </button>
+                                <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
                                 <button type="button" id="btnSignUp" class="btn"
                                         data-toggle="modal" data-target="#sign_up_modal">
                                         ${sign_up}
@@ -145,21 +147,72 @@
                 <h4 class="modal-title">${sign_up}</h4>
             </div>
             <div class="modal-body">
-                <form id="sign_up_form">
-                    <div class="form-group">
+                <form id="sign_up_form" class="form-horizontal">
+                    <div class="form-group has-feedback">
                         <input type="hidden" name="action" value="sign_up_user">
-                        <label for="up_login">${login}:</label>
-                        <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}"><br/>
-                        <label for="up_password">${password}:</label>
-                        <input id="up_password" class="form-control" type="password" name="password" placeholder="${password}"><br/>
-                        <label for="up_name">${first_name}:</label>
-                        <input id="up_name" class="form-control" type="text" name="name" placeholder="${first_name}"><br/>
-                        <label for="up_surname">${last_name}:</label>
-                        <input id="up_surname" class="form-control" type="text" name="surname" placeholder="${last_name}"><br/>
-                        <label for="up_email">${email}:</label>
-                        <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}"><br/>
-                        <button class="btn btn-success" type="button" onclick="signUp()">${confirm}</button>
+                        <label for="up_login" class="control-label col-sm-2">${login}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_login" class="form-control" type="text" name="login" placeholder="${login}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
                     </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_password" class="control-label col-sm-2">${password}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_password" class="form-control" type="password" name="password"
+                                   placeholder="${password}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_name" class="control-label col-sm-2">${first_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_name" class="form-control" type="text" name="name"
+                                   placeholder="${first_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_surname" class="control-label col-sm-2">${last_name}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_surname" class="form-control" type="text" name="surname"
+                                   placeholder="${last_name}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="up_email" class="control-label col-sm-2">${email}:</label>
+                        <div class="col-sm-10">
+                            <input id="up_email" class="form-control" type="text" name="email" placeholder="${email}">
+                            <span class="glyphicon glyphicon-ok form-control-feedback val-obj"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger alert-hidden">
+                        <strong>Ошибка!</strong> Пользователь с таким логином уже существует.
+                    </div>
+                    <button class="btn btn-success" type="submit">${confirm}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="delete-answer-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <form method="post" action="start">
+                    <h5>${delete_answer_msg}</h5>
+                        <input type="hidden" name="action" value="delete_answer">
+                        <input type="hidden" name="answer" value="">
+                        <input type="hidden" name="user" value="">
+                    <button type="submit" class="btn btn-warning">${confirm}</button>
+                    <button type="button" class="btn btn-success" onclick="$('#delete-answer-modal').modal('hide')">${cancel}</button>
                 </form>
             </div>
         </div>
@@ -222,7 +275,7 @@
             </div>
             <c:if test="${(sessionScope.user.login eq block.owner.login) or (sessionScope.user.role == 'ADMIN')}">
                 <div class="ownerMenu">
-                    <form>
+                    <form class="edit-question-form">
                         <input type="hidden" name="action" value="ask">
                         <input type="hidden" name="id" value="${block.question.id}">
                         <input id="edit-question-submit" type="submit" style="display: none;">
@@ -234,7 +287,7 @@
                                 <div class="modal-body">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <form method="post" action="start">
-                                        <h5>${delete_warning_msg}</h5>
+                                        <h5>${delete_question_msg}</h5>
                                             <input type="hidden" name="action" value="delete_question">
                                             <input type="hidden" name="question" value="${block.question.id}">
                                             <input type="hidden" name="user" value="${sessionScope.user.id}">
@@ -331,17 +384,13 @@
                     </div>
                     <c:if test="${(sessionScope.user.login eq answer.owner.login) or (sessionScope.user.role == 'ADMIN')}">
                         <div class="ownerMenu answer-owner-menu">
-                            <form method="post" action="start">
-                                <input type="hidden" name="action" value="edit_question_form">
-                                <input type="hidden" name=question" value="${block.question.id}">
-                                <a href="#" onclick="this.form.submit()">${edit}</a>
+                            <form method="post" action="start" class="edit-answer-form">
+                                <input type="hidden" name="action" value="edit_answer_form">
+                                <input type="hidden" name="answer" value="${answer.id}">
+                                <input type="submit" style="display: none" class="edit_answer_submit">
+                                <a href="#" onclick="$(this).siblings('.edit_answer_submit').get(0).click()">${edit}</a>
                             </form>
-                            <form method="post" action="start">
-                                <input type="hidden" name="action" value="delete_question">
-                                <input type="hidden" name="question" value="${block.question.id}">
-                                <input type="hidden" name="user" value="${sessionScope.user.id}">
-                                <a href="#" onclick="this.form.submit()">${delete}</a>
-                            </form>
+                            <a href="#" onclick="showDeleteAnswerModal(${answer.id},${sessionScope.user.id})">${delete}</a>
                         </div>
                     </c:if>
                     <div class="media">
@@ -366,6 +415,9 @@
                     <div class="form-group">
                         <input type="hidden" name="action" value="answer">
                         <input type="hidden" name="question" value="${block.question.id}">
+                        <div class="alert alert-warning alert-hidden">
+                            Заполните поле с ответом.
+                        </div>
                         <div class="styler">
                             <a href="#" onclick="chooseFile()">
                                 <div class="load-picture">
@@ -377,9 +429,8 @@
                                 <div class="set-code"></div>
                             </a>
                         </div>
-                        <textarea class="form-control" rows="9" id="description" name="description"
-                                  onfocus="showTip('area')"></textarea>
-                        <button class="btn btn-primary" type="button" onclick="this.form.submit()">${answer_btn}</button>
+                        <textarea class="form-control" rows="9" id="description" name="description"></textarea>
+                        <button class="btn btn-primary" type="submit">${answer_btn}</button>
                     </div>
                 </form>
             </c:if>
@@ -392,84 +443,4 @@
 </div>
 </body>
 </html>
-<%-------------------------------------------------------------------------------------------------------------------%>
-
-<%--<div class="question">--%>
-<%--<c:if test="${sessionScope.user != null}">--%>
-<%--<form class="marks" method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="add_mark">--%>
-<%--<input type="hidden" name="type" value="question">--%>
-<%--<input type="hidden" name="id" value="${block.question.id}">--%>
-<%--<button type="submit" name="mark_type" value="up">Up</button>--%>
-<%--<button type="submit" name="mark_type" value="down">Down</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
-<%--<c:if test="${(sessionScope.user eq block.owner) or (sessionScope.user.role == 'ADMIN')}">--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="edit_question_form">--%>
-<%--<input type="hidden" name="question" value="${block.question.id}">--%>
-<%--<button type="submit">Edit Question</button>--%>
-<%--</form>--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="delete_question">--%>
-<%--<input type="hidden" name="question" value="${block.question.id}">--%>
-<%--<input type="hidden" name="user" value="${sessionScope.user.id}">--%>
-<%--<button type="submit">Delete Question</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
-<%--<c:out value="${block.question.title}"/><br/>--%>
-<%--<c:out value="${block.question.description}"/><br/>--%>
-<%--<c:out value="${fn:length(block.marks)}"/><br/>--%>
-<%--<c:out value="${block.question.answered}"/><br/>--%>
-<%--<c:out value="${block.owner.login}"/><br/>--%>
-<%--<c:forEach items="${block.tags}" var="tag">--%>
-<%--<div class="tag">--%>
-<%--<c:out value="${tag.title}"></c:out>--%>
-<%--</div>--%>
-<%--</c:forEach><br/>--%>
-<%--</div>--%>
-
-<%--<div class="answers">--%>
-<%--<c:forEach var="answer" items="${answers}">--%>
-<%--<div class="answer">--%>
-<%--<c:if test="${sessionScope.user != null}">--%>
-<%--<form class="marks" method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="add_mark">--%>
-<%--<input type="hidden" name="type" value="answer">--%>
-<%--<input type="hidden" name="id" value="${answer.id}">--%>
-<%--<button type="submit" name="mark_type" value="up">Up</button>--%>
-<%--<button type="submit" name="mark_type" value="down">Down</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
-<%--<c:if test="${(sessionScope.user eq block.owner) or (sessionScope.user.role == 'ADMIN')}">--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="set_solution">--%>
-<%--<input type="hidden" name="question" value="${block.question.id}">--%>
-<%--<input type="hidden" name="answer" value="${answer.id}">--%>
-<%--<button type="submit">Make as Solution</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
-<%--<c:out value="${answer.description}"/><br/>--%>
-<%--<c:out value="${answer.owner.login}"/><br/>--%>
-<%--<c:out value="${fn:length(answer.marks)}"/><br/>--%>
-<%--<c:out value="${answer.solution}"/><br/>--%>
-<%--<c:if test="${(answer.owner eq sessionScope.user) or (sessionScope.user.role == 'ADMIN')}">--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="answer" value="${answer.id}">--%>
-<%--<input type="hidden" name="user" value="${sessionScope.user.id}">--%>
-<%--<button type="submit" name="action" value="delete_answer">Delete</button>--%>
-<%--<button type="submit" name="action" value="edit_answer_form">Edit</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
-<%--</div>--%>
-<%--</c:forEach>--%>
-<%--</div>--%>
-<%--<c:if test="${sessionScope.user != null}">--%>
-<%--<form id="add_answer" method="post" action="start">--%>
-<%--<textarea name="description" placeholder="Write your answer here"></textarea><br/>--%>
-<%--<input type="hidden" name="action" value="answer">--%>
-<%--<input type="hidden" name="question" value="${block.question.id}">--%>
-<%--<button type="submit">Answer</button>--%>
-<%--</form>--%>
-<%--</c:if>--%>
 

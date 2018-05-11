@@ -1,8 +1,12 @@
 <!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+<web-app
+        xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+        version="2.4">
 
     <display-name>Archetype Created Web Application</display-name>
 
@@ -96,6 +100,21 @@
         <servlet-name>Controller</servlet-name>
     </filter-mapping>
 
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error</location>
+    </error-page>
+
+    <servlet>
+        <servlet-name>ErrorHandler</servlet-name>
+        <servlet-class>by.epam.like_it.controller.ErrorHandler</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ErrorHandler</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Controller</servlet-name>
         <servlet-class>by.epam.like_it.controller.Controller</servlet-class>
@@ -115,12 +134,12 @@
         <servlet-name>Home</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
     </servlet>
-    
+
     <servlet>
         <servlet-name>SignInError</servlet-name>
         <jsp-file>/WEB-INF/sign_in_error.jsp</jsp-file>
     </servlet>
-    
+
     <servlet>
         <servlet-name>SignUpForm</servlet-name>
         <jsp-file>/WEB-INF/sign_up_form.jsp</jsp-file>
@@ -191,7 +210,7 @@
         <servlet-name>SignUpForm</servlet-name>
         <url-pattern>/sign_up</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>SignInError</servlet-name>
         <url-pattern>/sign_in_error</url-pattern>

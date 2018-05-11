@@ -20,7 +20,7 @@ public class GoToQuestionFormCommand implements Command {
     private static final String ADDING_FORM_PATH = "/asking";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
 
@@ -37,7 +37,7 @@ public class GoToQuestionFormCommand implements Command {
                 dispatcher.forward(request,response);
             }
 
-        } catch (IOException | ServiceException | ServletException e) {
+        } catch (ServiceException e) {
             Logger logger= Logger.getLogger(this.getClass());
             logger.error(e.getMessage());
         }

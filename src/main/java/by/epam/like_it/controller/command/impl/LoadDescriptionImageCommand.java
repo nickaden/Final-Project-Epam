@@ -28,9 +28,9 @@ public class LoadDescriptionImageCommand implements Command {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        try {
+
             Part filePart = request.getPart(KeyHolder.UPFILE_KEY);
             String fileName = filePart.getSubmittedFileName();
 
@@ -51,9 +51,5 @@ public class LoadDescriptionImageCommand implements Command {
 
             PrintWriter writer=response.getWriter();
             writer.write(file.getName());
-
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
     }
 }

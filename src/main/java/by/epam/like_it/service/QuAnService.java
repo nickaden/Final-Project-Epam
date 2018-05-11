@@ -43,7 +43,7 @@ public interface QuAnService {
 
     boolean deleteAnswer(int answerID, int userID) throws ServiceException;
 
-    void setSolution(int questionID, int answerID) throws ServiceException;
+    void setSolution(int questionID, int answerID, User owner) throws ServiceException;
 
     boolean deleteQuestion(int questionID, int userID) throws ServiceException;
 }

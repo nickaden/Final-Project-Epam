@@ -6,6 +6,8 @@ import by.epam.like_it.entity.*;
 import by.epam.like_it.exception.DAOException;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
+import by.epam.like_it.service.validate.*;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,16 @@ public class QuAnServiceImpl implements QuAnService {
     private static final String QUESTION_TYPE = "question";
     private static final String ANSWER_TYPE = "answer";
     private static final String WHITESPACES_SPLIT = " ";
+    private static final String NOT_VALID_MSG="Data is not valid";
 
     @Override
     public List<QuestionInfoBlock> getQuestions(String lang) throws ServiceException {
 
         List<QuestionInfoBlock> questionBlockList = new ArrayList<>();
+
+        if (!GeneralValidator.checkLang(lang)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         try {
 
@@ -44,7 +51,6 @@ public class QuAnServiceImpl implements QuAnService {
 
         } catch (DAOException e) {
             throw new ServiceException(e);
-
         }
 
         return questionBlockList;
@@ -54,7 +60,17 @@ public class QuAnServiceImpl implements QuAnService {
     @Override
     public int addQuestion(Question question, User owner, String lang, String tagString) throws ServiceException {
 
-        int questionID = -1;
+        int questionId = -1;
+
+        if (!QuestionValidator.checkQuestionAdding(question)
+                && UserValidator.checkUserEditing(owner)
+                && GeneralValidator.checkLang(lang)
+                && TagValidator.checkTagString(tagString)){
+
+            Logger logger=Logger.getLogger(getClass());
+            logger.error(NOT_VALID_MSG);
+            return questionId;
+        }
 
         List<Tag> tags = new ArrayList<>();
 
@@ -69,18 +85,27 @@ public class QuAnServiceImpl implements QuAnService {
 
                 tags.add(tag);
             }
-            questionID = quAnDAO.addQuestion(question, owner, lang, tags);
+            questionId = quAnDAO.addQuestion(question, owner, lang, tags);
 
 
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
 
-        return questionID;
+        return questionId;
     }
 
     @Override
     public void editQuestion(Question question, String tagString, String lang) throws ServiceException {
+
+        if(!QuestionValidator.checkQuestionEditing(question)
+                && TagValidator.checkTagString(tagString)
+                && GeneralValidator.checkLang(lang)){
+
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return;
+        }
 
         List<Tag> tags = new ArrayList<>();
 
@@ -112,6 +137,13 @@ public class QuAnServiceImpl implements QuAnService {
         QuAnDAO dao = DAOfactory.getQuAnDAO();
         boolean isDeleted = false;
 
+        if (!GeneralValidator.checkId(questionID) && GeneralValidator.checkId(userID)){
+
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return false;
+        }
+
         try {
 
             Question question = dao.getQuestionById(questionID);
@@ -132,6 +164,9 @@ public class QuAnServiceImpl implements QuAnService {
     @Override
     public QuestionInfoBlock getQuestionInfoBlock(int id) throws ServiceException {
 
+        if (!GeneralValidator.checkId(id)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         QuestionInfoBlock block = null;
 
@@ -160,6 +195,10 @@ public class QuAnServiceImpl implements QuAnService {
 
     public Question getQuestion(int id) throws ServiceException {
 
+        if (!GeneralValidator.checkId(id)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
+
         QuAnDAO dao = DAOfactory.getQuAnDAO();
         try {
             return dao.getQuestionById(id);
@@ -172,6 +211,11 @@ public class QuAnServiceImpl implements QuAnService {
 
     @Override
     public List<Answer> getAnswersByQuestion(Question question) throws ServiceException {
+
+        if (! QuestionValidator.checkQuestionEditing(question)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
+
         DAOFactory factory = DAOFactory.getInstance();
         QuAnDAO quAnDAO = factory.getQuAnDAO();
 
@@ -194,6 +238,10 @@ public class QuAnServiceImpl implements QuAnService {
     @Override
     public Answer getAnswerById(int id) throws ServiceException {
 
+        if (!GeneralValidator.checkId(id)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
+
         Answer answer = null;
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
@@ -211,6 +259,10 @@ public class QuAnServiceImpl implements QuAnService {
 
     @Override
     public List<QuestionInfoBlock> getAnsweredQuestionsByUser(User user) throws ServiceException {
+
+        if (! UserValidator.checkUserEditing(user)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         QuAnDAO quAnDAO = DAOfactory.getQuAnDAO();
         List<QuestionInfoBlock> blockList = new ArrayList<>();
@@ -245,6 +297,10 @@ public class QuAnServiceImpl implements QuAnService {
 
     @Override
     public List<QuestionInfoBlock> getQuestionsByUser(User user) throws ServiceException {
+
+        if (! UserValidator.checkUserEditing(user)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         QuAnDAO quAnDAO = DAOfactory.getQuAnDAO();
         List<Question> questions;
@@ -298,6 +354,12 @@ public class QuAnServiceImpl implements QuAnService {
     @Override
     public void editTag(Tag tag) throws ServiceException {
 
+        if(!TagValidator.checkTagEditing(tag)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return;
+        }
+
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
         try {
@@ -314,23 +376,36 @@ public class QuAnServiceImpl implements QuAnService {
     public int addTag(Tag tag) throws ServiceException {
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
-        int tagID = 0;
+        int tagId = 0;
+
+        if(!TagValidator.checkTagAdding(tag)){
+
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return tagId;
+        }
 
         try {
 
-            tagID = dao.addTag(tag);
+            tagId = dao.addTag(tag);
 
         } catch (DAOException e) {
             throw new ServiceException(e);
 
         }
 
-        return tagID;
+        return tagId;
     }
 
 
     @Override
     public boolean deleteTag(Tag tag) throws ServiceException {
+
+        if(!TagValidator.checkTagEditing(tag)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return false;
+        }
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
         boolean isDeleted = false;
@@ -348,13 +423,19 @@ public class QuAnServiceImpl implements QuAnService {
     }
 
     @Override
-    public void addAnswer(Answer answer, int questionID) throws ServiceException {
+    public void addAnswer(Answer answer, int questionId) throws ServiceException {
+
+        if (!AnswerValidator.checkAnswerAdding(answer) && GeneralValidator.checkId(questionId)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.error(NOT_VALID_MSG);
+            return;
+        }
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
         try {
 
-            dao.addAnswer(answer, questionID);
+            dao.addAnswer(answer, questionId);
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -363,13 +444,19 @@ public class QuAnServiceImpl implements QuAnService {
 
 
     @Override
-    public void editAnswer(Answer newAnswer, int userID) throws ServiceException {
+    public void editAnswer(Answer newAnswer, int userId) throws ServiceException {
+
+        if (!AnswerValidator.checkAnswerEditing(newAnswer) && GeneralValidator.checkId(userId)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return;
+        }
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
         try {
 
-            if (newAnswer.getOwner().getId() == userID) {
+            if (newAnswer.getOwner().getId() == userId) {
 
                 dao.editAnswer(newAnswer);
             }
@@ -381,18 +468,24 @@ public class QuAnServiceImpl implements QuAnService {
 
 
     @Override
-    public boolean deleteAnswer(int answerID, int userID) throws ServiceException {
+    public boolean deleteAnswer(int answerId, int userId) throws ServiceException {
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
         Answer answer;
         boolean isDeleted = false;
 
+        if (!GeneralValidator.checkId(answerId) && GeneralValidator.checkId(userId)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return false;
+        }
+
         try {
 
-            answer = dao.getAnswerById(answerID);
+            answer = dao.getAnswerById(answerId);
 
-            if (answer.getOwner().getId() == userID) {
-                isDeleted = dao.deleteAnswer(answerID);
+            if (answer.getOwner().getId() == userId) {
+                isDeleted = dao.deleteAnswer(answerId);
             }
 
         } catch (DAOException e) {
@@ -404,15 +497,24 @@ public class QuAnServiceImpl implements QuAnService {
 
 
     @Override
-    public void setSolution(int questionID, int answerID) throws ServiceException {
+    public void setSolution(int questionId, int answerId, User owner) throws ServiceException {
+
+        if (! GeneralValidator.checkId(questionId) && GeneralValidator.checkId(answerId)){
+            Logger logger=Logger.getLogger(getClass());
+            logger.warn(NOT_VALID_MSG);
+            return;
+        }
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
 
         try {
 
-
-
-            dao.setSolution(questionID, answerID);
+            QuestionInfoBlock questionInfoBlock=getQuestionInfoBlock(questionId);
+            if (owner.getId()!=questionInfoBlock.getOwner().getId())
+            {
+                throw new ServiceException();
+            }
+            dao.setSolution(questionId, answerId);
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -426,6 +528,11 @@ public class QuAnServiceImpl implements QuAnService {
         DAOFactory factory = DAOFactory.getInstance();
         QuAnDAO quAnDAO = factory.getQuAnDAO();
         boolean isAdded = false;
+
+        if(!GeneralValidator.checkId(id)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            return isAdded;
+        }
 
         try {
 
@@ -447,6 +554,10 @@ public class QuAnServiceImpl implements QuAnService {
 
         QuAnDAO quAnDAO=DAOfactory.getQuAnDAO();
         Mark mark= null;
+
+        if (!GeneralValidator.checkId(id) && GeneralValidator.checkId(ownerId)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         try {
             mark = quAnDAO.getMark(typeOfMark, id, ownerId);

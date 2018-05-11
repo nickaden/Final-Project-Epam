@@ -18,7 +18,7 @@ public class GoToEditTagFormCommand implements Command{
     private static final String TAG_KEY="tag";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Tag tag=new Tag();
 
@@ -29,16 +29,9 @@ public class GoToEditTagFormCommand implements Command{
         request.setAttribute(KeyHolder.PATH_KEY, ReferenceEditor.getReference(request));
 
         RequestDispatcher dispatcher=request.getRequestDispatcher(EDIT_TAG_FORM_PATH);
+        dispatcher.forward(request,response);
 
-        try {
 
-            dispatcher.forward(request,response);
-
-        } catch (ServletException | IOException e) {
-
-            Logger logger= Logger.getRootLogger();
-            logger.error(e.getMessage());
-        }
 
     }
 }

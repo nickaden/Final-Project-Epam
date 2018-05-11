@@ -6,6 +6,8 @@ import by.epam.like_it.entity.QuestionInfoBlock;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
+import org.apache.log4j.Logger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class StartCommand implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
 
@@ -37,8 +39,8 @@ public class StartCommand implements Command {
 
             dispatcher.forward(request,response);
 
-        } catch (ServletException | IOException | ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
     }
 }

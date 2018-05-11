@@ -16,7 +16,7 @@ import java.io.IOException;
 public class EditTagCommand implements Command {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Tag tag = new Tag();
 
@@ -29,12 +29,13 @@ public class EditTagCommand implements Command {
         try {
 
             service.editTag(tag);
-            response.sendRedirect(ReferenceEditor.getReference(request));
 
-        } catch (ServiceException | IOException e) {
+
+        } catch (ServiceException e) {
             Logger logger= Logger.getRootLogger();
             logger.error(e.getMessage());
-
+        } finally {
+            response.sendRedirect(ReferenceEditor.getReference(request));
         }
     }
 }

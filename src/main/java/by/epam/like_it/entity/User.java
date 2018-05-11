@@ -22,6 +22,7 @@ public class User implements Serializable {
 
     public User() {
         role=Role.USER;
+        imageName="";
     }
 
     public User(int id, String login, String password, LocalDate regDate) {

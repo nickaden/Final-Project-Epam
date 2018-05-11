@@ -16,7 +16,7 @@ public class GoToEditUserFormCommand implements Command {
     private static final String EDIT_FORM_PATH="/edit_user";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user=new User();
 
@@ -31,13 +31,9 @@ public class GoToEditUserFormCommand implements Command {
         request.setAttribute(KeyHolder.USER_KEY,user);
         request.setAttribute(KeyHolder.REFERER_KEY, ReferenceEditor.getReference(request));
 
-        try {
+        RequestDispatcher dispatcher=request.getRequestDispatcher(EDIT_FORM_PATH);
+        dispatcher.forward(request,response);
 
-            RequestDispatcher dispatcher=request.getRequestDispatcher(EDIT_FORM_PATH);
-            dispatcher.forward(request,response);
 
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
     }
 }

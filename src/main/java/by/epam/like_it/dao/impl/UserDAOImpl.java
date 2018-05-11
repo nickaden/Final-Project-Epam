@@ -55,6 +55,7 @@ public class UserDAOImpl implements UserDAO {
     private static final int FIRST_INDEX=1;
     private static final int SECOND_INDEX=2;
     private static final int IMAGE_NAME_INDEX =7;
+    private static final int ADD_IMAGE_NAME_INDEX=8;
 
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -206,7 +207,7 @@ public class UserDAOImpl implements UserDAO {
                 statement.setString(SURNAME_INDEX,user.getSurname());
                 statement.setString(EMAIL_INDEX,user.getEmail());
                 statement.setDate(REG_DATE_INDEX,java.sql.Date.valueOf(user.getRegDate()));
-                statement.setString(IMAGE_NAME_INDEX,user.getImageName());
+                statement.setString(ADD_IMAGE_NAME_INDEX,user.getImageName());
 
                 statement.execute();
 

@@ -8,14 +8,24 @@ import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.DAOException;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.UserService;
+import by.epam.like_it.service.validate.GeneralValidator;
+import by.epam.like_it.service.validate.UserValidator;
+import org.apache.log4j.Logger;
+import org.omg.CORBA.NO_RESOURCES;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
+    private static final String NOT_VALID_MSG="Data is not valid";
+
     @Override
     public User authorizeUser(String login, String password) throws ServiceException {
+
+        if(!UserValidator.checkField(login) && UserValidator.checkField(password)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = factory.getUserDAO();
@@ -56,6 +66,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(User user) throws ServiceException {
 
+        if(!UserValidator.checkUserEditing(user)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            return;
+        }
+
         UserDAO dao = DAOFactory.getInstance().getUserDAO();
 
         try {
@@ -70,6 +85,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addUser(User user) throws ServiceException {
+
+        if(!UserValidator.checkUserAdding(user)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = factory.getUserDAO();
@@ -90,6 +110,11 @@ public class UserServiceImpl implements UserService {
         UserDAO dao = DAOFactory.getInstance().getUserDAO();
         boolean isDeleted = false;
 
+        if(!GeneralValidator.checkId(userID)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            return isDeleted;
+        }
+
         try {
 
             isDeleted = dao.deleteUser(userID);
@@ -105,6 +130,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setUserImage(String imageName, User user) throws ServiceException {
 
+        if(!UserValidator.checkField(imageName) && UserValidator.checkUserEditing(user)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            return;
+        }
+
         try {
             DAOFactory.getInstance().getUserDAO().setImageName(imageName,user);
         } catch (DAOException e) {
@@ -114,6 +144,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int id) throws ServiceException {
+
+        if (!GeneralValidator.checkId(id)){
+            throw new ServiceException(NOT_VALID_MSG);
+        }
 
         try {
 
@@ -132,6 +166,11 @@ public class UserServiceImpl implements UserService {
 
         QuAnDAO quAnDAO=DAOFactory.getInstance().getQuAnDAO();
         int rate=0;
+
+        if (UserValidator.checkUserEditing(user)){
+            Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
+            return rate;
+        }
 
         try {
 

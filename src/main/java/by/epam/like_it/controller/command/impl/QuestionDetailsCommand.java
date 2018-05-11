@@ -7,6 +7,7 @@ import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.util.KeyHolder;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +22,7 @@ public class QuestionDetailsCommand implements Command {
     private static final String QUESTION_DETAILS_PATH="/WEB-INF/question_details.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ServiceFactory factory=ServiceFactory.getInstance();
         QuAnService service=factory.getQuAnService();
@@ -37,8 +38,8 @@ public class QuestionDetailsCommand implements Command {
             RequestDispatcher dispatcher=request.getRequestDispatcher(QUESTION_DETAILS_PATH);
             dispatcher.forward(request,response);
 
-        } catch (ServletException | IOException | ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
     }
 }

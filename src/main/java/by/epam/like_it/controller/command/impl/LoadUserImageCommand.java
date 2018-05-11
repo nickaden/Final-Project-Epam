@@ -6,6 +6,7 @@ import by.epam.like_it.controller.util.ReferenceEditor;
 import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.ServiceFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class LoadUserImageCommand implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         try {
             Part filePart = request.getPart(KeyHolder.UPFILE_KEY);
@@ -54,8 +55,8 @@ public class LoadUserImageCommand implements Command {
             PrintWriter writer=response.getWriter();
             writer.write(file.getName());
 
-        } catch (IOException | ServletException | ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
     }
 }

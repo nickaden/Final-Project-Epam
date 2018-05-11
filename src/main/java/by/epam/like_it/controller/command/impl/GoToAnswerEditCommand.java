@@ -20,7 +20,7 @@ public class GoToAnswerEditCommand implements Command{
     private static final String EDIT_FORM_PATH="/edit_answer";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
 
             ServiceFactory factory=ServiceFactory.getInstance();
@@ -31,11 +31,10 @@ public class GoToAnswerEditCommand implements Command{
             request.setAttribute(KeyHolder.PATH_KEY, ReferenceEditor.getReference(request));
 
             RequestDispatcher dispatcher=request.getRequestDispatcher(EDIT_FORM_PATH);
-
             dispatcher.forward(request,response);
 
 
-        } catch (ServletException | ServiceException | IOException e) {
+        } catch (ServiceException e) {
 
             Logger logger= Logger.getRootLogger();
             logger.error(e.getMessage());

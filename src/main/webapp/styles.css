@@ -1,12 +1,17 @@
+.navbar-default{
+    background-color: #96cefa;
+    border-color: #82c4dd;
+    border-radius: 2px;
+}
 
+#user-logo{
+    font-size: 20px;
+    font-weight: bold;
+}
 
 #add_answer{
     border-top: 2px solid #50a8ca;
     margin-top:40px;
-}
-
-.signin {
-
 }
 
 #back{
@@ -77,6 +82,10 @@ header h2{
 
 #topNav{
     width: 100%;
+}
+
+#topNav ul li{
+    margin: 0px 15px;
 }
 
 #lang{
@@ -340,8 +349,8 @@ header h2{
 }
 
 .title-text{
-    display: inline;
-    width: 90%;
+    position: relative;
+    margin-right: 30px;
 }
 
 #description{
@@ -592,4 +601,29 @@ header h2{
 
 #edit-tag-modal{
     width: 50%;
+}
+
+.edit-question-form{
+    display: inline-block;
+}
+
+.edit-answer-form{
+    display: inline-block;
+}
+
+.info {
+    display: none;
+    position: absolute;
+}
+
+.val-obj{
+    display: none;
+}
+
+.alert-hidden{
+    display: none;
+}
+
+#sign_in_warning{
+    display: none;
 }

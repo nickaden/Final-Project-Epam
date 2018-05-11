@@ -1,3 +1,246 @@
+$(document).ready(function () {
+    var jVal = {
+        'login': function (input) {
+            var elem = input;
+            if (elem.val().length < 4 || elem.val().length > 20) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+                elem.siblings('.glyphicon-remove').show();
+                elem.siblings('.glyphicon-ok').hide();
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+                elem.siblings('.glyphicon-ok').show();
+                elem.siblings('.glyphicon-remove').hide();
+            }
+        },
+        'email': function (input) {
+            var elem = input;
+            var pattern = /^.+@.+[.].{2,}$/i;
+            if (!pattern.test(elem.val())) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+                elem.siblings('.glyphicon-remove').show();
+                elem.siblings('.glyphicon-ok').hide();
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+                elem.siblings('.glyphicon-ok').show();
+                elem.siblings('.glyphicon-remove').hide();
+            }
+        },
+        'firstName': function (input) {
+            var elem = input;
+            if (elem.val().length < 4 || elem.val().length > 20) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+                elem.siblings('.glyphicon-remove').show();
+                elem.siblings('.glyphicon-ok').hide();
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+                elem.siblings('.glyphicon-ok').show();
+                elem.siblings('.glyphicon-remove').hide();
+            }
+        },
+        'lastName': function (input) {
+            var elem = input;
+            if (elem.val().length < 4 || elem.val().length > 20) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+                elem.siblings('.glyphicon-remove').show();
+                elem.siblings('.glyphicon-ok').hide();
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+                elem.siblings('.glyphicon-ok').show();
+                elem.siblings('.glyphicon-remove').hide();
+            }
+        },
+        'password': function (input) {
+            var elem = input;
+            var pattern = /\w{4,}/;
+            if (!pattern.test(elem.val())) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+                elem.siblings('.glyphicon-remove').show();
+                elem.siblings('.glyphicon-ok').hide();
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+                elem.siblings('.glyphicon-ok').show();
+                elem.siblings('.glyphicon-remove').hide();
+            }
+        },
+        'sendIt': function () {
+            if (!jVal.error) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        'description': function (textarea) {
+            var elem = textarea;
+            if (elem.val().length == 0) {
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+            }
+        },
+        'title': function (input) {
+            var elem = input;
+            if (elem.val().length < 4 || elem.val().length > 1024){
+                jVal.error = true;
+                elem.parent().removeClass('has-success').addClass('has-error');
+            } else {
+                elem.parent().removeClass('has-error').addClass('has-success');
+            }
+        }
+    };
+
+    $('#up_login').change(function () {
+        jVal.login($(this));
+    });
+
+    $('#up_email').change(function () {
+        jVal.email($(this))
+    });
+
+    $('#up_name').change(function () {
+        jVal.firstName($(this))
+    });
+
+    $('#up_surname').change(function () {
+        jVal.lastName($(this))
+    });
+
+    $('#up_password').change(function () {
+        jVal.password($(this))
+    });
+
+    $('#sign_up_form').find('button[type="submit"]').click(function () {
+        jVal.error = false;
+        jVal.login($('#up_login'));
+        jVal.password($('#up_password'));
+        jVal.firstName($('#up_name'));
+        jVal.lastName($('#up_surname'));
+        jVal.email($('#up_email'));
+        var sent = jVal.sendIt();
+        if (sent) {
+            var form = $('#sign_up_form').serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'start',
+                data: form,
+                success: function (data) {
+                    if (data == 'error') {
+                        $('.user-exist').fadeIn(300);
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, str) {
+                    alert('Возникла ошибка!');
+                }
+            });
+        }
+        return false;
+    })
+
+    $('#btnLogin').click(function () {
+        var form = $('#formLogin').serialize();
+        $.ajax({
+            type: 'POST',
+            url: 'start',
+            data: form,
+            success: function (data) {
+                if (data == "success") {
+                    location.reload();
+                } else {
+                    $('#sign_in_warning').show();
+                }
+            },
+            error: function (xhr, str) {
+                alert('Возникла ошибка!');
+            }
+        });
+        return false;
+    });
+
+    $('.answer-form').find('button[type="submit"]').click(function () {
+        jVal.error = false;
+        jVal.description($('.answer-form').find('textarea'));
+        if (jVal.error != true) {
+            this.form.submit();
+        } else {
+            $('.answer-form').find('.alert-warning').show();
+        }
+        return false;
+    });
+
+    $('#add_question_btn').click(function () {
+        jVal.error=false;
+        jVal.title($('#title'));
+        jVal.description($('#description'));
+        if (jVal.error!=true){
+            this.form.submit();
+        } else {
+            $('.alert-hidden').fadeIn(300);
+        }
+        return false;
+    });
+
+    $('#edit-user-form-own').find('button[type="submit"]').click(function () {
+        jVal.error=false;
+        jVal.login($('#user-login-own'));
+        jVal.password($('#user-password-own'));
+        jVal.firstName($('#user-name-own'));
+        jVal.lastName($('#user-surname-own'));
+        jVal.email($('#user-email-own'));
+        if (jVal.error!=true){
+            this.form.submit();
+        }
+        return false;
+    });
+
+    $('#edit-user-modal').find('button[type="submit"]').click(function () {
+        var form=$('#edit-user-modal').find('form');
+        jVal.error=false;
+        jVal.login(form.find('input[name="login"]'));
+        jVal.password(form.find('input[name="password"]'));
+        jVal.firstName(form.find('input[name="name"]'));
+        jVal.lastName(form.find('input[name="surname"]'));
+        jVal.email(form.find('input[name="email"]'));
+        if (jVal.error!=true){
+            this.form.submit();
+        }
+        return false;
+    });
+
+    $('#edit-tag-btn').click(function () {
+        jVal.error=false;
+        jVal.title($('#tag-title'));
+        if (jVal.error != true ){
+            this.form.submit();
+        }
+        return false;
+    });
+
+    $('#add-user').click(function () {
+        $('#add-user-modal').modal();
+    })
+
+    $('#add-user-submit').click(function () {
+        jVal.error=false;
+        jVal.login($('#user-login'));
+        jVal.password($('#user-password'));
+        jVal.firstName($('#user-name'));
+        jVal.lastName($('#user-surname'));
+        jVal.email($('#user-email'));
+        if (jVal.error!=true){
+            this.form.submit();
+        }
+        return false;
+    })
+
+});
+
 function loadDoc() {
 
     var file = document.getElementById("upfile"),
@@ -51,59 +294,13 @@ function view() {
     }
 }
 
-function signIn() {
-
-    var form = new FormData();
-    var login = document.getElementById("login").value;
-    var password = document.getElementById("password").value;
-
-    form.append("login", login);
-    form.append("password", password);
-    form.append("action", "sign_in");
-
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText == "success") {
-                location.reload();
-            } else {
-                var msg = document.getElementById("sign_in_warning");
-                msg.innerText = "Данного пользователя не существует!";
-            }
-        }
-    };
-
-    xhttp.open("POST", "start", true);
-    xhttp.send(form);
-}
-
-function signUp() {
-    var msg = $('#sign_up_form').serialize();
-    $.ajax({
-        type: 'POST',
-        url: 'start',
-        data: msg,
-        success: function (data) {
-            if (data != 'error') {
-                location.reload();
-            } else {
-                $('#sign-up-label').val('Ошибка регистрации. Проверьте правильность введенных данных')
-            }
-        },
-        error: function (xhr, str) {
-            alert('Возникла ошибка!');
-        }
-    });
-}
-
 function vote_up(type, id, mark) {
     var msg = "action=add_mark&type=" + type + "&id=" + id + "&mark_type=up";
     $.ajax({
         type: 'POST',
         url: 'start',
         data: msg,
-        dataType:'text',
+        dataType: 'text',
         success: function (data) {
             if (data != "error") {
                 mark.css("background", "url(\"web-images/vote_up_hover.png\") no-repeat 50% 50%");
@@ -125,7 +322,7 @@ function vote_down(type, id, mark) {
         type: 'POST',
         url: 'start',
         data: msg,
-        dataType:'text',
+        dataType: 'text',
         success: function (data) {
             mark.css("background", "url(\"web-images/vote_down_hover.png\") no-repeat 50% 50%");
             mark.css("background-size", "contain");
@@ -145,10 +342,10 @@ function set_solution(questionId, answerId, solution) {
         url: 'start',
         data: msg,
         success: function (data) {
-            $('#answers').find('.solution').css("background","url(\"web-images/solution.png\") no-repeat 50% 50%")
-                .css("background-size","contain");
-            solution.css( 'background', 'url("web-images/solution_hover.png") no-repeat 50% 50%')
-                .css('background-size','contain');
+            $('#answers').find('.solution').css("background", "url(\"web-images/solution.png\") no-repeat 50% 50%")
+                .css("background-size", "contain");
+            solution.css('background', 'url("web-images/solution_hover.png") no-repeat 50% 50%')
+                .css('background-size', 'contain');
         },
         error: function (xhr, str) {
             alert('Возникла ошибка!');
@@ -253,9 +450,9 @@ function showPreview() {
 
     $('#preview').slideToggle(500);
 
-    var title=$('.title-text').val();
-    var tags=$('#tags').val();
-    var date=new Date();
+    var title = $('.title-text').val();
+    var tags = $('#tags').val();
+    var date = new Date();
 
     var text = document.getElementById('description').value;
     var block = $('<div></div>').text(text);
@@ -263,11 +460,11 @@ function showPreview() {
 
     $('#preview').find('#question-title').text(title);
     $('#preview').find('.description').html(descriptionBlock);
-    $('#preview').find('.question-date').text(date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear());
+    $('#preview').find('.question-date').text(date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear());
 
-    tags=tags.split(' ');
+    tags = tags.split(' ');
 
-    for (var i=0; i<tags.length; i++){
+    for (var i = 0; i < tags.length; i++) {
         $('.tags').append($('<div class=tag></div>').text(tags[i]));
     }
 }
@@ -378,7 +575,15 @@ function showEditTagModal(id, title) {
     $('#edit-tag-modal').modal();
 }
 
-function showDeleteTagModal(id) {
+function showDeleteTagModal(id, title) {
     $('#delete-tag-modal').find('input[name="id"]').val(id);
+    $('#delete-tag-modal').find('input[name="title"]').val(title);
     $('#delete-tag-modal').modal();
+}
+
+function showDeleteAnswerModal(answer, user) {
+
+    $('#delete-answer-modal').find('input[name="answer"]').val(answer);
+    $('#delete-answer-modal').find('input[name="user"]').val(user);
+    $('#delete-answer-modal').modal();
 }
