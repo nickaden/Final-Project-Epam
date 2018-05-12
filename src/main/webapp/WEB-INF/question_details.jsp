@@ -64,78 +64,67 @@
             <li>
                 <h3><a href="/home">Like IT</a></h3>
             </li>
-            <li><a href="#">
-                <form class="form-inline">
-                    <div class="input-group col-xs-12">
-                        <input type="text" class="form-control" id="search" placeholder="${search}">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </a></li>
-            <li>
-                <div class="form-group">
-                    <c:set var="rus" value="selected"/>
-                    <c:if test="${sessionScope.lang eq 'en'}">
-                        <c:set var="eng" value="selected"/>
-                        <c:set var="rus" value=""/>
-                    </c:if>
-                    <select class="form-control" id="lang" name="lang" onchange="changeLang()">
-                        <option value="en" <c:out value="${eng}"/> >${en_option}</option>
-                        <option value="ru" <c:out value="${rus}"/> >${ru_option}</option>
-                    </select>
-                </div>
-            </li>
-            <c:choose>
-                <c:when test="${sessionScope.user eq null}">
-                    <li class="dropdown pull-right" id="menuLogin">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">${sign_in}</a>
-                        <div class="dropdown-menu" style="padding:10px;">
-                            <form class="form" id="formLogin">
-                                <input type="hidden" name="action" value="sign_in">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login" type="text" class="form-control" name="login"
-                                           placeholder="${login}">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                    <input id="password" type="password" class="form-control" name="password"
-                                           placeholder="${password}">
-                                </div>
-                                <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
-                                <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
-                                <button type="button" id="btnSignUp" class="btn"
-                                        data-toggle="modal" data-target="#sign_up_modal">
-                                        ${sign_up}
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                </c:when>
-                <c:otherwise>
-                    <li class="dropdown pull-right" id="menuUser">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navUser">
-                            <c:out value="${sessionScope.user.login}"/></a>
-                        <div class="dropdown-menu" style="padding:10px;">
-                            <img class="img-rounded" id="miniature"
-                                 src="/load?type=user&name=${sessionScope.user.imageName}">
-                            <div id="userInfo">
-                                <a href="/start?action=user_details&user=${sessionScope.user.id}">
-                                    <c:out value="${sessionScope.user.login}"/>
-                                </a>
-                                <form method="get" action="start">
-                                    <input type="hidden" name="action" value="sign_out">
-                                    <button id="signOut" class="btn-default" type="submit">${sign_out}</button>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu lang-item">
+                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
+                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                    </ul>
+                </li>
+                <c:choose>
+                    <c:when test="${sessionScope.user eq null}">
+                        <li class="dropdown pull-right" id="menuLogin">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">
+                                <span class="glyphicon glyphicon-user"></span>${sign_in}
+                            </a>
+                            <div class="dropdown-menu" style="padding:10px;">
+                                <form class="form" id="formLogin">
+                                    <input type="hidden" name="action" value="sign_in">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login" type="text" class="form-control" name="login"
+                                               placeholder="${login}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password"
+                                               placeholder="${password}">
+                                    </div>
+                                    <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                    <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
+                                    <button type="button" id="btnSignUp" class="btn"
+                                            data-toggle="modal" data-target="#sign_up_modal">
+                                            ${sign_up}
+                                    </button>
                                 </form>
                             </div>
-                        </div>
-                    </li>
-                </c:otherwise>
-            </c:choose>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="dropdown pull-right" id="menuUser">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navUser">
+                                <img class="img-rounded dropdown-image"
+                                     src="/load?type=user&name=${sessionScope.user.imageName}"></a>
+                            <div class="dropdown-menu user-info-dropdown" style="padding:10px;">
+                                <img class="img-rounded" id="miniature"
+                                     src="/load?type=user&name=${sessionScope.user.imageName}">
+                                <div id="userInfo">
+                                    <a href="/start?action=user_details&user=${sessionScope.user.id}">
+                                        <h3><c:out value="${sessionScope.user.login}"/></h3>
+                                    </a>
+                                    <form method="get" action="start">
+                                        <input type="hidden" name="action" value="sign_out">
+                                        <button id="signOut" class="btn btn-info btn-sm" type="submit">${sign_out}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
         </ul>
     </div>
 </nav>

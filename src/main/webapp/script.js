@@ -496,10 +496,7 @@ function showTip(type) {
     }
 }
 
-function changeLang() {
-
-    var e = document.getElementById('lang');
-    var lang = e.options[e.selectedIndex].value;
+function changeLang(lang) {
 
     var msg = "action=change_lang&lang=" + lang;
     $.ajax({

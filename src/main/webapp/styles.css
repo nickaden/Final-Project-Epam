@@ -1,12 +1,51 @@
-.navbar-default{
-    background-color: #96cefa;
-    border-color: #82c4dd;
-    border-radius: 2px;
+.lang-item{
+    min-width: 100%;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-#user-logo{
-    font-size: 20px;
-    font-weight: bold;
+lang-dropdown{
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.navbar-right{
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+#miniature {
+    position: relative;
+    display: inline;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+}
+
+.dropdown-image{
+    width: 30px;
+    height: 30px;
+    align-self: center;
+}
+
+.dropdown-image:hover{
+    box-shadow: 0 0 3px #00a5dd ;
+}
+
+#navUser{
+    padding: 10px 15px;
+}
+
+.user-info-dropdown{
+    min-width: 200px;
+}
+
+.user-info-dropdown h3{
+    font-size: 16px;
+    font-family: Arial;
+    margin-top: 5px;
 }
 
 #add_answer{
@@ -84,19 +123,10 @@ header h2{
     width: 100%;
 }
 
-#topNav ul li{
-    margin: 0px 15px;
-}
-
 #lang{
     position: relative;
     margin-top: 15px;
     float: right;
-}
-
-#menuLogin{
-    font-size: 18px;
-    margin-top:5px;
 }
 
 #btnLogin {
@@ -221,23 +251,9 @@ header h2{
     margin-right: 15px;
 }
 
-#miniature {
-    position: relative;
-    display: inline;
-    width: 60px;
-    height: 60px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-
-}
 
 #userInfo{
     display: inline-block;
-}
-
-#signOut{
-    width: 60px;
-    margin-top: 10px;
 }
 
 #sign_in_warning{

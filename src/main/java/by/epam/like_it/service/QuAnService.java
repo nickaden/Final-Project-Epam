@@ -37,13 +37,13 @@ public interface QuAnService {
 
     List<QuestionInfoBlock> getQuestionsByUser(User user) throws ServiceException;
 
-    void addAnswer(Answer answer, int questionID) throws ServiceException;
+    void addAnswer(Answer answer, int questionId) throws ServiceException;
 
-    void editAnswer(Answer newAnswer, int userID) throws ServiceException;
+    void editAnswer(Answer newAnswer, int userId) throws ServiceException;
 
-    boolean deleteAnswer(int answerID, int userID) throws ServiceException;
+    boolean deleteAnswer(int answerId, int userId) throws ServiceException;
 
-    void setSolution(int questionID, int answerID, User owner) throws ServiceException;
+    void setSolution(int questionId, int answerId, User owner) throws ServiceException;
 
-    boolean deleteQuestion(int questionID, int userID) throws ServiceException;
+    boolean deleteQuestion(int questionId, int userId) throws ServiceException;
 }

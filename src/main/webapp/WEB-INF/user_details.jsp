@@ -2,7 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <fmt:setLocale value="${sessionScope.lang}" scope="session"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
@@ -70,78 +70,67 @@
             <li>
                 <h3><a href="/home">Like IT</a></h3>
             </li>
-            <li><a href="#">
-                <form class="form-inline">
-                    <div class="input-group col-xs-12">
-                        <input type="text" class="form-control" id="search" placeholder="${search}">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </a></li>
-            <li>
-                <div class="form-group">
-                    <c:set var="rus" value="selected"/>
-                    <c:if test="${sessionScope.lang eq 'en'}">
-                        <c:set var="eng" value="selected"/>
-                        <c:set var="rus" value=""/>
-                    </c:if>
-                    <select class="form-control" id="lang" name="lang" onchange="changeLang()">
-                        <option value="en" <c:out value="${eng}"/> >${en_option}</option>
-                        <option value="ru" <c:out value="${rus}"/> >${ru_option}</option>
-                    </select>
-                </div>
-            </li>
-            <c:choose>
-                <c:when test="${sessionScope.user eq null}">
-                    <li class="dropdown pull-right" id="menuLogin">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">${sign_in}</a>
-                        <div class="dropdown-menu" style="padding:10px;">
-                            <form class="form" id="formLogin">
-                                <input type="hidden" name="action" value="sign_in">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login" type="text" class="form-control" name="login"
-                                           placeholder="${login}">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                    <input id="password" type="password" class="form-control" name="password"
-                                           placeholder="${password}">
-                                </div>
-                                <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
-                                <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
-                                <button type="button" id="btnSignUp" class="btn"
-                                        data-toggle="modal" data-target="#sign_up_modal">
-                                        ${sign_up}
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                </c:when>
-                <c:otherwise>
-                    <li class="dropdown pull-right" id="menuUser">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navUser">
-                            <c:out value="${sessionScope.user.login}"/></a>
-                        <div class="dropdown-menu" style="padding:10px;">
-                            <img class="img-rounded" id="miniature"
-                                 src="/load?type=user&name=${sessionScope.user.imageName}">
-                            <div id="userInfo">
-                                <a href="/start?action=user_details&user=${sessionScope.user.id}">
-                                    <c:out value="${sessionScope.user.login}"/>
-                                </a>
-                                <form method="get" action="start">
-                                    <input type="hidden" name="action" value="sign_out">
-                                    <button id="signOut" class="btn-default" type="submit">${sign_out}</button>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu lang-item">
+                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
+                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                    </ul>
+                </li>
+                <c:choose>
+                    <c:when test="${sessionScope.user eq null}">
+                        <li class="dropdown pull-right" id="menuLogin">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">
+                                <span class="glyphicon glyphicon-user"></span>${sign_in}
+                            </a>
+                            <div class="dropdown-menu" style="padding:10px;">
+                                <form class="form" id="formLogin">
+                                    <input type="hidden" name="action" value="sign_in">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login" type="text" class="form-control" name="login"
+                                               placeholder="${login}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password"
+                                               placeholder="${password}">
+                                    </div>
+                                    <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                    <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
+                                    <button type="button" id="btnSignUp" class="btn"
+                                            data-toggle="modal" data-target="#sign_up_modal">
+                                            ${sign_up}
+                                    </button>
                                 </form>
                             </div>
-                        </div>
-                    </li>
-                </c:otherwise>
-            </c:choose>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="dropdown pull-right" id="menuUser">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navUser">
+                                <img class="img-rounded dropdown-image"
+                                     src="/load?type=user&name=${sessionScope.user.imageName}"></a>
+                            <div class="dropdown-menu user-info-dropdown" style="padding:10px;">
+                                <img class="img-rounded" id="miniature"
+                                     src="/load?type=user&name=${sessionScope.user.imageName}">
+                                <div id="userInfo">
+                                    <a href="/start?action=user_details&user=${sessionScope.user.id}">
+                                        <h3><c:out value="${sessionScope.user.login}"/></h3>
+                                    </a>
+                                    <form method="get" action="start">
+                                        <input type="hidden" name="action" value="sign_out">
+                                        <button id="signOut" class="btn btn-info btn-sm" type="submit">${sign_out}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
         </ul>
     </div>
 </nav>
@@ -208,59 +197,60 @@
     </div>
 </div>
 <div id="add-user-modal" class="modal fade" role="dialog">
-    div class="modal-dialog modal-sm">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-user-form" method="post"
+                      action="start">
+                    <div class="form-group">
+                        <input type="hidden" name="action" value="add_user">
+                        <label class="control-label" for="user-login">${login}</label>
+                        <input id="user-login" type="text" class="form-control"
+                               name="login"
+                               value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="user-password">${password}</label>
+                        <input id="user-password" type="password" class="form-control"
+                               name="password"
+                               value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="user-name">${first_name}</label>
+                        <input id="user-name" type="text" class="form-control"
+                               name="name"
+                               value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="user-surname">${last_name}</label>
+                        <input id="user-surname" type="text" class="form-control"
+                               name="surname"
+                               value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="user-email">${email}</label>
+                        <input id="user-email" type="text" class="form-control"
+                               name="email"
+                               value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">${role_title}</label><br/>
+                        <label class="radio-inline"><input type="radio" name="role" value="USER"
+                                                           checked="checked">${user_role}</label>
+                        <label class="radio-inline"><input type="radio" name="role"
+                                                           value="ADMIN">${admin_role}</label>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" id="add-user-submit" type="submit">${add_btn}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-            <form id="add-user-form" method="post"
-                  action="start">
-                <div class="form-group">
-                    <input type="hidden" name="action" value="add_user">
-                    <label class="control-label" for="user-login">${login}</label>
-                    <input id="user-login" type="text" class="form-control"
-                           name="login"
-                           value=""/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="user-password">${password}</label>
-                    <input id="user-password" type="password" class="form-control"
-                           name="password"
-                           value=""/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="user-name">${first_name}</label>
-                    <input id="user-name" type="text" class="form-control"
-                           name="name"
-                           value=""/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="user-surname">${last_name}</label>
-                    <input id="user-surname" type="text" class="form-control"
-                           name="surname"
-                           value=""/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="user-email">${email}</label>
-                    <input id="user-email" type="text" class="form-control"
-                           name="email"
-                           value=""/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">${role_title}</label><br/>
-                    <label class="radio-inline"><input type="radio" name="role" value="USER"
-                                                       checked="checked">${user_role}</label>
-                    <label class="radio-inline"><input type="radio" name="role"
-                                                       value="ADMIN">${admin_role}</label>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-success" id="add-user-submit" type="submit">${add_btn}
-                    </button>
-                </div>
-            </form>
     </div>
-</div>
 </div>
 <div id="edit-user-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -284,7 +274,8 @@
                     <input id='user-id' type="hidden" name="id" value="">
                     <input type="hidden" name="action" value="delete_user">
                     <button type="submit" class="btn btn-warning">${confirm}</button>
-                    <button type="button" class="btn btn-success" onclick="$('#delete-user-modal').modal('hide')">${cancel}</button>
+                    <button type="button" class="btn btn-success"
+                            onclick="$('#delete-user-modal').modal('hide')">${cancel}</button>
                 </form>
             </div>
         </div>
@@ -476,9 +467,10 @@
                                                 <input type="hidden" name="action" value="edit_tag">
                                                 <input type="text" class="form-control" name="title" value="">
                                                 <button class="btn btn-primary" type="submit">
-                                                    ${edit_btn}
+                                                        ${edit_btn}
                                                 </button>
-                                                <button id="edit-tag-btn" class="btn btn-warning" onclick="$('#edit-tag-modal').modal('hide')">${cancel}</button>
+                                                <button id="edit-tag-btn" class="btn btn-warning"
+                                                        onclick="$('#edit-tag-modal').modal('hide')">${cancel}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -496,9 +488,10 @@
                                                 <input type="hidden" name="title" value="">
                                                 <input type="hidden" name="action" value="delete_tag">
                                                 <button class="btn btn-warning" type="submit">
-                                                    ${confirm}
+                                                        ${confirm}
                                                 </button>
-                                                <button type="button" class="btn btn-success" onclick="$('#delete-tag-modal').modal('hide')">${cancel}</button>
+                                                <button type="button" class="btn btn-success"
+                                                        onclick="$('#delete-tag-modal').modal('hide')">${cancel}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -510,8 +503,10 @@
                             <div class="tag-sm edit-menu">
                                 <h3><c:out value="${tag.title}"/></h3>
                                 <div class="edit-buttons">
-                                    <div class="delete-by-admin" onclick="showDeleteTagModal(${tag.id},'${tag.title}')"></div>
-                                    <div class="edit-by-admin" onclick="showEditTagModal(${tag.id},<c:out value="'${tag.title}'"/>)"></div>
+                                    <div class="delete-by-admin"
+                                         onclick="showDeleteTagModal(${tag.id},'${tag.title}')"></div>
+                                    <div class="edit-by-admin"
+                                         onclick="showEditTagModal(${tag.id},<c:out value="'${tag.title}'"/>)"></div>
                                 </div>
                             </div>
                         </c:forEach>
@@ -539,19 +534,22 @@
                                                    value="${user.login}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="user-password-${user.id}">${password}</label>
+                                            <label class="control-label"
+                                                   for="user-password-${user.id}">${password}</label>
                                             <input id="user-password-${user.id}" type="password" class="form-control"
                                                    name="password"
                                                    value="${user.password}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="user-name-${user.id}">${first_name}</label>
+                                            <label class="control-label"
+                                                   for="user-name-${user.id}">${first_name}</label>
                                             <input id="user-name-${user.id}" type="text" class="form-control"
                                                    name="name"
                                                    value="${user.name}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="user-surname-${user.id}">${last_name}</label>
+                                            <label class="control-label"
+                                                   for="user-surname-${user.id}">${last_name}</label>
                                             <input id="user-surname-${user.id}" type="text" class="form-control"
                                                    name="surname"
                                                    value="${user.surname}"/>

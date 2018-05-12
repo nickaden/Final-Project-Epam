@@ -20,6 +20,7 @@ public class QuAnServiceImpl implements QuAnService {
     private static final String ANSWER_TYPE = "answer";
     private static final String WHITESPACES_SPLIT = " ";
     private static final String NOT_VALID_MSG="Data is not valid";
+    private static final int NOT_VALID_ID=-1;
 
     @Override
     public List<QuestionInfoBlock> getQuestions(String lang) throws ServiceException {
@@ -132,12 +133,12 @@ public class QuAnServiceImpl implements QuAnService {
     }
 
     @Override
-    public boolean deleteQuestion(int questionID, int userID) throws ServiceException {
+    public boolean deleteQuestion(int questionId, int userId) throws ServiceException {
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
         boolean isDeleted = false;
 
-        if (!GeneralValidator.checkId(questionID) && GeneralValidator.checkId(userID)){
+        if (!GeneralValidator.checkId(questionId) && GeneralValidator.checkId(userId)){
 
             Logger logger=Logger.getLogger(getClass());
             logger.warn(NOT_VALID_MSG);
@@ -146,11 +147,11 @@ public class QuAnServiceImpl implements QuAnService {
 
         try {
 
-            Question question = dao.getQuestionById(questionID);
+            Question question = dao.getQuestionById(questionId);
             User owner = dao.getQuestionOwner(question);
 
-            if (owner.getId() == userID) {
-                isDeleted = dao.deleteQuestion(questionID);
+            if (owner.getId() == userId) {
+                isDeleted = dao.deleteQuestion(questionId);
             }
 
         } catch (DAOException e) {
@@ -376,7 +377,7 @@ public class QuAnServiceImpl implements QuAnService {
     public int addTag(Tag tag) throws ServiceException {
 
         QuAnDAO dao = DAOfactory.getQuAnDAO();
-        int tagId = 0;
+        int tagId = NOT_VALID_ID;
 
         if(!TagValidator.checkTagAdding(tag)){
 

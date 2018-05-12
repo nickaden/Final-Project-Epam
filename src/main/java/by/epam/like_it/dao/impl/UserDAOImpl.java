@@ -17,6 +17,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private final ConnectionPool connectionPool;
+    private static final int NOT_VALID_ID=-1;
 
     //**** Statements ****//
     private static final String GET_USER="SELECT * FROM user WHERE login=? AND password=?";
@@ -56,6 +57,7 @@ public class UserDAOImpl implements UserDAO {
     private static final int SECOND_INDEX=2;
     private static final int IMAGE_NAME_INDEX =7;
     private static final int ADD_IMAGE_NAME_INDEX=8;
+
 
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -186,7 +188,7 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement statement=null;
         ResultSet rs=null;
 
-        int userID=-1;
+        int userID=NOT_VALID_ID;
 
         try {
 

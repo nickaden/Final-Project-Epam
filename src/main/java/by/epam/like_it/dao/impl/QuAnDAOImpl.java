@@ -673,7 +673,7 @@ public class QuAnDAOImpl implements QuAnDAO {
 
 
     @Override
-    public void addAnswer(Answer answer, int questionID) throws DAOException {
+    public void addAnswer(Answer answer, int questionId) throws DAOException {
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -683,7 +683,7 @@ public class QuAnDAOImpl implements QuAnDAO {
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(ADD_ANSWER);
             statement.setInt(1, answer.getOwner().getId());
-            statement.setInt(2, questionID);
+            statement.setInt(2, questionId);
             statement.setString(3, answer.getDescription());
             statement.execute();
 
@@ -869,7 +869,7 @@ public class QuAnDAOImpl implements QuAnDAO {
     }
 
     @Override
-    public boolean deleteAnswer(int answerID) throws DAOException {
+    public boolean deleteAnswer(int answerId) throws DAOException {
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -879,10 +879,12 @@ public class QuAnDAOImpl implements QuAnDAO {
         try {
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(DELETE_ANSWER);
-            statement.setInt(ID_INDEX, answerID);
-            statement.execute();
+            statement.setInt(ID_INDEX, answerId);
+            int deleted=statement.executeUpdate();
 
-            isDeleted = true;
+            if (deleted>0) {
+                isDeleted = true;
+            }
 
         } catch (ConnectionPoolException | SQLException e) {
             throw new DAOException(e);
@@ -940,6 +942,8 @@ public class QuAnDAOImpl implements QuAnDAO {
         try {
 
             connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+
             statement=connection.prepareStatement(GET_SOLUTION_BY_ANSWER);
             statement.setInt(ID_INDEX,answerID);
             rs=statement.executeQuery();
