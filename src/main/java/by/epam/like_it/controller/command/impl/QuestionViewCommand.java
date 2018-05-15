@@ -14,9 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
-public class StartCommand implements Command {
+public class QuestionViewCommand implements Command {
 
     private static final String BLOCK_LIST_KEY="blocks";
     private static final String START_PAGE_PATH="/WEB-INF/question_view.jsp";
@@ -34,6 +35,7 @@ public class StartCommand implements Command {
             String lang = (String) session.getAttribute(KeyHolder.LANG_KEY);
 
             List<QuestionInfoBlock> blockList=service.getQuestions(lang);
+            Collections.reverse(blockList);
             request.setAttribute(BLOCK_LIST_KEY,blockList);
             RequestDispatcher dispatcher=request.getRequestDispatcher(START_PAGE_PATH);
 

@@ -85,7 +85,7 @@ $(document).ready(function () {
         },
         'title': function (input) {
             var elem = input;
-            if (elem.val().length < 4 || elem.val().length > 1024){
+            if (elem.val().length < 4 || elem.val().length > 1024) {
                 jVal.error = true;
                 elem.parent().removeClass('has-success').addClass('has-error');
             } else {
@@ -175,10 +175,10 @@ $(document).ready(function () {
     });
 
     $('#add_question_btn').click(function () {
-        jVal.error=false;
+        jVal.error = false;
         jVal.title($('#title'));
         jVal.description($('#description'));
-        if (jVal.error!=true){
+        if (jVal.error != true) {
             this.form.submit();
         } else {
             $('.alert-hidden').fadeIn(300);
@@ -187,36 +187,36 @@ $(document).ready(function () {
     });
 
     $('#edit-user-form-own').find('button[type="submit"]').click(function () {
-        jVal.error=false;
+        jVal.error = false;
         jVal.login($('#user-login-own'));
         jVal.password($('#user-password-own'));
         jVal.firstName($('#user-name-own'));
         jVal.lastName($('#user-surname-own'));
         jVal.email($('#user-email-own'));
-        if (jVal.error!=true){
+        if (jVal.error != true) {
             this.form.submit();
         }
         return false;
     });
 
     $('#edit-user-modal').find('button[type="submit"]').click(function () {
-        var form=$('#edit-user-modal').find('form');
-        jVal.error=false;
+        var form = $('#edit-user-modal').find('form');
+        jVal.error = false;
         jVal.login(form.find('input[name="login"]'));
         jVal.password(form.find('input[name="password"]'));
         jVal.firstName(form.find('input[name="name"]'));
         jVal.lastName(form.find('input[name="surname"]'));
         jVal.email(form.find('input[name="email"]'));
-        if (jVal.error!=true){
+        if (jVal.error != true) {
             this.form.submit();
         }
         return false;
     });
 
     $('#edit-tag-btn').click(function () {
-        jVal.error=false;
+        jVal.error = false;
         jVal.title($('#tag-title'));
-        if (jVal.error != true ){
+        if (jVal.error != true) {
             this.form.submit();
         }
         return false;
@@ -224,16 +224,16 @@ $(document).ready(function () {
 
     $('#add-user').click(function () {
         $('#add-user-modal').modal();
-    })
+    });
 
     $('#add-user-submit').click(function () {
-        jVal.error=false;
+        jVal.error = false;
         jVal.login($('#user-login'));
         jVal.password($('#user-password'));
         jVal.firstName($('#user-name'));
         jVal.lastName($('#user-surname'));
         jVal.email($('#user-email'));
-        if (jVal.error!=true){
+        if (jVal.error != true) {
             this.form.submit();
         }
         return false;
@@ -324,10 +324,12 @@ function vote_down(type, id, mark) {
         data: msg,
         dataType: 'text',
         success: function (data) {
-            mark.css("background", "url(\"web-images/vote_down_hover.png\") no-repeat 50% 50%");
-            mark.css("background-size", "contain");
-            mark.siblings(".vote-up").css("background", "url(\"web-images/vote_up.png\") no-repeat 50% 50%").css("background-size", "contain");
-            mark.siblings(".question-details-mark").text(data);
+            if (data != 'error') {
+                mark.css("background", "url(\"web-images/vote_down_hover.png\") no-repeat 50% 50%");
+                mark.css("background-size", "contain");
+                mark.siblings(".vote-up").css("background", "url(\"web-images/vote_up.png\") no-repeat 50% 50%").css("background-size", "contain");
+                mark.siblings(".question-details-mark").text(data);
+            }
         },
         error: function (xhr, str) {
             alert('Возникла ошибка!');
@@ -338,19 +340,30 @@ function vote_down(type, id, mark) {
 function set_solution(questionId, answerId, solution) {
     var msg = "action=set_solution&question=" + questionId + "&answer=" + answerId;
     $.ajax({
-        type: 'POST',
-        url: 'start',
-        data: msg,
-        success: function (data) {
-            $('#answers').find('.solution').css("background", "url(\"web-images/solution.png\") no-repeat 50% 50%")
-                .css("background-size", "contain");
-            solution.css('background', 'url("web-images/solution_hover.png") no-repeat 50% 50%')
-                .css('background-size', 'contain');
-        },
-        error: function (xhr, str) {
-            alert('Возникла ошибка!');
+            type: 'POST',
+            url: 'start',
+            data: msg,
+            success: function (data) {
+                if (data == 'success') {
+                    if (solution.css('background').indexOf('solution_hover.png') != -1) {
+                        $('#answers').find('.solution').css("background", "url(\"web-images/solution.png\") no-repeat 50% 50%")
+                            .css("background-size", "contain");
+                    } else {
+                        $('#answers').find('.solution').css("background", "url(\"web-images/solution.png\") no-repeat 50% 50%")
+                            .css("background-size", "contain");
+                        solution.css('background', "url(\"web-images/solution_hover.png\") no-repeat 50% 50%");
+                    }
+                    solution.css('background-size', 'contain');
+                }
+            },
+            error:
+
+                function (xhr, str) {
+                    alert('Возникла ошибка!');
+                }
         }
-    });
+    )
+    ;
 }
 
 function style_description(block) {
@@ -359,51 +372,72 @@ function style_description(block) {
     var description = descriptionBlock.text();
     descriptionBlock.empty();
     var pos = 0;
-    var newPos = 0
+    var newPos = 0;
+    var text="";
 
     while (pos <= description.length) {
 
-        if ((newPos = description.indexOf("[img]", pos)) != -1) {
+        var part=description.substring(pos,pos+6);
 
-            var end = description.indexOf("[/img]", newPos);
+        if (part.indexOf('[img]')!= -1) {
 
-            var tempText = description.substring(pos, newPos);
-            if (tempText.length > 0) {
-                var textBlock = $('<p></p>').text(tempText);
+            var end = description.indexOf("[/img]", pos);
+
+            var tempText = text;
+            text="";
+            var textPos=0;
+            while ((textPos=tempText.indexOf('\n')) !=-1) {
+
+                var textBlock = $('<p></p>').text(tempText.substring(0,textPos));
+                tempText=tempText.substring(textPos+1);
                 descriptionBlock.append(textBlock);
             }
 
 
-            var imgName = description.substring(newPos + 5, end);
-            var imgBlock = $('<img id="preview-img">');
+            var imgName = description.substring(pos + 6, end);
+            var imgBlock = $('<img class="preview-img">');
             imgBlock.attr('src', '/load?type=description&name=' + imgName);
             descriptionBlock.append(imgBlock);
 
             pos = end + 6;
 
-        } else if ((newPos = description.indexOf("[code]", pos)) != -1) {
+        }
+        if (part.indexOf('[code]') != -1) {
 
-            var end = description.indexOf("[/code]", newPos);
+            var end = description.indexOf("[/code]", pos);
 
-            var tempText = description.substring(pos, newPos);
-            if (tempText.length > 0) {
-                var textBlock = $('<p></p>').text(tempText);
+            var tempText = text;
+            text="";
+            var textPos=0;
+            while ((textPos=tempText.indexOf('\n')) !=-1) {
+
+                var textBlock = $('<p></p>').text(tempText.substring(0,textPos));
+                tempText=tempText.substring(textPos+1);
                 descriptionBlock.append(textBlock);
             }
 
-            var codeText = description.substring(newPos + 6, end);
+            var codeText = description.substring(pos + 6, end);
             var codeBlock = $('<div class="well code"></div>');
             var preBlock = $('<pre></pre>').text(codeText);
             codeBlock.append(preBlock);
             descriptionBlock.append(codeBlock);
 
             pos = end + 7;
-        } else {
+        }
+        if (pos>description.lastIndexOf('[/img]') && pos>description.lastIndexOf('[/code]')){
 
-            var text = description.substring(pos, description.length);
-            var textBlock = $('<p></p>').text(text);
-            descriptionBlock.append(textBlock);
+            var tempText = description.substring(pos, description.length);
+            var textPos=0;
+            while ((textPos=tempText.indexOf('\n')) !=-1) {
+
+                var textBlock = $('<p></p>').text(tempText.substring(0,textPos));
+                tempText=tempText.substring(textPos+1);
+                descriptionBlock.append(textBlock);
+            }
             pos = description.length + 1;
+        } else {
+            text+=description.charAt(pos);
+            pos++;
         }
     }
 
@@ -412,7 +446,6 @@ function style_description(block) {
 }
 
 function chooseFile(picture) {
-    var picture = picture.get(0)
     if (picture) {
         picture.click();
     } else {

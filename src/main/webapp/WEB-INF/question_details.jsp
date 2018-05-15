@@ -28,6 +28,9 @@
 <fmt:message bundle="${loc}" key="answer.answers" var="answers_title"/>
 <fmt:message bundle="${loc}" key="answer.answer_btn" var="answer_btn"/>
 <fmt:message bundle="${loc}" key="answer.delete_warn_msg" var="delete_answer_msg"/>
+<fmt:message bundle="${loc}" key="authorization.error" var="auth_error"/>
+<fmt:message bundle="${loc}" key="authorization.error_info" var="auth_error_info"/>
+<fmt:message bundle="${loc}" key="authorization.sign_in_warning" var="sign_in_warning"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,17 +47,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../script.js"></script>
-    <script>
-        $(document).ready(function () {
-            var descriptions = $('.description');
-            descriptions.each(function (i, item) {
-                style_description($(item));
-            });
-        });
-    </script>
-    <link rel="stylesheet" href="../sign_up_styles.css">
-    <script src="../validation.js"></script>
+
 
 </head>
 <body>
@@ -93,7 +86,7 @@
                                         <input id="password" type="password" class="form-control" name="password"
                                                placeholder="${password}">
                                     </div>
-                                    <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                    <p class="help-block" id="sign_in_warning">${sign_in_warning}</p>
                                     <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
                                     <button type="button" id="btnSignUp" class="btn"
                                             data-toggle="modal" data-target="#sign_up_modal">
@@ -181,8 +174,8 @@
                             <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
                         </div>
                     </div>
-                    <div class="alert alert-danger alert-hidden">
-                        <strong>Ошибка!</strong> Пользователь с таким логином уже существует.
+                    <div class="alert alert-danger alert-hidden user-exist">
+                        <strong>${auth_error}</strong>${auth_error_info}
                     </div>
                     <button class="btn btn-success" type="submit">${confirm}</button>
                 </form>
@@ -279,6 +272,7 @@
                                         <h5>${delete_question_msg}</h5>
                                             <input type="hidden" name="action" value="delete_question">
                                             <input type="hidden" name="question" value="${block.question.id}">
+                                            <input type="hidden" name="description" value="${block.question.description}">
                                             <input type="hidden" name="user" value="${sessionScope.user.id}">
                                         <button type="submit" class="btn btn-warning">${confirm}</button>
                                         <button type="button" class="btn btn-success" onclick="$('#delete-user-modal').modal('hide')">${cancel}</button>
@@ -306,7 +300,9 @@
             </div>
         </div>
         <div id="answers">
-            <h3>${answers_title}</h3>
+            <c:if test="${fn:length(block.answers) > 0}">
+                <h3>${answers_title}</h3>
+            </c:if>
             <c:forEach var="answer" items="${block.answers}">
                 <div class="answer">
 
@@ -345,7 +341,6 @@
                             <c:set var="solution_style" value=""/>
                         </c:otherwise>
                     </c:choose>
-
                         <%----------------------------%>
 
                     <div class="marking">
@@ -377,7 +372,7 @@
                                 <input type="hidden" name="action" value="edit_answer_form">
                                 <input type="hidden" name="answer" value="${answer.id}">
                                 <input type="submit" style="display: none" class="edit_answer_submit">
-                                <a href="#" onclick="$(this).siblings('.edit_answer_submit').get(0).click()">${edit}</a>
+                                <a href="#" onclick="$(this).siblings('.edit_answer_submit').click()">${edit}</a>
                             </form>
                             <a href="#" onclick="showDeleteAnswerModal(${answer.id},${sessionScope.user.id})">${delete}</a>
                         </div>
@@ -408,15 +403,10 @@
                             Заполните поле с ответом.
                         </div>
                         <div class="styler">
-                            <a href="#" onclick="chooseFile()">
-                                <div class="load-picture">
-                                    <input type="file" id="picture" style="display: none" onfocus="this.clear()"
-                                           onchange="loadPicture()">
-                                </div>
-                            </a>
-                            <a href="#" onclick="setCode()">
-                                <div class="set-code"></div>
-                            </a>
+                            <input type="file" id="picture" style="display: none" onfocus="this.clear()"
+                                   onchange="loadPicture()">
+                            <div class="load-picture" onclick="chooseFile($('#picture'))"></div>
+                            <div class="set-code" onclick="setCode()"></div>
                         </div>
                         <textarea class="form-control" rows="9" id="description" name="description"></textarea>
                         <button class="btn btn-primary" type="submit">${answer_btn}</button>
@@ -430,6 +420,17 @@
         </div>
     </div>
 </div>
+<script src="../script.js"></script>
+<script>
+    $(document).ready(function () {
+        var descriptions = $('.description');
+        descriptions.each(function (i, item) {
+            style_description($(item));
+        });
+    });
+</script>
+<link rel="stylesheet" href="../sign_up_styles.css">
+<script src="../validation.js"></script>
 </body>
 </html>
 

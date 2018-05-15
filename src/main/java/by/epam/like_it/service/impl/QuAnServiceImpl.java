@@ -149,8 +149,9 @@ public class QuAnServiceImpl implements QuAnService {
 
             Question question = dao.getQuestionById(questionId);
             User owner = dao.getQuestionOwner(question);
+            User user=DAOFactory.getInstance().getUserDAO().getUserById(userId);
 
-            if (owner.getId() == userId) {
+            if (owner.getId() == userId || user.getRole() == User.Role.ADMIN) {
                 isDeleted = dao.deleteQuestion(questionId);
             }
 
@@ -424,9 +425,9 @@ public class QuAnServiceImpl implements QuAnService {
     }
 
     @Override
-    public void addAnswer(Answer answer, int questionId) throws ServiceException {
+    public void addAnswer(Answer answer) throws ServiceException {
 
-        if (!AnswerValidator.checkAnswerAdding(answer) && GeneralValidator.checkId(questionId)){
+        if ( !(AnswerValidator.checkAnswerAdding(answer) && GeneralValidator.checkId(answer.getQuestionId())) ){
             Logger logger=Logger.getLogger(getClass());
             logger.error(NOT_VALID_MSG);
             return;
@@ -436,7 +437,7 @@ public class QuAnServiceImpl implements QuAnService {
 
         try {
 
-            dao.addAnswer(answer, questionId);
+            dao.addAnswer(answer, answer.getQuestionId());
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -457,7 +458,9 @@ public class QuAnServiceImpl implements QuAnService {
 
         try {
 
-            if (newAnswer.getOwner().getId() == userId) {
+            User user=DAOFactory.getInstance().getUserDAO().getUserById(userId);
+
+            if (newAnswer.getOwner().getId() == userId || user.getRole()==User.Role.ADMIN) {
 
                 dao.editAnswer(newAnswer);
             }
@@ -484,8 +487,9 @@ public class QuAnServiceImpl implements QuAnService {
         try {
 
             answer = dao.getAnswerById(answerId);
+            User user=DAOFactory.getInstance().getUserDAO().getUserById(userId);
 
-            if (answer.getOwner().getId() == userId) {
+            if (answer.getOwner().getId() == userId || user.getRole()==User.Role.ADMIN) {
                 isDeleted = dao.deleteAnswer(answerId);
             }
 
@@ -500,7 +504,8 @@ public class QuAnServiceImpl implements QuAnService {
     @Override
     public void setSolution(int questionId, int answerId, User owner) throws ServiceException {
 
-        if (! GeneralValidator.checkId(questionId) && GeneralValidator.checkId(answerId)){
+        if (! (GeneralValidator.checkId(questionId) && GeneralValidator.checkId(answerId)
+                && UserValidator.checkUserEditing(owner))){
             Logger logger=Logger.getLogger(getClass());
             logger.warn(NOT_VALID_MSG);
             return;
@@ -532,7 +537,7 @@ public class QuAnServiceImpl implements QuAnService {
 
         if(!GeneralValidator.checkId(id)){
             Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
-            return isAdded;
+            return false;
         }
 
         try {

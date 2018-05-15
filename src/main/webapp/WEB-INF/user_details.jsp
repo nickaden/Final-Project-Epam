@@ -42,6 +42,10 @@
 <fmt:message bundle="${loc}" key="tab.tags" var="tags_tab"/>
 <fmt:message bundle="${loc}" key="tab.users" var="users_tab"/>
 
+<fmt:message bundle="${loc}" key="authorization.error" var="auth_error"/>
+<fmt:message bundle="${loc}" key="authorization.error_info" var="auth_error_info"/>
+<fmt:message bundle="${loc}" key="authorization.sign_in_warning" var="sign_in_warning"/>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +103,7 @@
                                         <input id="password" type="password" class="form-control" name="password"
                                                placeholder="${password}">
                                     </div>
-                                    <p class="help-block" id="sign_in_warning">Данного пользователя не существует!</p>
+                                    <p class="help-block" id="sign_in_warning">${sign_in_warning}</p>
                                     <button id="btnLogin" class="btn" type="submit">${sign_in}</button>
                                     <button type="button" id="btnSignUp" class="btn"
                                             data-toggle="modal" data-target="#sign_up_modal">
@@ -187,8 +191,8 @@
                             <span class="glyphicon glyphicon-remove form-control-feedback val-obj"></span>
                         </div>
                     </div>
-                    <div class="alert alert-danger alert-hidden">
-                        <strong>Ошибка!</strong> Пользователь с таким логином уже существует.
+                    <div class="alert alert-danger alert-hidden user-exist">
+                        <strong>${auth_error}</strong>${auth_error_info}
                     </div>
                     <button class="btn btn-success" type="submit">${confirm}</button>
                 </form>
@@ -197,7 +201,7 @@
     </div>
 </div>
 <div id="add-user-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>

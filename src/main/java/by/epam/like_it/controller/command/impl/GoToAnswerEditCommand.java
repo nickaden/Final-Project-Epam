@@ -1,5 +1,6 @@
 package by.epam.like_it.controller.command.impl;
 
+import by.epam.like_it.controller.util.DescriptionImageParser;
 import by.epam.like_it.entity.Answer;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
@@ -14,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Key;
+import java.util.List;
 
 public class GoToAnswerEditCommand implements Command{
 
@@ -27,6 +30,10 @@ public class GoToAnswerEditCommand implements Command{
             QuAnService service=factory.getQuAnService();
 
             Answer answer=service.getAnswerById(Integer.parseInt(request.getParameter(KeyHolder.ANSWER_KEY)));
+
+            List<String> images=DescriptionImageParser.parseImages(answer.getDescription());
+            request.getSession(true).setAttribute(KeyHolder.DESCRIPTION_IMAGES,images);
+
             request.setAttribute(KeyHolder.ANSWER_KEY, answer);
             request.setAttribute(KeyHolder.PATH_KEY, ReferenceEditor.getReference(request));
 

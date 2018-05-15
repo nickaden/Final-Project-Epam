@@ -100,6 +100,16 @@
         <servlet-name>Controller</servlet-name>
     </filter-mapping>
 
+    <filter>
+        <filter-name>DescriptionImageFilter</filter-name>
+        <filter-class>by.epam.like_it.controller.filter.DescriptionImageFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>DescriptionImageFilter</filter-name>
+        <servlet-name>Controller</servlet-name>
+    </filter-mapping>
+
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error</location>

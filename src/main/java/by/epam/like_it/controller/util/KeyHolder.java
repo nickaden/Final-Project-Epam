@@ -2,6 +2,7 @@ package by.epam.like_it.controller.util;
 
 public class KeyHolder {
 
+    public static final String ACTION_KEY="action";
     public static final String USER_KEY="user";
     public static final String DESCRIPTION_KEY="description";
     public static final String QUESTION_KEY="question";
@@ -36,6 +37,7 @@ public class KeyHolder {
     public static final String ERROR="error";
     public static final String SUCCESS="success";
     public static final String BLOCK_KEY="block";
+    public static final String DESCRIPTION_IMAGES="images";
 
 
 

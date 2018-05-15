@@ -1,5 +1,6 @@
 package by.epam.like_it.controller.command.impl;
 
+import by.epam.like_it.controller.util.DescriptionImageParser;
 import by.epam.like_it.entity.QuestionInfoBlock;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class GoToQuestionEditCommand implements Command {
 
@@ -30,7 +32,9 @@ public class GoToQuestionEditCommand implements Command {
 
             QuestionInfoBlock questionInfo = service.getQuestionInfoBlock(Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)));
 
+
             request.setAttribute(INFOBLOCK_KEY, questionInfo);
+
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(EDIT_FORM_PATH);
 

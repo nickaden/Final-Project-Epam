@@ -24,13 +24,14 @@ public class AddAnswerCommand implements Command {
         User user=(User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
         answer.setOwner(user);
         answer.setDescription(request.getParameter(KeyHolder.DESCRIPTION_KEY));
+        answer.setQuestionId(Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)));
 
         ServiceFactory factory=ServiceFactory.getInstance();
         QuAnService service=factory.getQuAnService();
 
         try {
 
-            service.addAnswer(answer,Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)));
+            service.addAnswer(answer);
 
         } catch (ServiceException e) {
             Logger logger= Logger.getRootLogger();

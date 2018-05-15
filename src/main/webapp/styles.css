@@ -53,6 +53,8 @@ lang-dropdown{
     margin-top:40px;
 }
 
+
+
 #back{
     display: inline-block;
 }
@@ -358,6 +360,8 @@ header h2{
 .code{
     width: 80%;
     padding: 5px;
+    max-height: 700px;
+    overflow-y: scroll;
 }
 
 .title-label{
@@ -390,6 +394,7 @@ header h2{
     height: 25px;
     background: url('web-images/picture.png') no-repeat 50% 50%;
     background-size: contain;
+    cursor: pointer;
 }
 
 
@@ -401,6 +406,7 @@ header h2{
     height: 25px;
     background: url('web-images/code.png') no-repeat 50% 50%;
     background-size: contain;
+    cursor: pointer;
 }
 
 .load-picture:hover{
@@ -422,7 +428,7 @@ header h2{
     padding: 5px;
 }
 
-#preview-img{
+.preview-img{
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;

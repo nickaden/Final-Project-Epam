@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
         QuAnDAO quAnDAO=DAOFactory.getInstance().getQuAnDAO();
         int rate=0;
 
-        if (UserValidator.checkUserEditing(user)){
+        if (!UserValidator.checkUserEditing(user)){
             Logger.getLogger(getClass()).warn(NOT_VALID_MSG);
             return rate;
         }

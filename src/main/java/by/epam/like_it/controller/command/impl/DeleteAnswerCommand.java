@@ -1,5 +1,8 @@
 package by.epam.like_it.controller.command.impl;
 
+import by.epam.like_it.controller.util.DescriptionImageParser;
+import by.epam.like_it.controller.util.ImageRemover;
+import by.epam.like_it.entity.Answer;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
@@ -20,13 +23,23 @@ public class DeleteAnswerCommand implements Command {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         QuAnService service = factory.getQuAnService();
+        boolean isDeleted=false;
 
         try {
 
-            service.deleteAnswer(
+            Answer answer=service.getAnswerById(Integer.parseInt(request.getParameter(KeyHolder.ANSWER_KEY)));
+
+            isDeleted=service.deleteAnswer(
                     Integer.parseInt(request.getParameter(KeyHolder.ANSWER_KEY)),
                     Integer.parseInt(request.getParameter(KeyHolder.USER_KEY))
             );
+
+            if (isDeleted) {
+                ImageRemover.deleteImages(
+                        request.getServletContext().getInitParameter(KeyHolder.DESCRIPTION_IMAGE_PATH),
+                        DescriptionImageParser.parseImages(answer.getDescription())
+                );
+            }
 
         } catch (ServiceException e) {
 

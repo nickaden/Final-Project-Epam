@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class SetSolutionCommand implements Command {
@@ -22,19 +23,31 @@ public class SetSolutionCommand implements Command {
 
         ServiceFactory factory = ServiceFactory.getInstance();
         QuAnService service = factory.getQuAnService();
+        PrintWriter writer=response.getWriter();
 
         try {
+
+            User user= (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+
+            if (user == null){
+                response.getWriter().write(KeyHolder.ERROR);
+                return;
+            }
 
             service.setSolution(
                     Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)),
                     Integer.parseInt(request.getParameter(KeyHolder.ANSWER_KEY)),
-                    (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY)
+                    user
             );
+
+            writer=response.getWriter();
+            writer.write(KeyHolder.SUCCESS);
 
         } catch (ServiceException e) {
             Logger.getLogger(getClass()).error(e.getMessage());
+            writer.write(KeyHolder.ERROR);
         } finally {
-            response.sendRedirect(NEW_QUESTION_PATH + request.getParameter(KeyHolder.QUESTION_KEY));
+            writer.close();
         }
     }
 }

@@ -6,6 +6,7 @@ import by.epam.like_it.controller.util.KeyHolder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class LoadDescriptionImageCommand implements Command {
 
-    private static final List<String> suffixes=new ArrayList<>();
+    private static final List<String> suffixes = new ArrayList<>();
 
     {
         suffixes.add(".jpg");
@@ -30,26 +31,34 @@ public class LoadDescriptionImageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+        List<String> descriptionImages;
 
-            Part filePart = request.getPart(KeyHolder.UPFILE_KEY);
-            String fileName = filePart.getSubmittedFileName();
+        Part filePart = request.getPart(KeyHolder.UPFILE_KEY);
+        String fileName = filePart.getSubmittedFileName();
 
-            File upload = new File(request.getServletContext().getInitParameter(KeyHolder.DESCRIPTION_IMAGE_PATH));
+        descriptionImages = (List<String>) request.getSession(true).getAttribute(KeyHolder.DESCRIPTION_IMAGES);
+        if (descriptionImages == null) {
+            descriptionImages = new ArrayList<>();
+        }
 
-            String prefix = fileName.substring(0, fileName.indexOf(KeyHolder.DOT_SEPARATOR));
-            String suffix = fileName.substring(fileName.indexOf(KeyHolder.DOT_SEPARATOR));
+        File upload = new File(request.getServletContext().getInitParameter(KeyHolder.DESCRIPTION_IMAGE_PATH));
 
-            if (!suffixes.contains(suffix)) {
-                return;
-            }
+        String prefix = fileName.substring(0, fileName.lastIndexOf(KeyHolder.DOT_SEPARATOR));
+        String suffix = fileName.substring(fileName.lastIndexOf(KeyHolder.DOT_SEPARATOR));
 
-            File file = File.createTempFile(prefix, suffix, upload);
+        if (!suffixes.contains(suffix)) {
+            return;
+        }
 
-            InputStream fileContent = filePart.getInputStream();
-            Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            fileContent.close();
+        File file = File.createTempFile(prefix, suffix, upload);
+        descriptionImages.add(file.getName());
+        request.getSession(true).setAttribute(KeyHolder.DESCRIPTION_IMAGES,descriptionImages);
 
-            PrintWriter writer=response.getWriter();
-            writer.write(file.getName());
+        InputStream fileContent = filePart.getInputStream();
+        Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        fileContent.close();
+
+        PrintWriter writer = response.getWriter();
+        writer.write(file.getName());
     }
 }

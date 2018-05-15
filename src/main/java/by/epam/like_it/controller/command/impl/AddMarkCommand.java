@@ -24,6 +24,12 @@ public class AddMarkCommand implements Command {
 
         Mark mark = new Mark();
         User user = (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+
+        if (user==null){
+            response.getWriter().write(KeyHolder.ERROR);
+            return;
+        }
+
         String type= request.getParameter(KeyHolder.TYPE_KEY);
         List<Mark> marks;
 
@@ -65,7 +71,6 @@ public class AddMarkCommand implements Command {
             PrintWriter writer=response.getWriter();
             writer.write(KeyHolder.ERROR);
             writer.close();
-
         }
     }
 }

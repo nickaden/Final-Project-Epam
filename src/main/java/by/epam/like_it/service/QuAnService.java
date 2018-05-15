@@ -37,7 +37,7 @@ public interface QuAnService {
 
     List<QuestionInfoBlock> getQuestionsByUser(User user) throws ServiceException;
 
-    void addAnswer(Answer answer, int questionId) throws ServiceException;
+    void addAnswer(Answer answer) throws ServiceException;
 
     void editAnswer(Answer newAnswer, int userId) throws ServiceException;
 

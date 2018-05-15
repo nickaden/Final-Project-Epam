@@ -6,7 +6,7 @@
 
     <command>
         <action-name>question_view</action-name>
-        <command-class>by.epam.like_it.controller.command.impl.StartCommand</command-class>
+        <command-class>by.epam.like_it.controller.command.impl.QuestionViewCommand</command-class>
     </command>
 
     <command>
@@ -95,16 +95,6 @@
     </command>
 
     <command>
-        <action-name>admin_menu</action-name>
-        <command-class>by.epam.like_it.controller.command.impl.GoToAdminMenuCommand</command-class>
-    </command>
-
-    <command>
-        <action-name>edit_user_form</action-name>
-        <command-class>by.epam.like_it.controller.command.impl.GoToEditUserFormCommand</command-class>
-    </command>
-
-    <command>
         <action-name>edit_user</action-name>
         <command-class>by.epam.like_it.controller.command.impl.EditUserCommand</command-class>
     </command>
@@ -112,11 +102,6 @@
     <command>
         <action-name>delete_user</action-name>
         <command-class>by.epam.like_it.controller.command.impl.DeleteUserCommand</command-class>
-    </command>
-
-    <command>
-        <action-name>edit_tag_form</action-name>
-        <command-class>by.epam.like_it.controller.command.impl.GoToEditTagFormCommand</command-class>
     </command>
 
     <command>

@@ -2,10 +2,8 @@ package by.epam.like_it.controller;
 
 import by.epam.like_it.controller.command.Command;
 import by.epam.like_it.controller.command.CommandFactory;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
