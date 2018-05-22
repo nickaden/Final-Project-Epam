@@ -1,0 +1,41 @@
+.answer-info{
+    position: relative;
+}
+
+.answer-date{
+    font-size: 11px;
+}
+
+.answer-owner-menu{
+    font-size: 12px;
+    display: inline;
+}
+
+.answer{
+    min-height: 200px;
+    border-top: 2px solid #9FADB5;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.answer-form{
+    margin-bottom: 10px;
+}
+
+.answer-form button{
+    margin-top: 5px;
+}
+
+#answers {
+    margin-top: 30px;
+}
+
+#add_answer{
+    border-top: 2px solid #50a8ca;
+    margin-top:40px;
+}
+
+.edit-answer-form{
+    display: inline-block;
+}

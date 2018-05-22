@@ -1,6 +1,8 @@
 package by.epam.like_it.controller.command;
 
 import by.epam.like_it.controller.util.CommandLoader;
+
+import java.io.IOException;
 import java.util.Map;
 
 public class CommandFactory {
@@ -17,6 +19,10 @@ public class CommandFactory {
     }
 
     private CommandFactory() {
-       commandMap= CommandLoader.getInstance().getCommands();
+
+    }
+
+    public void loadCommands() throws IOException{
+        commandMap= CommandLoader.getInstance().getCommands();
     }
 }

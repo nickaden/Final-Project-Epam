@@ -39,6 +39,8 @@
 <fmt:message bundle="${loc}" key="question.how_to_tag.title" var="tag_title"/>
 <fmt:message bundle="${loc}" key="question.how_to_tag.msg_1" var="tag_msg_1"/>
 <fmt:message bundle="${loc}" key="question.how_to_tag.msg_2" var="tag_msg_2"/>
+<fmt:message bundle="${loc}" key="question.validate.error.title" var="error_title"/>
+<fmt:message bundle="${loc}" key="question.validate.error.msg" var="error_msg"/>
 <fmt:message bundle="${loc}" key="authorization.error" var="auth_error"/>
 <fmt:message bundle="${loc}" key="authorization.error_info" var="auth_error_info"/>
 <fmt:message bundle="${loc}" key="authorization.sign_in_warning" var="sign_in_warning"/>
@@ -46,22 +48,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>${headTitle}</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/question.css">
+    <link rel="stylesheet" href="css/question_answer_edit.css">
+    <link rel="stylesheet" href="css/description.css">
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="js/require.js" data-main="js/add_question"></script>
+    <script src="js/styler.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../script.js"></script>
-    <link rel="stylesheet" href="../sign_up_styles.css">
-    <script src="../validation.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
 
 </head>
 <body>
@@ -77,8 +83,8 @@
                         <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu lang-item">
-                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
-                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                        <li><a href="#" class="lang-option" data="en">${en_option}</a></li>
+                        <li><a href="#" class="lang-option" data="ru">${ru_option}</a></li>
                     </ul>
                 </li>
                 <c:choose>
@@ -243,13 +249,13 @@
                        placeholder="${enter_tags_msg}" onfocus="showTip('tag')" value="${tagLine}">
             </div>
             <div class="form-group">
-                <button class="btn btn-info" type="button" onclick="showPreview()">${show_preview_btn}
+                <button id="preview-btn" class="btn btn-info" type="button" onclick="showPreview()">${show_preview_btn}
                 </button>
                 <button class="btn btn-success" id="add_question_btn" type="submit">${done_btn}</button>
             </div>
             <div class="form-group">
                 <div class="alert alert-warning alert-hidden">
-                    <strong>Ошибка!</strong>Заполните обязательные поля <b>Заголовок</b> и <b>Описание</b>
+                    <strong>${error_title}</strong>${error_msg}
                 </div>
             </div>
         </form>
@@ -329,19 +335,3 @@
 </html>
 
 
-<%-------------------------------------------------------------------------------------------------------------------%>
-
-<%--<html>--%>
-<%--<head>--%>
-<%--<title>Title</title>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="add_question">--%>
-<%--<input type="text" name="title"><br/>--%>
-<%--<textarea name="description"></textarea><br/>--%>
-<%--<input type="text" name="tags">--%>
-<%--<button type="submit">Submit</button>--%>
-<%--</form>--%>
-<%--</body>--%>
-<%--</html>--%>

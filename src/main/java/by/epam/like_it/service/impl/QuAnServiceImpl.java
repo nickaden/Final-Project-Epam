@@ -27,7 +27,7 @@ public class QuAnServiceImpl implements QuAnService {
 
         List<QuestionInfoBlock> questionBlockList = new ArrayList<>();
 
-        if (!GeneralValidator.checkLang(lang)){
+        if (!GeneralValidator.checkLangWithNull(lang)){
             throw new ServiceException(NOT_VALID_MSG);
         }
 
@@ -65,7 +65,7 @@ public class QuAnServiceImpl implements QuAnService {
 
         if (!QuestionValidator.checkQuestionAdding(question)
                 && UserValidator.checkUserEditing(owner)
-                && GeneralValidator.checkLang(lang)
+                && GeneralValidator.checkLangStrict(lang)
                 && TagValidator.checkTagString(tagString)){
 
             Logger logger=Logger.getLogger(getClass());
@@ -101,7 +101,7 @@ public class QuAnServiceImpl implements QuAnService {
 
         if(!QuestionValidator.checkQuestionEditing(question)
                 && TagValidator.checkTagString(tagString)
-                && GeneralValidator.checkLang(lang)){
+                && GeneralValidator.checkLangStrict(lang)){
 
             Logger logger=Logger.getLogger(getClass());
             logger.warn(NOT_VALID_MSG);

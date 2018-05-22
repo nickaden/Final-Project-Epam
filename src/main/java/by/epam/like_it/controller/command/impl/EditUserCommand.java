@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class EditUserCommand implements Command {
@@ -38,6 +39,12 @@ public class EditUserCommand implements Command {
         try {
 
             service.editUser(user);
+
+            HttpSession session=request.getSession(true);
+            User currentUser= (User) session.getAttribute(KeyHolder.USER_KEY);
+            if(currentUser != null && currentUser.getId()== user.getId()){
+                session.setAttribute(KeyHolder.USER_KEY,user);
+            }
 
         } catch (ServiceException e) {
 

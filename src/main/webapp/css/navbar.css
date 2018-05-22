@@ -1,0 +1,90 @@
+.lang-item{
+    min-width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+lang-dropdown{
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.navbar-right{
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+#miniature {
+    position: relative;
+    display: inline;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+}
+
+.dropdown-image{
+    width: 30px;
+    height: 30px;
+    align-self: center;
+}
+
+.dropdown-image:hover{
+    box-shadow: 0 0 3px #00a5dd ;
+}
+
+#navUser{
+    padding: 10px 15px;
+}
+
+.user-info-dropdown{
+    min-width: 200px;
+}
+
+.user-info-dropdown h3{
+    font-size: 16px;
+    font-family: Arial;
+    margin-top: 5px;
+}
+
+#login {
+    width: 250px;
+}
+
+#password{
+    width: 250px;
+}
+
+#sign_in_warning{
+    margin-left: 10px;
+    font-size: 12px;
+    color: #c80000;
+}
+
+#topNav{
+    width: 100%;
+}
+
+#lang{
+    position: relative;
+    margin-top: 15px;
+    float: right;
+}
+
+#btnLogin {
+    margin: 5px 0px ;
+}
+
+#btnSignUp{
+    float: right;
+    margin: 5px 0px ;
+}
+
+#userInfo{
+    display: inline-block;
+}
+
+#sign_in_warning{
+    display: none;
+}

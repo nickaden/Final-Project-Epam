@@ -20,6 +20,8 @@ import java.util.List;
 public class QuestionViewCommand implements Command {
 
     private static final String BLOCK_LIST_KEY="blocks";
+    private static final String VIEW_KEY="view";
+    private static final String ALL_VALUE="all";
     private static final String START_PAGE_PATH="/WEB-INF/question_view.jsp";
 
 
@@ -32,7 +34,12 @@ public class QuestionViewCommand implements Command {
             QuAnService service=factory.getQuAnService();
 
             HttpSession session=request.getSession(true);
-            String lang = (String) session.getAttribute(KeyHolder.LANG_KEY);
+            String lang=null;
+            String view= (String) request.getSession().getAttribute(KeyHolder.VIEW_KEY);
+
+            if (view.equals(KeyHolder.LANG_VALUE)) {
+                lang = (String) session.getAttribute(KeyHolder.LANG_KEY);
+            }
 
             List<QuestionInfoBlock> blockList=service.getQuestions(lang);
             Collections.reverse(blockList);

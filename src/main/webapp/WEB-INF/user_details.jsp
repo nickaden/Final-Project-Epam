@@ -55,16 +55,18 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/question.css">
+    <link rel="stylesheet" href="css/user_menu.css">
 
     <!-- jQuery library -->
-    <script src="../jquery-3.3.1.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-    <script src="../script.js"></script>
-    <link rel="stylesheet" href="../sign_up_styles.css">
-    <script src="../validation.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="js/require.js" data-main="../js/user_details"></script>
+    <script src="js/styler.js"></script>
 
 </head>
 <body>
@@ -80,8 +82,8 @@
                         <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu lang-item">
-                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
-                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                        <li><a href="#" class="lang-option" data="en">${en_option}</a></li>
+                        <li><a href="#" class="lang-option" data="ru">${ru_option}</a></li>
                     </ul>
                 </li>
                 <c:choose>
@@ -608,56 +610,3 @@
 
 </body>
 </html>
-
-<%--------------------------------------------------------------------------%>
-
-<%--<%@ page contentType="text/html;charset=UTF-8" %>--%>
-<%--<%@ page isELIgnored="false" %>--%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>--%>
-<%--<html>--%>
-<%--<head>--%>
-<%--<title>Title</title>--%>
-<%--<link rel="stylesheet" href="../styles.css">--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<div class="user_desc">--%>
-<%--<img src="/load?type=user&name=${requestScope.user.imageName}" width="200px" height="200px">--%>
-<%--<form method="POST" enctype="multipart/form-data" action="start">--%>
-<%--<input type="hidden" name="action" value="load_user_image">--%>
-<%--<input type="file" name="upfile"><br/>--%>
-<%--<input type="submit" value="Press"><br>--%>
-<%--</form>--%>
-<%--<c:out value="${requestScope.user.login}"/>--%>
-<%--<c:out value="${requestScope.user.name}"/>--%>
-<%--<c:out value="${requestScope.user.surname}"/>--%>
-<%--<c:out value="${requestScope.user.email}"/>--%>
-<%--<h3><c:out value="${requestScope.rate}"/></h3>--%>
-<%--<c:if test="${sessionScope.user.role == 'ADMIN'}">--%>
-<%--<form method="get" action="start">--%>
-<%--<input type="hidden" name="action" value="admin_menu">--%>
-<%--<button type="submit">Admin Menu</button>--%>
-<%--</form>--%>
-
-<%--</c:if>--%>
-<%--</div>--%>
-
-<%--<h3>Questions (<c:out value="${fn:length(questions)}"/>)</h3>--%>
-<%--<c:forEach var="question" items="${requestScope.questions}">--%>
-<%--<div id="user_questions">--%>
-<%--<a href="/start?action=question_details&id=${question.id}">--%>
-<%--<c:out value="${question.title}"/>--%>
-<%--</a>--%>
-<%--</div>--%>
-<%--</c:forEach>--%>
-
-<%--<h3>Answers (<c:out value="${fn:length(requestScope.answered_questions)}"/>)</h3>--%>
-<%--<c:forEach var="question" items="${requestScope.answered_questions}">--%>
-<%--<div id="user_answered">--%>
-<%--<a href="/start?action=question_details&id=${question.id}">--%>
-<%--<c:out value="${question.title}"/>--%>
-<%--</a>--%>
-<%--</div>--%>
-<%--</c:forEach>--%>
-<%--</body>--%>
-<%--</html>--%>

@@ -38,6 +38,9 @@ public class KeyHolder {
     public static final String SUCCESS="success";
     public static final String BLOCK_KEY="block";
     public static final String DESCRIPTION_IMAGES="images";
+    public static final String VIEW_KEY="view";
+    public static final String ALL_VALUE="all";
+    public static final String LANG_VALUE="lang";
 
 
 

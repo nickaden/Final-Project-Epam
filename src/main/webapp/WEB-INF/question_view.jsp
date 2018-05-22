@@ -21,6 +21,7 @@
 <fmt:message bundle="${loc}" key="button.confirm" var="confirm"/>
 <fmt:message bundle="${loc}" key="asking.ask_button" var="ask_button"/>
 <fmt:message bundle="${loc}" key="question.answers" var="answers"/>
+<fmt:message bundle="${loc}" key="question.view_all_msg" var="view_all_msg"/>
 <fmt:message bundle="${loc}" key="authorization.error" var="auth_error"/>
 <fmt:message bundle="${loc}" key="authorization.error_info" var="auth_error_info"/>
 <fmt:message bundle="${loc}" key="authorization.sign_in_warning" var="sign_in_warning"/>
@@ -33,24 +34,18 @@
     <title>${headTitle}</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
 
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <script src="jquery-3.3.1.min.js"></script>
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="../sign_up_styles.css">
-    <script src="../script.js"></script>
-    <%--<script>--%>
-        <%--$(document).ready(function () {--%>
-            <%--$('.user-info-dropdown').find('#navUser').remove();--%>
-        <%--})--%>
-    <%--</script>--%>
 
+    <script src="js/require.js" data-main="js/question_view"></script>
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/question.css">
 
 </head>
 <body>
@@ -66,8 +61,8 @@
                         <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu lang-item">
-                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
-                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                        <li><a href="#" class="lang-option" data="en">${en_option}</a></li>
+                        <li><a href="#" class="lang-option" data="ru">${ru_option}</a></li>
                     </ul>
                 </li>
                 <c:choose>
@@ -113,7 +108,8 @@
                                     </a>
                                     <form method="get" action="start">
                                         <input type="hidden" name="action" value="sign_out">
-                                        <button id="signOut" class="btn btn-info btn-sm" type="submit">${sign_out}</button>
+                                        <button id="signOut" class="btn btn-info btn-sm"
+                                                type="submit">${sign_out}</button>
                                     </form>
                                 </div>
                             </div>
@@ -132,7 +128,7 @@
                 <h4 class="modal-title">${sign_up}</h4>
             </div>
             <div class="modal-body">
-                <form id="sign_up_form" class="form-horizontal">
+                <form method="post" id="sign_up_form" class="form-horizontal">
                     <div class="form-group has-feedback">
                         <input type="hidden" name="action" value="sign_up_user">
                         <label for="up_login" class="control-label col-sm-2">${login}:</label>
@@ -188,11 +184,22 @@
 </div>
 <div class="content container">
     <div class="button-space row">
-        <c:if test="${sessionScope.user != null}">
-            <a href="/start?action=ask">
-                <button class="btn btn-primary" id="asking-button">${ask_button}</button>
-            </a>
-        </c:if>
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <c:set var="check" value=""/>
+                <c:if test="${sessionScope.view eq 'all'}">
+                    <c:set var="check" value="checked"/>
+                </c:if>
+                <label><input type="checkbox" id="view_all" ${check}>${view_all_msg}</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <c:if test="${sessionScope.user != null}">
+                <a href="/start?action=ask">
+                    <button class="btn btn-primary" id="asking-button">${ask_button}</button>
+                </a>
+            </c:if>
+        </div>
     </div>
     <div class="row">
         <div class="content col-md-9">
@@ -236,7 +243,7 @@
                                                                         dateStyle="SHORT"/></div>
                         <div class="owner question-owner"><a
                                 href="/start?action=user_details&user=${block.owner.id}"><c:out
-                                value="${block.owner.login}"/>,</a></div>
+                                value="${block.owner.login}"/></a></div>
                     </div>
                 </div>
             </c:forEach>
@@ -252,79 +259,3 @@
 </html>
 
 
-<%------------------------------------------------------------------------------------>
-
-
-
-<%--<!DOCTYPE html>--%>
-<%--<html lang="en">--%>
-<%--<head>--%>
-<%--<title>Title</title>--%>
-<%--<link rel="stylesheet" href="../styles.css">--%>
-<%--<meta charset="utf-8">--%>
-<%--<meta name="viewport" content="width=device-width, initial-scale=1">--%>
-<%--<!-- Latest compiled and minified CSS -->--%>
-<%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<header>--%>
-<%--<h2>LikeIT</h2>--%>
-<%--<c:choose>--%>
-<%--<c:when test="${sessionScope.user eq null}">--%>
-<%--<div class="signin">--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="sign_in">--%>
-<%--<input type="hidden" name="old_action" value="question_view">--%>
-<%--<input type="text" name="login">--%>
-<%--<input type="text" name="password">--%>
-<%--<button type="submit">Sign in</button>--%>
-<%--</form>--%>
-<%--<form method="get" action="start">--%>
-<%--<input type="hidden" name="action" value="sign_up">--%>
-<%--<button type="submit">Sign Up</button>--%>
-<%--</form>--%>
-<%--</div>--%>
-<%--</c:when>--%>
-<%--<c:otherwise>--%>
-<%--<a href="/start?action=user_details"><c:out value="${sessionScope.user.login}"/></a>--%>
-<%--<form method="get" action="start">--%>
-<%--<input type="hidden" name="action" value="sign_out">--%>
-<%--<button type="submit">Sign Out</button>--%>
-<%--</form>--%>
-<%--</c:otherwise>--%>
-<%--</c:choose>--%>
-<%--<form class="lang" method="post" action="start">--%>
-<%--<c:set var="rus" value="selected"/>--%>
-<%--<c:if test="${sessionScope.lang eq 'en'}">--%>
-<%--<c:set var="eng" value="selected"/>--%>
-<%--<c:set var="rus" value=""/>--%>
-<%--</c:if>--%>
-<%--<input type="hidden" name="action" value="change_lang">--%>
-<%--<select name="lang" onchange="this.form.submit()">--%>
-<%--<option value="en" <c:out value="${eng}"/> >En</option>--%>
-<%--<option value="ru" <c:out value="${rus}"/> >Ru</option>--%>
-<%--</select>--%>
-<%--</form>--%>
-<%--</header>--%>
-<%--<c:if test="${sessionScope.user !=null}">--%>
-<%--<a href="/start?action=ask"><button>Ask New Question</button></a>--%>
-<%--</c:if>--%>
-<%--<div class="questions">--%>
-<%--<c:forEach var="block" items="${requestScope.blocks}">--%>
-<%--<div class="question">--%>
-<%--<a href="/start?action=question_details&id=${block.question.id}">--%>
-<%--<c:out value="${block.question.title}"/><br/>--%>
-<%--</a>--%>
-<%--<c:out value="${block.question.description}"/><br/>--%>
-<%--<c:out value="${fn:length(block.marks)}"/><br/>--%>
-<%--<c:out value="${block.question.answered}"/><br/>--%>
-<%--<c:forEach items="${block.tags}" var="tag">--%>
-<%--<div class="tag">--%>
-<%--<c:out value="${tag.title}"></c:out>--%>
-<%--</div>--%>
-<%--</c:forEach><br/>--%>
-<%--</div>--%>
-<%--</c:forEach>--%>
-<%--</div>--%>
-<%--</body>--%>
-<%--</html>--%>

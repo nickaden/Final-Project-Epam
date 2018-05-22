@@ -1,0 +1,17 @@
+#preview{
+    position: relative;
+    margin-left: -15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.preview-img{
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.help-tip{
+    padding: 10px;
+}

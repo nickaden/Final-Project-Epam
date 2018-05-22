@@ -15,6 +15,7 @@ public class QuAnDAOImpl implements QuAnDAO {
 
     //**** Statements ****//
     private static final String GET_QUESTIONS = "SELECT * FROM question INNER JOIN language ON language.id=question.lang_id WHERE language.title=?";
+    private static final String GET_ALL_QUESTIONS = "SELECT * FROM question";
     private static final String GET_QUESTIONS_BY_USER = "SELECT * FROM question WHERE owner_id=?";
     private static final String GET_QUESTIONS_BY_TAG = "SELECT * FROM question INNER JOIN question_tag ON question.id = question_tag.q_id WHERE question_tag.tag_id=?";
     private static final String GET_QUESTION_BY_ID = "SELECT * FROM question WHERE id=?";
@@ -120,8 +121,13 @@ public class QuAnDAOImpl implements QuAnDAO {
         try {
 
             connection = connectionPool.takeConnection();
-            statement = connection.prepareStatement(GET_QUESTIONS);
-            statement.setString(1, lang);
+
+            if (lang == null) {
+                statement = connection.prepareStatement(GET_ALL_QUESTIONS);
+            } else {
+                statement = connection.prepareStatement(GET_QUESTIONS);
+                statement.setString(1, lang);
+            }
             rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -963,6 +969,7 @@ public class QuAnDAOImpl implements QuAnDAO {
             }
 
             connection.commit();
+            connection.setAutoCommit(true);
 
         } catch (ConnectionPoolException | SQLException e) {
             try {
@@ -1215,7 +1222,6 @@ public class QuAnDAOImpl implements QuAnDAO {
 
         } catch (SQLException e) {
             throw new DAOException(e);
-
         }
 
         return false;

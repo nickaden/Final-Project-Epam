@@ -46,22 +46,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>${headTitle}</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <script src="jquery-3.3.1.min.js"></script>
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../script.js"></script>
-    <link rel="stylesheet" href="../sign_up_styles.css">
-    <script src="../validation.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+
+    <script src="js/require.js" data-main="js/edit_answer"></script>
+    <script src="js/styler.js"></script>
+
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/description.css">
+    <link rel="stylesheet" href="css/question_answer_edit.css">
 
 </head>
 <body>
@@ -77,8 +81,8 @@
                         <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu lang-item">
-                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
-                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                        <li><a href="#" class="lang-option" data="en">${en_option}</a></li>
+                        <li><a href="#" class="lang-option" data="ru">${ru_option}</a></li>
                     </ul>
                 </li>
                 <c:choose>
@@ -232,40 +236,3 @@
 </div>
 </body>
 </html>
-
-
-<%-------------------------------------------------------------------------------------------------------------------%>
-
-<%--<html>--%>
-<%--<head>--%>
-<%--<title>Title</title>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<form method="post" action="start">--%>
-<%--<input type="hidden" name="action" value="add_question">--%>
-<%--<input type="text" name="title"><br/>--%>
-<%--<textarea name="description"></textarea><br/>--%>
-<%--<input type="text" name="tags">--%>
-<%--<button type="submit">Submit</button>--%>
-<%--</form>--%>
-<%--</body>--%>
-<%--</html>--%>
-
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ page isELIgnored="false" %>--%>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
-<%--<html>--%>
-<%--<head>--%>
-    <%--<title>Title</title>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<form method="post" action="start">--%>
-    <%--<input type="hidden" name="action" value="edit_answer">--%>
-    <%--<input type="hidden" name="answer" value="${answer.id}">--%>
-    <%--<input type="hidden" name="path" value="${path}">--%>
-    <%--<textarea name="description">${requestScope.answer.description}</textarea>--%>
-    <%--<button type="submit">Submit</button>--%>
-<%--</form>--%>
-
-<%--</body>--%>
-<%--</html>--%>

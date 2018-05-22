@@ -1,6 +1,7 @@
 package by.epam.like_it.controller.util;
 
 import by.epam.like_it.controller.command.Command;
+import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import java.util.Map;
 public class CommandLoader {
 
     private static CommandLoader ourInstance = new CommandLoader();
-    private static final String COMMANDS_SOURCE_PATH="D:\\Epam JWD\\Tasks\\likeIT\\src\\main\\resources\\commands.xml";
+    private static final String COMMANDS_SOURCE_PATH="commands.xml";
 
     public static CommandLoader getInstance() {
         return ourInstance;
@@ -26,14 +28,15 @@ public class CommandLoader {
     }
 
 
-    public Map<String,Command> getCommands(){
+    public Map<String,Command> getCommands() throws IOException{
 
         Map<String,Command> map=new HashMap<>();
 
         try {
 
             DOMParser parser=new DOMParser();
-            parser.parse(COMMANDS_SOURCE_PATH);
+            URL commandsResource = Thread.currentThread().getContextClassLoader().getResource(COMMANDS_SOURCE_PATH);
+            parser.parse(commandsResource.getPath());
 
             Document document=parser.getDocument();
             Element root=document.getDocumentElement();
@@ -50,8 +53,8 @@ public class CommandLoader {
                 map.put(actionName.getTextContent(),command);
             }
 
-        } catch (SAXException | IOException | IllegalAccessException | ClassNotFoundException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (SAXException | InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+            Logger.getLogger(getClass()).error(e.getMessage());
         }
         return map;
     }

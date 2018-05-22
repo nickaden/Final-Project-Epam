@@ -1,0 +1,46 @@
+.sidebar{
+    margin-top: 35px;
+}
+
+.side-panel{
+    min-height: 300px;
+    background-color: #FFF8DC;
+}
+
+.button-space{
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+.content {
+    margin-top: -10px;
+}
+
+#asking-button{
+    margin-right: 15px;
+}
+
+.button-space .checkbox{
+    margin-left: 20px;
+    margin-bottom: 25px;
+}
+
+.info {
+    display: none;
+    position: absolute;
+}
+
+.val-obj{
+    display: none;
+}
+
+.alert-hidden{
+    display: none;
+}
+
+#back{
+    display: inline-block;
+}
+#error {
+    color: #c63512;
+}

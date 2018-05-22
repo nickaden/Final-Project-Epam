@@ -1,0 +1,61 @@
+.code{
+    width: 80%;
+    padding: 5px;
+    max-height: 700px;
+    overflow-y: scroll;
+}
+
+.code pre{
+    border: 0px;
+}
+
+.title-label{
+    display: inline;
+}
+
+.title-text{
+    position: relative;
+    margin-right: 30px;
+}
+
+#description{
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.styler{
+    margin-top: 15px;
+    height: 30px;
+}
+
+.load-picture{
+    margin-top: 2px;
+    padding: 0px;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    background: url('../web-images/picture.png') no-repeat 50% 50%;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.set-code{
+    margin-top: 2px;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    background: url('../web-images/code.png') no-repeat 50% 50%;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.load-picture:hover{
+    background: url('../web-images/picture_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}
+
+.set-code:hover {
+
+    background: url('../web-images/code_hover.png') no-repeat 50% 50%;
+    background-size: contain;
+}

@@ -25,10 +25,16 @@ public class StartFilter implements Filter {
         String uri=request.getRequestURI();
         HttpSession session=request.getSession(true);
         String lang= (String) session.getAttribute(KeyHolder.LANG_KEY);
+        String view= (String) session.getAttribute(KeyHolder.VIEW_KEY);
 
         if (lang==null){
             lang=EN_KEY;
             session.setAttribute(KeyHolder.LANG_KEY,lang);
+        }
+
+        if (view==null){
+            view=KeyHolder.LANG_KEY;
+            session.setAttribute(KeyHolder.VIEW_KEY,view);
         }
 
         if(uri.equals(HOME_URI)){

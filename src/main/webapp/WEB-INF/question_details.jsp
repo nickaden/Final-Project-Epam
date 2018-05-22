@@ -39,15 +39,21 @@
     <title>${headTitle}</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/question.css">
+    <link rel="stylesheet" href="css/answer.css">
+    <link rel="stylesheet" href="css/description.css">
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="js/require.js" data-main="js/question_details"></script>
+    <script src="js/voting.js"></script>
+    <script src="js/styler.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -63,8 +69,8 @@
                         <c:out value="${fn:toUpperCase(sessionScope.lang)}"/>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu lang-item">
-                        <li><a href="#" onclick="changeLang('en')">${en_option}</a></li>
-                        <li><a href="#" onclick="changeLang('ru')">${ru_option}</a></li>
+                        <li><a href="#" class="lang-option" data="en">${en_option}</a></li>
+                        <li><a href="#" class="lang-option" data="ru">${ru_option}</a></li>
                     </ul>
                 </li>
                 <c:choose>
@@ -202,11 +208,16 @@
 </div>
 <div class="container">
     <div class="button-space row">
-        <c:if test="${sessionScope.user != null}">
-            <a href="/start?action=ask">
-                <button class="btn btn-primary" id="asking-button">${ask_button}</button>
-            </a>
-        </c:if>
+        <div class="col-sm-10">
+
+        </div>
+        <div class="col-sm-2">
+            <c:if test="${sessionScope.user != null}">
+                <a href="/start?action=ask">
+                    <button class="btn btn-primary" id="asking-button">${ask_button}</button>
+                </a>
+            </c:if>
+        </div>
     </div>
     <div class="content col-md-9">
         <div id="question-details">
@@ -420,17 +431,6 @@
         </div>
     </div>
 </div>
-<script src="../script.js"></script>
-<script>
-    $(document).ready(function () {
-        var descriptions = $('.description');
-        descriptions.each(function (i, item) {
-            style_description($(item));
-        });
-    });
-</script>
-<link rel="stylesheet" href="../sign_up_styles.css">
-<script src="../validation.js"></script>
 </body>
 </html>
 

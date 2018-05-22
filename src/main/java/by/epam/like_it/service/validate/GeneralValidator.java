@@ -11,11 +11,20 @@ public class GeneralValidator {
         return id > 0;
     }
 
-    public static boolean checkLang(String lang){
+    public static boolean checkLangStrict(String lang){
 
         Pattern pattern= Pattern.compile(langRegEx);
         Matcher matcher=pattern.matcher(lang);
 
         return matcher.find();
+    }
+
+    public static boolean checkLangWithNull(String lang){
+
+        if(lang == null) {
+            return true;
+        } else {
+            return checkLangStrict(lang);
+        }
     }
 }
