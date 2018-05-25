@@ -13,9 +13,11 @@ public interface QuAnService {
 
     int addQuestion(Question question, User owner, String lang, String tags) throws ServiceException;
 
-    void editQuestion(Question question, String tags, String lang) throws ServiceException;
+    void editQuestion(Question question, String tags, String lang, int userId) throws ServiceException;
 
-    List<QuestionInfoBlock> getQuestions(String language) throws ServiceException;
+    List<QuestionInfoBlock> getQuestions(String language, int page) throws ServiceException;
+
+    int getPageCount(String lang) throws ServiceException;
 
     List<Tag> getTags() throws ServiceException;
 
@@ -32,6 +34,8 @@ public interface QuAnService {
     boolean addMark(Mark mark, String typeOfMark, int id) throws ServiceException;
 
     Mark getMark(String typeOfMark, int id, int ownerId) throws ServiceException;
+
+    int getRate(String type, int id) throws ServiceException;
 
     List<QuestionInfoBlock> getAnsweredQuestionsByUser(User user) throws ServiceException;
 

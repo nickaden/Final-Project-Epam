@@ -16,7 +16,6 @@ import java.io.PrintWriter;
 
 public class SignInCommand implements Command {
 
-    private static final String ERROR_REFER="/sign_in_error";
     private static final String SUCCESS="success";
     private static final String FAILURE="failure";
 

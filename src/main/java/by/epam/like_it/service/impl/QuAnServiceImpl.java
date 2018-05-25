@@ -10,6 +10,7 @@ import by.epam.like_it.service.validate.*;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuAnServiceImpl implements QuAnService {
@@ -19,11 +20,12 @@ public class QuAnServiceImpl implements QuAnService {
     private static final String QUESTION_TYPE = "question";
     private static final String ANSWER_TYPE = "answer";
     private static final String WHITESPACES_SPLIT = " ";
+    private static final String EMPTY_STRING="";
     private static final String NOT_VALID_MSG="Data is not valid";
     private static final int NOT_VALID_ID=-1;
 
     @Override
-    public List<QuestionInfoBlock> getQuestions(String lang) throws ServiceException {
+    public List<QuestionInfoBlock> getQuestions(String lang, int page) throws ServiceException {
 
         List<QuestionInfoBlock> questionBlockList = new ArrayList<>();
 
@@ -35,7 +37,12 @@ public class QuAnServiceImpl implements QuAnService {
 
             QuAnDAO quAnDAO = DAOfactory.getQuAnDAO();
 
-            List<Question> questions = quAnDAO.getQuestions(lang);
+            int noOfPages=quAnDAO.getPageCount(lang);
+            if (page>noOfPages){
+                page=noOfPages;
+            }
+
+            List<Question> questions = quAnDAO.getQuestions(lang, page);
 
             for (Question question : questions) {
 
@@ -50,6 +57,8 @@ public class QuAnServiceImpl implements QuAnService {
                 questionBlockList.add(questionBlock);
             }
 
+            Collections.reverse(questionBlockList);
+
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -57,6 +66,19 @@ public class QuAnServiceImpl implements QuAnService {
         return questionBlockList;
     }
 
+    @Override
+    public int getPageCount(String lang) throws ServiceException {
+
+        int pageCount= 0;
+        try {
+
+            pageCount = DAOFactory.getInstance().getQuAnDAO().getPageCount(lang);
+            return pageCount;
+
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
 
     @Override
     public int addQuestion(Question question, User owner, String lang, String tagString) throws ServiceException {
@@ -81,10 +103,11 @@ public class QuAnServiceImpl implements QuAnService {
             String[] tagList = tagString.split(WHITESPACES_SPLIT);
 
             for (String tagTitle : tagList) {
+                if (!tagTitle.equals(EMPTY_STRING)){
                 Tag tag = new Tag();
                 tag.setTitle(tagTitle);
-
                 tags.add(tag);
+                }
             }
             questionId = quAnDAO.addQuestion(question, owner, lang, tags);
 
@@ -97,7 +120,7 @@ public class QuAnServiceImpl implements QuAnService {
     }
 
     @Override
-    public void editQuestion(Question question, String tagString, String lang) throws ServiceException {
+    public void editQuestion(Question question, String tagString, String lang, int userId) throws ServiceException {
 
         if(!QuestionValidator.checkQuestionEditing(question)
                 && TagValidator.checkTagString(tagString)
@@ -123,8 +146,13 @@ public class QuAnServiceImpl implements QuAnService {
 
         try {
 
-            int langID = dao.getLanguageID(lang);
-            dao.editQuestion(question, tags, langID);
+            User owner = dao.getQuestionOwner(question);
+            User user=DAOFactory.getInstance().getUserDAO().getUserById(userId);
+
+            if (owner.getId() == userId || user.getRole() == User.Role.ADMIN) {
+                int langID = dao.getLanguageID(lang);
+                dao.editQuestion(question, tags, langID);
+            }
 
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -553,6 +581,31 @@ public class QuAnServiceImpl implements QuAnService {
         }
 
         return isAdded;
+    }
+
+    @Override
+    public int getRate(String type, int id) throws ServiceException {
+
+        List<Mark> marks;
+
+        if (type.equals(QUESTION_TYPE)){
+            QuestionInfoBlock question=getQuestionInfoBlock(id);
+            marks=question.getMarks();
+        } else {
+            Answer answer=getAnswerById(id);
+            marks=answer.getMarks();
+        }
+
+        int rate=0;
+        for(Mark rateMark:marks){
+            if (rateMark.getType()==Mark.Type.UP){
+                rate++;
+            } else if (rateMark.getType()==Mark.Type.DOWN){
+                rate--;
+            }
+        }
+
+        return rate;
     }
 
     @Override

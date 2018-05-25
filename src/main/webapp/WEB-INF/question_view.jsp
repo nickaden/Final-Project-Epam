@@ -247,13 +247,50 @@
                     </div>
                 </div>
             </c:forEach>
+            <c:if test="${noOfPages>1}">
+                <ul class="pagination pagination-sm">
+                <c:set var="begin" value="1"/>
+                <c:set var="end" value="${noOfPages}"/>
+                <c:if test="${currentPage-2 gt begin}">
+                    <c:set var="begin" value="${currentPage-2}"/>
+                </c:if>
+                <c:if test="${currentPage+2 lt end}">
+                    <c:set var="end" value="${currentPage+2}"/>
+                </c:if>
+
+
+                <c:if test="${currentPage != 1}">
+                    <li><a href="/start?action=question_view&page=${currentPage-1}">Prev</a></li>
+                </c:if>
+
+                <c:forEach var="i" begin="${begin}" end="${end}">
+                    <c:choose>
+                        <c:when test="${currentPage eq i}">
+                            <c:set var="isActive" value="active"/>
+                            <li class="${isActive}">
+                                <a href="">${i}</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="isActive" value=""/>
+                            <li class="">
+                                <a href="/start?action=question_view&page=${i}">${i}</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <c:if test="${currentPage lt noOfPages}">
+                    <li><a href="/start?action=question_view&page=${currentPage+1}">Next</a></li>
+                </c:if>
+            </ul>
+            </c:if>
         </div>
         <div class="sidebar col-md-3">
             <div class="panel panel-default side-panel">
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

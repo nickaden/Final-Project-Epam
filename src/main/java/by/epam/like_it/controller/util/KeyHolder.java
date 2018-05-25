@@ -41,9 +41,9 @@ public class KeyHolder {
     public static final String VIEW_KEY="view";
     public static final String ALL_VALUE="all";
     public static final String LANG_VALUE="lang";
-
-
-
+    public static final String PAGE_KEY="page";
     public static final String QUESTION_DETAILS_PATH = "/start?action=question_details&id=";
+
+    public static final int INTERNAL_ERROR_CODE=500;
 
 }

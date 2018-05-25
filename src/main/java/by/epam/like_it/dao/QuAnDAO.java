@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface QuAnDAO {
 
-    List<Question> getQuestions(String lang) throws DAOException;
+    List<Question> getQuestions(String lang, int page) throws DAOException;
+
+    int getPageCount(String lang) throws DAOException;
 
     Question getQuestionById(int id) throws DAOException;
 

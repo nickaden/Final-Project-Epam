@@ -1,6 +1,7 @@
 package by.epam.like_it.controller.command.impl;
 
 import by.epam.like_it.entity.Question;
+import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
@@ -25,6 +26,8 @@ public class EditQuestionCommand implements Command{
         question.setTitle(request.getParameter(KeyHolder.TITLE_KEY));
         question.setDescription(request.getParameter(KeyHolder.DESCRIPTION_KEY));
 
+        User user= (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
+
         ServiceFactory factory=ServiceFactory.getInstance();
         QuAnService service=factory.getQuAnService();
 
@@ -32,7 +35,7 @@ public class EditQuestionCommand implements Command{
 
         try {
 
-            service.editQuestion(question,request.getParameter(KeyHolder.TAGS_KEY),lang);
+            service.editQuestion(question,request.getParameter(KeyHolder.TAGS_KEY),lang,user.getId());
 
         } catch (ServiceException  e) {
             Logger logger= Logger.getRootLogger();

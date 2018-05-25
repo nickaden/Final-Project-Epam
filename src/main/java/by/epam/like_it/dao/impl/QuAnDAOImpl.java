@@ -14,8 +14,12 @@ public class QuAnDAOImpl implements QuAnDAO {
     private ConnectionPool connectionPool;
 
     //**** Statements ****//
-    private static final String GET_QUESTIONS = "SELECT * FROM question INNER JOIN language ON language.id=question.lang_id WHERE language.title=?";
-    private static final String GET_ALL_QUESTIONS = "SELECT * FROM question";
+    private static final String GET_QUESTIONS_BY_LANG = "SELECT * FROM question INNER JOIN language ON language.id=question.lang_id WHERE language.title=? LIMIT ?,?";
+    private static final String GET_ALL_QUESTIONS = "SELECT * FROM question LIMIT ?,?";
+
+    private static final String GET_QUESTIONS_COUNT="SELECT COUNT(*) AS count FROM question";
+    private static final String GET_QUESTIONS_COUNT_BY_LANG ="SELECT COUNT(*) AS count FROM question INNER JOIN language ON language.id=question.lang_id WHERE language.title=?";
+
     private static final String GET_QUESTIONS_BY_USER = "SELECT * FROM question WHERE owner_id=?";
     private static final String GET_QUESTIONS_BY_TAG = "SELECT * FROM question INNER JOIN question_tag ON question.id = question_tag.q_id WHERE question_tag.tag_id=?";
     private static final String GET_QUESTION_BY_ID = "SELECT * FROM question WHERE id=?";
@@ -82,9 +86,9 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final String SURNAME_KEY = "surname";
     private static final String EMAIL_KEY = "email";
     private static final String IMAGE_NAME = "image_name";
-    private static final String SQL_EXCEPTION = "Database exception";
     private static final String QUESTION_KEY = "question";
     private static final String ANSWER_KEY = "answer";
+    private static final String COUNT_KEY = "count";
 
 
     //**** Indexes ****//
@@ -103,6 +107,12 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final int UPDATE_Q_DESCRIPTION = 2;
     private static final int UPDATE_Q_ID = 3;
     private static final int ANSWER_DESCRIPTION_INDEX = 1;
+    private static final int LIMIT_START_INDEX=1;
+    private static final int LIMIT_PER_PAGE_INDEX=2;
+    private static final int LANG_INDEX=1;
+
+    private static final int PER_PAGE=8;
+
 
 
     public QuAnDAOImpl(ConnectionPool connectionPool) {
@@ -111,7 +121,7 @@ public class QuAnDAOImpl implements QuAnDAO {
 
 
     @Override
-    public List<Question> getQuestions(String lang) throws DAOException {
+    public List<Question> getQuestions(String lang, int page) throws DAOException {
 
         List<Question> questions = new ArrayList<>();
         Connection connection = null;
@@ -121,12 +131,17 @@ public class QuAnDAOImpl implements QuAnDAO {
         try {
 
             connection = connectionPool.takeConnection();
+            int startIndex=(PER_PAGE*(page-1));
 
             if (lang == null) {
                 statement = connection.prepareStatement(GET_ALL_QUESTIONS);
+                statement.setInt(LIMIT_START_INDEX,startIndex);
+                statement.setInt(LIMIT_PER_PAGE_INDEX,PER_PAGE);
             } else {
-                statement = connection.prepareStatement(GET_QUESTIONS);
+                statement = connection.prepareStatement(GET_QUESTIONS_BY_LANG);
                 statement.setString(1, lang);
+                statement.setInt(2,startIndex);
+                statement.setInt(3,PER_PAGE);
             }
             rs = statement.executeQuery();
 
@@ -149,6 +164,38 @@ public class QuAnDAOImpl implements QuAnDAO {
         return questions;
     }
 
+    @Override
+    public int getPageCount(String lang) throws DAOException {
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        int questionCount=0;
+
+        try {
+
+            connection=connectionPool.takeConnection();
+            if (lang==null) {
+                statement = connection.prepareStatement(GET_QUESTIONS_COUNT);
+            } else {
+                statement = connection.prepareStatement(GET_QUESTIONS_COUNT_BY_LANG);
+                statement.setString(LANG_INDEX,lang);
+            }
+            rs=statement.executeQuery();
+
+            if(rs.next()){
+                questionCount=rs.getInt(COUNT_KEY);
+            }
+
+            return (int)Math.ceil(((double)questionCount)/PER_PAGE);
+
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            connectionPool.closeConnection(connection,statement,rs);
+        }
+    }
 
     @Override
     public List<Tag> getTags() throws DAOException {
@@ -325,6 +372,7 @@ public class QuAnDAOImpl implements QuAnDAO {
         } catch (SQLException | ConnectionPoolException e) {
             try {
                 connection.rollback();
+                connection.setAutoCommit(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -367,6 +415,7 @@ public class QuAnDAOImpl implements QuAnDAO {
         } catch (ConnectionPoolException | SQLException e) {
             try {
                 connection.rollback();
+                connection.setAutoCommit(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -974,6 +1023,7 @@ public class QuAnDAOImpl implements QuAnDAO {
         } catch (ConnectionPoolException | SQLException e) {
             try {
                 connection.rollback();
+                connection.setAutoCommit(true);
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }

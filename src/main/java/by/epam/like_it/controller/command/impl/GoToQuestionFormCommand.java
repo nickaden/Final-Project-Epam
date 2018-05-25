@@ -19,6 +19,7 @@ import java.util.List;
 public class GoToQuestionFormCommand implements Command {
 
     private static final String FORM_PATH = "/asking";
+    private static final String EMPTY_STRING = "";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +28,7 @@ public class GoToQuestionFormCommand implements Command {
 
             QuestionInfoBlock questionInfoBlock;
             String id=request.getParameter(KeyHolder.ID_KEY);
-            if (id==null || id.equals("")){
+            if (id==null || id.equals(EMPTY_STRING)){
                 response.sendRedirect(FORM_PATH);
             } else {
 

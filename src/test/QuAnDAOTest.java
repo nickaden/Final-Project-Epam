@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
 
 public class QuAnDAOTest {
     private QuAnDAO quAnDAO;
-    private String RU_LANG="ru";
+    private String RU_LANG=null;
     private static final int NOT_VALID_ID=-1;
 
     @Before
@@ -29,7 +29,7 @@ public class QuAnDAOTest {
 
     @Test
     public void getQuestionsTest() throws DAOException {
-        assertNotNull(quAnDAO.getQuestions(RU_LANG));
+        assertNotNull(quAnDAO.getQuestions(RU_LANG,1));
     }
 
     @Test

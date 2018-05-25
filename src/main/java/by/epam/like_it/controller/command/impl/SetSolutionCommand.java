@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 public class SetSolutionCommand implements Command {
-
-    private static final String NEW_QUESTION_PATH = "/start?action=question_details&id=";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

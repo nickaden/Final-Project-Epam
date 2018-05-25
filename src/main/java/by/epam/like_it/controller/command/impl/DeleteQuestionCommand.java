@@ -3,7 +3,7 @@ package by.epam.like_it.controller.command.impl;
 import by.epam.like_it.controller.util.DescriptionImageParser;
 import by.epam.like_it.controller.util.ImageRemover;
 import by.epam.like_it.entity.Question;
-import by.epam.like_it.exception.CommandException;
+import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;
 import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.ServiceFactory;
@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class DeleteQuestionCommand implements Command {
 
@@ -29,8 +28,8 @@ public class DeleteQuestionCommand implements Command {
         ServiceFactory factory = ServiceFactory.getInstance();
         QuAnService service = factory.getQuAnService();
 
-        boolean isDeleted = false;
-
+        boolean isDeleted;
+        User user= (User) request.getSession(true).getAttribute(KeyHolder.USER_KEY);
 
 
         try {
@@ -39,7 +38,7 @@ public class DeleteQuestionCommand implements Command {
 
             isDeleted = service.deleteQuestion(
                     Integer.parseInt(request.getParameter(KeyHolder.QUESTION_KEY)),
-                    Integer.parseInt(request.getParameter(KeyHolder.USER_KEY))
+                    user.getId()
             );
 
             if (isDeleted){

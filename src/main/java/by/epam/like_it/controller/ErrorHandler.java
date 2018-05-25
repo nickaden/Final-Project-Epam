@@ -45,7 +45,7 @@ public class ErrorHandler extends HttpServlet {
 
         String errorMessage="["+statusCode+"] Servlet " + servletName +
                 " has thrown an exception " + throwable.getClass().getName() +
-                " : " + throwable.getMessage();
+                " : " + throwable.getMessage()+" from "+requestUri;
 
         request.setAttribute(ERROR_KEY, errorMessage);
         request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);

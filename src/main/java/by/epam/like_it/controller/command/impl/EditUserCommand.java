@@ -42,6 +42,7 @@ public class EditUserCommand implements Command {
 
             HttpSession session=request.getSession(true);
             User currentUser= (User) session.getAttribute(KeyHolder.USER_KEY);
+
             if(currentUser != null && currentUser.getId()== user.getId()){
                 session.setAttribute(KeyHolder.USER_KEY,user);
             }

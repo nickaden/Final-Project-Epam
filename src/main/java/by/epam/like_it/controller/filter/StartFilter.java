@@ -11,7 +11,6 @@ import java.io.IOException;
 public class StartFilter implements Filter {
 
     private static final String HOME_URI="/home";
-    private static final String START_URI="/start?action=question_view";
     private static final String EN_KEY="en";
 
     public void destroy() {

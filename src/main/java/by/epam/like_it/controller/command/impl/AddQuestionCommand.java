@@ -18,7 +18,6 @@ import java.io.IOException;
 
 public class AddQuestionCommand implements Command {
 
-    private static final String TAGS_KEY = "tags";
     private static final String NEW_QUESTION_PATH = "/start?action=question_details&id=";
     private static final String NO_QUESTION="Question not found";
 

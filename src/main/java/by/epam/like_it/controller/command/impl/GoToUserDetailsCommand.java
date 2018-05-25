@@ -1,6 +1,5 @@
 package by.epam.like_it.controller.command.impl;
 
-import by.epam.like_it.entity.Question;
 import by.epam.like_it.entity.QuestionInfoBlock;
 import by.epam.like_it.entity.User;
 import by.epam.like_it.exception.ServiceException;

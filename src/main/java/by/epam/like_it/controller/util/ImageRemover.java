@@ -11,4 +11,9 @@ public class ImageRemover {
             new File(path+"\\"+image).delete();
         }
     }
+
+    public static void deleteImage(String path,String image){
+
+        new File(path+"\\"+image).delete();
+    }
 }

@@ -34,7 +34,7 @@ public class AddUserCommand implements Command{
 
         try {
 
-            int userID=service.addUser(user);
+           service.addUser(user);
 
         } catch (ServiceException e) {
             Logger logger= Logger.getRootLogger();
