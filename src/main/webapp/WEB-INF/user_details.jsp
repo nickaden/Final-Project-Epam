@@ -51,7 +51,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
+    <title><c:out value="${requestScope.user.login}"/></title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
@@ -74,7 +74,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav" id="topNav">
             <li>
-                <h3><a href="/home">Like IT</a></h3>
+                <h3 class="logo"><a href="/home">Like IT</a></h3>
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -129,7 +129,8 @@
                                     </a>
                                     <form method="get" action="start">
                                         <input type="hidden" name="action" value="sign_out">
-                                        <button id="signOut" class="btn btn-info btn-sm" type="submit">${sign_out}</button>
+                                        <button id="signOut" class="btn btn-info btn-sm"
+                                                type="submit">${sign_out}</button>
                                     </form>
                                 </div>
                             </div>
@@ -505,6 +506,14 @@
                             </div>
 
                         </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control tag-search" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </div>
+                        </div>
                         <c:forEach var="tag" items="${requestScope.tags}">
                             <div class="tag-sm edit-menu">
                                 <h3><c:out value="${tag.title}"/></h3>
@@ -520,6 +529,14 @@
                 </div>
                 <div id="users" class="tab-pane fade">
                     <div class="users-menu">
+                        <div class="input-group">
+                            <input type="text" class="form-control user-search" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </div>
+                        </div>
                         <c:forEach var="user" items="${requestScope.users}">
                             <div class="user-sm edit-menu">
                                 <div class="user-image-container">

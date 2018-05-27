@@ -1,5 +1,8 @@
 package by.epam.like_it.dao.connection_pool;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 import java.util.Locale;
 import java.util.Map;
@@ -78,7 +81,7 @@ public final class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Error closing the connection.", e);
+            Logger.getLogger(getClass()).log(Level.ERROR, "Error closing the connection.", e);
         }
     }
 
@@ -102,21 +105,21 @@ public final class ConnectionPool {
                 con.close();
             }
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            Logger.getLogger(getClass()).log(Level.ERROR, "Connection isn't return to the pool.");
         }
         try {
             if (st !=null) {
                 st.close();
             }
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "ResultSet isn't closed.");
+            Logger.getLogger(getClass()).log(Level.ERROR, "Statement isn't closed.");
         }
         try {
             if (rs!=null) {
                 rs.close();
             }
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Statement isn't closed.");
+            Logger.getLogger(getClass()).log(Level.ERROR, "ResultSet isn't closed.");
         }
     }
 
@@ -126,14 +129,14 @@ public final class ConnectionPool {
                 con.close();
             }
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            Logger.getLogger(getClass()).log(Level.ERROR, "Connection isn't return to the pool.");
         }
         try {
             if (st !=null) {
                 st.close();
             }
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Statement isn't closed.");
+            Logger.getLogger(getClass()).log(Level.ERROR, "Statement isn't closed.");
         }
     }
 
@@ -369,6 +372,7 @@ public final class ConnectionPool {
         public void rollback() throws SQLException {
             connection.rollback();
         }
+
 
         @Override
         public void setAutoCommit(boolean autoCommit) throws SQLException {

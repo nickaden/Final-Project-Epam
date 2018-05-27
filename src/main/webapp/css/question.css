@@ -116,11 +116,13 @@
 .vote-up{
     background: url("../web-images/vote_up.png") no-repeat 50% 50%;
     background-size: contain;
+    cursor: pointer;
 }
 
 .vote-down{
     background: url("../web-images/vote_down.png") no-repeat 50% 50%;
     background-size: contain;
+    cursor: pointer;
 }
 
 .vote-up:hover{

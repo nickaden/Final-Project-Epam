@@ -30,7 +30,7 @@ define(
                     }
 
 
-                    var imgName = description.substring(pos + 5, end);
+                    var imgName = description.substring(pos + 6, end);
                     var imgBlock = $('<img class="preview-img">');
                     imgBlock.attr('src', '/load?type=description&name=' + imgName);
                     descriptionBlock.append(imgBlock);

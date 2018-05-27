@@ -1,5 +1,5 @@
 require(
-    ['navbar'],
+    ['navbar','side_panel'],
     function (navbar) {
 
         $('#view_all').change(function () {

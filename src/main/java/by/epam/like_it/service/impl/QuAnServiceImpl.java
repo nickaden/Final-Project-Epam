@@ -9,9 +9,7 @@ import by.epam.like_it.service.QuAnService;
 import by.epam.like_it.service.validate.*;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class QuAnServiceImpl implements QuAnService {
 
@@ -64,6 +62,46 @@ public class QuAnServiceImpl implements QuAnService {
         }
 
         return questionBlockList;
+    }
+
+    @Override
+    public List<QuestionRateInfo> getPopularQuestions(String language) throws ServiceException {
+
+        Map<Question,Integer> popular=new HashMap<>();
+        List<Question> questions=new ArrayList<>();
+        List<QuestionRateInfo> questionRateInfoList=new ArrayList<>();
+        QuAnDAO quAnDAO=DAOfactory.getQuAnDAO();
+
+        try {
+
+            for (int page = 1; page <= getPageCount(language); page++) {
+                questions.addAll(quAnDAO.getQuestions(language, page));
+            }
+
+            for(Question question:questions){
+
+                List<Mark> marks=quAnDAO.getMarksByQuestion(question);
+                popular.put(question,getQuestionRate(marks));
+            }
+
+            List<Map.Entry<Question,Integer>> questionList=findGreatest(popular,5);
+
+            for (Map.Entry<Question,Integer> entry:questionList){
+
+                QuestionRateInfo rateInfo=new QuestionRateInfo();
+                rateInfo.id=entry.getKey().getId();
+                rateInfo.title=entry.getKey().getTitle();
+                rateInfo.rate=entry.getValue();
+
+                questionRateInfoList.add(rateInfo);
+            }
+
+            return questionRateInfoList;
+
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+
     }
 
     @Override
@@ -625,5 +663,56 @@ public class QuAnServiceImpl implements QuAnService {
         }
 
         return mark;
+    }
+
+    private int getQuestionRate(List<Mark> marks){
+
+        int rate=0;
+
+        for (Mark mark:marks){
+            if(mark.getType()==Mark.Type.UP){
+                rate++;
+            }
+            else {
+                rate--;
+            }
+        }
+
+        return rate;
+    }
+
+    private static <K, V extends Comparable<? super V>> List<Map.Entry<K, V>>
+    findGreatest(Map<K, V> map, int n)
+    {
+        Comparator<? super Map.Entry<K, V>> comparator =
+                new Comparator<Map.Entry<K, V>>()
+                {
+                    @Override
+                    public int compare(Map.Entry<K, V> e0, Map.Entry<K, V> e1)
+                    {
+                        V v0 = e0.getValue();
+                        V v1 = e1.getValue();
+                        return v0.compareTo(v1);
+                    }
+                };
+
+        PriorityQueue<Map.Entry<K, V>> highest =
+                new PriorityQueue<>(n, comparator);
+        for (Map.Entry<K, V> entry : map.entrySet())
+        {
+            highest.offer(entry);
+            while (highest.size() > n)
+            {
+                highest.poll();
+            }
+        }
+
+        List<Map.Entry<K, V>> result = new ArrayList<>();
+        while (highest.size() > 0)
+        {
+            result.add(highest.poll());
+        }
+
+        return result;
     }
 }

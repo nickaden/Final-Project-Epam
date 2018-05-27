@@ -25,6 +25,7 @@
 <fmt:message bundle="${loc}" key="authorization.error" var="auth_error"/>
 <fmt:message bundle="${loc}" key="authorization.error_info" var="auth_error_info"/>
 <fmt:message bundle="${loc}" key="authorization.sign_in_warning" var="sign_in_warning"/>
+<fmt:message bundle="${loc}" key="top-title" var="top-title"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +54,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav" id="topNav">
             <li>
-                <h3><a href="/home">Like IT</a></h3>
+                <h3 class="logo"><a href="/home">Like IT</a></h3>
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -288,6 +289,7 @@
         </div>
         <div class="sidebar col-md-3">
             <div class="panel panel-default side-panel">
+                <h4>${top-title}</h4>
             </div>
         </div>
     </div>

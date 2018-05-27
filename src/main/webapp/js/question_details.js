@@ -1,5 +1,5 @@
 require(
-    ['validation','style_description','navbar'],
+    ['validation','style_description','navbar','side_panel'],
     function (jVal,style_description,navbar) {
 
     $(document).ready(function () {

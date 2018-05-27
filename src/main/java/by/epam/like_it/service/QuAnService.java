@@ -4,6 +4,7 @@ import by.epam.like_it.entity.*;
 import by.epam.like_it.exception.ServiceException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QuAnService {
 
@@ -16,6 +17,8 @@ public interface QuAnService {
     void editQuestion(Question question, String tags, String lang, int userId) throws ServiceException;
 
     List<QuestionInfoBlock> getQuestions(String language, int page) throws ServiceException;
+
+    List<QuestionRateInfo> getPopularQuestions(String language) throws ServiceException;
 
     int getPageCount(String lang) throws ServiceException;
 

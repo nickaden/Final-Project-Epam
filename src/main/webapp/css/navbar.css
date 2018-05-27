@@ -1,3 +1,20 @@
+@font-face{
+    font-family:Remachine;
+    src:url("../fonts/RemachineScript_Personal_Use.ttf")
+}
+
+
+.logo{
+    font-family: Remachine;
+    font-size: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.logo a{
+    text-decoration: none;
+}
+
 .lang-item{
     min-width: 100%;
     font-size: 16px;

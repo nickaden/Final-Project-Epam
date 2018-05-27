@@ -61,7 +61,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav" id="topNav">
             <li>
-                <h3><a href="/home">Like IT</a></h3>
+                <h3 class="logo"><a href="/home">Like IT</a></h3>
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -428,6 +428,7 @@
     </div>
     <div class="sidebar col-md-3">
         <div class="panel panel-default side-panel">
+            <h4>${top-title}</h4>
         </div>
     </div>
 </div>

@@ -5,6 +5,19 @@
 .side-panel{
     min-height: 300px;
     background-color: #FFF8DC;
+    padding:10px;
+    font-size:12px;
+}
+
+.side-panel .badge{
+    margin-left:5px;
+    color: white;
+    background: #64bd79;
+}
+
+.side-panel h4{
+    font-weight: bold;
+    color: #9c9999;
 }
 
 .button-space{

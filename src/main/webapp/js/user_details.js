@@ -55,6 +55,32 @@ require(
             return false;
         });
 
+        $('.tag-search').change(function () {
+
+            var text=this.value;
+            var tags=$('.tag-sm');
+            tags.show();
+            tags.each(function (index,obj) {
+                if ($(obj).find('h3').text().indexOf(text) == -1){
+                    $(obj).hide();
+                }
+            })
+
+        });
+
+        $('.user-search').change(function () {
+
+            var text=this.value;
+            var users=$('.user-sm');
+            users.show();
+            users.each(function (index,obj) {
+                if ($(obj).find('h4').text().indexOf(text) == -1){
+                    $(obj).hide();
+                }
+            })
+
+        })
+
     });
 
 function loadUserImage(picture, id) {

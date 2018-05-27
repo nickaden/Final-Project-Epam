@@ -110,6 +110,14 @@ public class QuAnDAOImpl implements QuAnDAO {
     private static final int LIMIT_START_INDEX=1;
     private static final int LIMIT_PER_PAGE_INDEX=2;
     private static final int LANG_INDEX=1;
+    private static final int START_INDEX=1;
+    private static final int PER_PAGE_INDEX=3;
+    private static final int TAG_TITLE_INDEX=1;
+    private static final int TAG_REPLACE_INDEX=2;
+    private static final int TAG_REPLACE_ID_INDEX=2;
+    private static final int DESCRIPTION_INDEX=3;
+    //  ******  //
+
 
     private static final int PER_PAGE=8;
 
@@ -139,9 +147,9 @@ public class QuAnDAOImpl implements QuAnDAO {
                 statement.setInt(LIMIT_PER_PAGE_INDEX,PER_PAGE);
             } else {
                 statement = connection.prepareStatement(GET_QUESTIONS_BY_LANG);
-                statement.setString(1, lang);
-                statement.setInt(2,startIndex);
-                statement.setInt(3,PER_PAGE);
+                statement.setString(LANG_INDEX, lang);
+                statement.setInt(START_INDEX,startIndex);
+                statement.setInt(PER_PAGE_INDEX,PER_PAGE);
             }
             rs = statement.executeQuery();
 
@@ -245,12 +253,12 @@ public class QuAnDAOImpl implements QuAnDAO {
 
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(ADD_TAG);
-            statement.setString(1, tag.getTitle());
-            statement.setString(2, tag.getTitle());
+            statement.setString(TAG_TITLE_INDEX, tag.getTitle());
+            statement.setString(TAG_REPLACE_INDEX, tag.getTitle());
             statement.execute();
 
             statement = connection.prepareStatement(GET_TAG_ID);
-            statement.setString(1, tag.getTitle());
+            statement.setString(TAG_TITLE_INDEX, tag.getTitle());
 
             rs = statement.executeQuery();
 
@@ -313,8 +321,8 @@ public class QuAnDAOImpl implements QuAnDAO {
 
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(UPDATE_TAG);
-            statement.setString(1, tag.getTitle());
-            statement.setInt(2, tag.getId());
+            statement.setString(TAG_TITLE_INDEX, tag.getTitle());
+            statement.setInt(TAG_REPLACE_ID_INDEX, tag.getId());
 
             statement.execute();
 
@@ -347,7 +355,7 @@ public class QuAnDAOImpl implements QuAnDAO {
             int langID = getLanguageID(lang);
 
             statement = connection.prepareStatement(ADD_QUESTION);
-            statement.setInt(1, langID);
+            statement.setInt(LANG_INDEX, langID);
             statement.setInt(2, owner.getId());
             statement.setString(3, question.getTitle());
             statement.setString(4, question.getDescription());
@@ -440,7 +448,7 @@ public class QuAnDAOImpl implements QuAnDAO {
 
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(GET_LANGUAGE_ID);
-            statement.setString(1, lang);
+            statement.setString(LANG_INDEX, lang);
             rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -733,9 +741,9 @@ public class QuAnDAOImpl implements QuAnDAO {
 
             connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(ADD_ANSWER);
-            statement.setInt(1, answer.getOwner().getId());
+            statement.setInt(ID_INDEX, answer.getOwner().getId());
             statement.setInt(2, questionId);
-            statement.setString(3, answer.getDescription());
+            statement.setString(DESCRIPTION_INDEX, answer.getDescription());
             statement.execute();
 
         } catch (ConnectionPoolException | SQLException e) {
@@ -1223,12 +1231,12 @@ public class QuAnDAOImpl implements QuAnDAO {
             for (Tag tag : tagList) {
 
                 statement = connection.prepareStatement(ADD_TAG);
-                statement.setString(1, tag.getTitle());
-                statement.setString(2, tag.getTitle());
+                statement.setString(TAG_TITLE_INDEX, tag.getTitle());
+                statement.setString(TAG_REPLACE_INDEX, tag.getTitle());
                 statement.execute();
 
                 statement = connection.prepareStatement(GET_TAG_ID);
-                statement.setString(1, tag.getTitle());
+                statement.setString(TAG_TITLE_INDEX, tag.getTitle());
                 rs = statement.executeQuery();
 
                 if (!rs.next()) {
